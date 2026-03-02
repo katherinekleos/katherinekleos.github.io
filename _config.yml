@@ -1,0 +1,8 @@
+title: Katherine Kleos
+description: Systems & research portfolio — blog + project case studies
+theme: minima
+
+header_pages:
+  - projects.md
+  - blog.md
+  - about.md
