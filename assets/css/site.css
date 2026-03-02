@@ -1,0 +1,11 @@
+:root{
+  --primary: #264E41;
+  --secondary: #1E3A5F;
+  --text: #2E2E2E;
+  --muted: #5F5F5F;
+}
+
+body{
+  font-family: Cambria, Georgia, "Times New Roman", serif;
+  color: var(--text);
+}
