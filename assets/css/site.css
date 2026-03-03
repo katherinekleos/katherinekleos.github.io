@@ -1,11 +1,115 @@
 :root{
-  --primary: #264E41;
-  --secondary: #1E3A5F;
-  --text: #2E2E2E;
-  --muted: #5F5F5F;
+  --primary: #264E41;   /* deep viridian */
+  --secondary: #1E3A5F; /* deep slate blue */
+  --text: #2E2E2E;      /* charcoal */
+  --muted: #5F5F5F;     /* neutral grey */
+  --line: rgba(46,46,46,0.14);
+  --bg: #ffffff;
 }
 
 body{
   font-family: Cambria, Georgia, "Times New Roman", serif;
   color: var(--text);
+  background: var(--bg);
 }
+
+/* Hero block */
+.hero-wrap{
+  position:relative;
+  padding: 78px 16px 56px 16px;
+  overflow:hidden;
+}
+
+.hero-wrap::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image: radial-gradient(rgba(46,46,46,0.12) 1px, transparent 1px);
+  background-size: 22px 22px;
+  opacity: 0.20;
+  pointer-events:none;
+}
+
+.hero-wrap::after{
+  content:"";
+  position:absolute;
+  inset:-60px;
+  background:
+    radial-gradient(520px 320px at 14% 86%, rgba(38,78,65,0.20), transparent 60%),
+    radial-gradient(520px 320px at 88% 18%, rgba(30,58,95,0.16), transparent 60%);
+  pointer-events:none;
+}
+
+.hero-inner{
+  position:relative;
+  z-index:1;
+  max-width: 980px;
+  margin: 0 auto;
+  text-align:center;
+}
+
+.hero-title{
+  font-size: clamp(38px, 5vw, 64px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0 0 16px 0;
+  font-weight: 750;
+  color: var(--text);
+}
+
+.accent-primary{ color: var(--primary); }
+.accent-secondary{ color: var(--secondary); }
+
+.hero-sub{
+  margin: 0 auto;
+  max-width: 780px;
+  color: var(--muted);
+  font-size: 1.08rem;
+  line-height: 1.6;
+}
+
+.hero-arrow{
+  margin-top: 26px;
+  font-size: 22px;
+  color: rgba(46,46,46,0.55);
+}
+
+/* Selected work */
+.section{
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 28px 16px 10px 16px;
+}
+
+.section h2{
+  font-size: 1.35rem;
+  margin: 0 0 14px 0;
+}
+
+.work-list{
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+
+.work-item{
+  padding: 14px 14px;
+  margin: 0 0 12px 0;
+  border-left: 4px solid var(--primary);
+  background: rgba(46,46,46,0.02);
+}
+
+.work-title{
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.work-desc{
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Link behavior */
+a{ color: var(--secondary); text-decoration:none; }
+a:hover{ text-decoration:underline; }
