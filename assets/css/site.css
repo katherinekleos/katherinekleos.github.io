@@ -1,3 +1,6 @@
+/* ================================
+   COLOR SYSTEM
+================================ */
 :root{
   --primary: #264E41;   /* deep viridian */
   --secondary: #1E3A5F; /* deep slate blue */
@@ -7,29 +10,97 @@
   --bg: #ffffff;
 }
 
+/* ================================
+   GLOBAL TYPOGRAPHY
+================================ */
 body{
   font-family: Cambria, Georgia, "Times New Roman", serif;
   color: var(--text);
   background: var(--bg);
+  margin: 0;
 }
 
-/* Hero block */
+/* Links */
+a{
+  color: var(--secondary);
+  text-decoration: none;
+}
+a:hover{
+  text-decoration: underline;
+}
+
+/* ================================
+   HEADER (Top Bar)
+================================ */
+.site-topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding: 22px 0 14px 0;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  text-decoration:none;
+}
+
+.brand img{
+  width:52px;
+  height:52px;
+  border-radius:999px;
+  object-fit:cover;
+  border: 1px solid var(--line);
+}
+
+.brand-name{
+  font-weight:700;
+  font-size:1.15rem;
+  color:var(--text);
+  line-height:1.05;
+}
+
+.brand-role{
+  font-size:0.95rem;
+  color:var(--muted);
+  margin-top:2px;
+  line-height:1.1;
+}
+
+.topnav a{
+  margin-left:18px;
+  color:var(--text);
+  opacity:0.85;
+}
+
+.topnav a:hover{
+  opacity:1;
+  text-decoration:underline;
+}
+
+/* ================================
+   HERO SECTION
+================================ */
 .hero-wrap{
   position:relative;
-  padding: 78px 16px 56px 16px;
+  padding: 82px 16px 60px 16px;
   overflow:hidden;
 }
 
+/* subtle dotted grid */
 .hero-wrap::before{
   content:"";
   position:absolute;
   inset:0;
   background-image: radial-gradient(rgba(46,46,46,0.12) 1px, transparent 1px);
   background-size: 22px 22px;
-  opacity: 0.20;
+  opacity: 0.18;
   pointer-events:none;
 }
 
+/* subtle green + blue glow */
 .hero-wrap::after{
   content:"";
   position:absolute;
@@ -52,13 +123,18 @@ body{
   font-size: clamp(38px, 5vw, 64px);
   line-height: 1.05;
   letter-spacing: -0.02em;
-  margin: 0 0 16px 0;
+  margin: 0 0 18px 0;
   font-weight: 750;
   color: var(--text);
 }
 
-.accent-primary{ color: var(--primary); }
-.accent-secondary{ color: var(--secondary); }
+.accent-primary{
+  color: var(--primary);
+}
+
+.accent-secondary{
+  color: var(--secondary);
+}
 
 .hero-sub{
   margin: 0 auto;
@@ -69,21 +145,24 @@ body{
 }
 
 .hero-arrow{
-  margin-top: 26px;
+  margin-top: 28px;
   font-size: 22px;
   color: rgba(46,46,46,0.55);
 }
 
-/* Selected work */
+/* ================================
+   SELECTED WORK SECTION
+================================ */
 .section{
   max-width: 980px;
   margin: 0 auto;
-  padding: 28px 16px 10px 16px;
+  padding: 36px 16px 20px 16px;
 }
 
 .section h2{
   font-size: 1.35rem;
-  margin: 0 0 14px 0;
+  margin: 0 0 18px 0;
+  font-weight: 700;
 }
 
 .work-list{
@@ -93,15 +172,15 @@ body{
 }
 
 .work-item{
-  padding: 14px 14px;
-  margin: 0 0 12px 0;
+  padding: 16px 16px;
+  margin: 0 0 14px 0;
   border-left: 4px solid var(--primary);
   background: rgba(46,46,46,0.02);
 }
 
 .work-title{
   font-weight: 700;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .work-desc{
@@ -110,6 +189,16 @@ body{
   line-height: 1.5;
 }
 
-/* Link behavior */
-a{ color: var(--secondary); text-decoration:none; }
-a:hover{ text-decoration:underline; }
+/* ================================
+   RESPONSIVE
+================================ */
+@media (max-width: 640px){
+  .site-topbar{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  .topnav a{
+    margin-left:0;
+    margin-right:14px;
+  }
+}
