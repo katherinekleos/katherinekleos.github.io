@@ -1,0 +1,176 @@
+<section class="tools-section" id="tools">
+  <div class="tools-wrap">
+    <div class="tools-header">
+      <h2>Tools &amp; Templates</h2>
+      <p>
+        Structured models, reusable templates, and practical workflow tools for research
+        administration and finance.
+      </p>
+    </div>
+
+    <div class="tools-grid">
+      <a href="/tools/portfolio-forecast" class="tool-card">
+        <div class="tool-meta">Model</div>
+        <h3>Sponsored Portfolio Forecast Model</h3>
+        <p>
+          Forecasting structure for burn rate, timing, and early risk visibility across active accounts.
+        </p>
+        <div class="tool-link">View tool →</div>
+      </a>
+
+      <a href="/tools/cost-transfer-generator" class="tool-card">
+        <div class="tool-meta">Template</div>
+        <h3>Cost Transfer Justification Generator</h3>
+        <p>
+          Structured language support for building clear, policy-aligned cost transfer narratives.
+        </p>
+        <div class="tool-link">View template →</div>
+      </a>
+
+      <a href="/tools/multi-ledger-reconciliation" class="tool-card">
+        <div class="tool-meta">Workflow</div>
+        <h3>Multi-Ledger Reconciliation Model</h3>
+        <p>
+          Repeatable reconciliation logic for comparing transactions, spotting issues, and documenting review.
+        </p>
+        <div class="tool-link">Explore workflow →</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tools-section {
+    position: relative;
+    width: 100%;
+    padding: 110px 24px;
+    background: #ffffff;
+    overflow: hidden;
+  }
+
+  .tools-section::before {
+    content: "";
+    position: absolute;
+    inset: -180px;
+    background:
+      radial-gradient(700px 380px at 18% 85%, rgba(46, 111, 94, 0.16), transparent 70%),
+      radial-gradient(700px 380px at 85% 15%, rgba(42, 92, 154, 0.14), transparent 70%);
+    pointer-events: none;
+  }
+
+  .tools-section::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(31, 41, 51, 0.08) 1px, transparent 1px);
+    background-size: 24px 24px;
+    opacity: 0.12;
+    pointer-events: none;
+  }
+
+  .tools-wrap {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .tools-header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+
+  .tools-header h2 {
+    margin: 0 0 14px 0;
+    font-family: Cambria, Georgia, "Times New Roman", serif;
+    font-size: 2.5rem;
+    color: #1f2933;
+  }
+
+  .tools-header p {
+    margin: 0 auto;
+    max-width: 760px;
+    color: #6b7280;
+    font-size: 1.12rem;
+    line-height: 1.75;
+  }
+
+  /* 🔥 KEY FIX */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .tool-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+    min-height: 220px;
+    padding: 28px;
+    border-radius: 18px;
+    background: #fcfbf8;
+    border: 1px solid rgba(31, 41, 51, 0.08);
+    text-decoration: none;
+    color: inherit;
+    box-sizing: border-box;
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease,
+      border-color 0.25s ease,
+      background 0.25s ease;
+  }
+
+  .tool-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 28px rgba(0, 0, 0, 0.07);
+    border-color: rgba(42, 92, 154, 0.18);
+    background: #ffffff;
+  }
+
+  .tool-meta {
+    margin-bottom: 10px;
+    font-size: 0.86rem;
+    color: #7b8794;
+  }
+
+  .tool-card h3 {
+    margin: 0 0 12px 0;
+    font-size: 1.18rem;
+    line-height: 1.35;
+    color: #1f2933;
+    transition: color 0.25s ease;
+  }
+
+  .tool-card:hover h3 {
+    color: #2a5c9a;
+  }
+
+  .tool-card p {
+    margin: 0 0 20px 0;
+    font-size: 0.98rem;
+    line-height: 1.7;
+    color: #4b5563;
+  }
+
+  .tool-link {
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    font-weight: 600;
+    color: #2a5c9a !important;
+    text-decoration: none;
+    transition: transform 0.25s ease, color 0.25s ease;
+  }
+
+  .tool-card:hover .tool-link {
+    transform: translateX(4px);
+    color: #1d4f86 !important;
+  }
+</style>

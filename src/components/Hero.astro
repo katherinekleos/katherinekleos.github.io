@@ -1,0 +1,169 @@
+<section class="hero" id="top">
+  <div class="inner">
+    <h1 class="title breathe">
+      Designing{" "}
+      <span class="accent green">structured systems</span>{" "}
+      and{" "}
+      <span class="accent blue">practical automation</span>
+      <br />
+      for research administration finance.
+    </h1>
+
+    <p class="sub">
+      Forecasting, reconciliation, and compliance—formalized into repeatable tools.
+    </p>
+
+    <a class="arrow" href="#about" aria-label="Scroll to About">↓</a>
+  </div>
+</section>
+
+<style>
+  :global(body){
+    font-family: Cambria, Georgia, "Times New Roman", serif;
+  }
+
+  .hero{
+    position: relative;
+    min-height: calc(100vh - 84px);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    padding: 9vh 20px 7vh;
+    background: #ffffff;
+    text-align: center;
+    width: 100%;
+  }
+
+  /* Soft color atmosphere */
+  .hero::before{
+    content: "";
+    position: absolute;
+    inset: -120px;
+    background:
+      radial-gradient(700px 380px at 18% 85%, rgba(46,111,94,0.16), transparent 70%),
+      radial-gradient(700px 380px at 85% 15%, rgba(42,92,154,0.14), transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Subtle dot texture */
+  .hero::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(31,41,51,0.08) 1px, transparent 1px);
+    background-size: 24px 24px;
+    opacity: 0.12;
+    pointer-events: none;
+  }
+
+  .inner{
+  position: relative;
+  z-index: 1;
+  width: min(90vw, 1200px);
+  transform: translateY(-5vh); /* <-- this is the key */
+}
+
+  .title{
+    margin: 0 auto 18px;
+    max-width: 90vw;
+    font-size: clamp(44px, 5vw, 72px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    font-weight: 740;
+    padding: 12px 0;
+    color: #1F2933;
+  }
+
+  .breathe{
+    display: inline-block;
+    transform-origin: center;
+    animation: breathe 4.5s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  @keyframes breathe{
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.01); }
+  }
+
+  .accent{
+    font-weight: 760;
+    background-size: 200% 100%;
+    background-position: 0% 50%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: drift 18s ease-in-out infinite alternate;
+  }
+
+  .accent.green{
+    background-image: linear-gradient(
+      120deg,
+      #2E6F5E 0%,
+      #3C7E88 45%,
+      #2A5C9A 100%
+    );
+  }
+
+  .accent.blue{
+    background-image: linear-gradient(
+      120deg,
+      #2A5C9A 0%,
+      #3C6EAA 45%,
+      #2E6F5E 100%
+    );
+    background-position: 100% 50%;
+  }
+
+  @keyframes drift{
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+  }
+
+  .sub{
+    margin: 0 auto;
+    max-width: 720px;
+    color: #52616B;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    padding: 4px 0;
+  }
+
+  .arrow{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    margin-top: 28px;
+    font-size: 18px;
+    color: rgba(31,41,51,0.65);
+    background: rgba(255,255,255,0.65);
+    border: 1px solid rgba(31,41,51,0.12);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+    text-decoration: none;
+    animation: bounce 2.3s ease-in-out infinite;
+  }
+
+  .arrow:hover{
+    color: rgba(31,41,51,0.9);
+  }
+
+  @keyframes bounce{
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .breathe, .accent, .arrow{
+      animation: none !important;
+    }
+  }
+
+  @media (max-width: 720px){
+    .hero{
+      padding: 8vh 18px 6vh;
+    }
+  }
+</style>

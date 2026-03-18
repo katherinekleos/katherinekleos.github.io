@@ -1,0 +1,275 @@
+---
+const featuredPost = {
+  title: "Building practical finance tooling in research administration",
+  description:
+    "Why I’m moving beyond documentation into repeatable tools—forecasting, reconciliation, and compliance patterns that reduce friction and surface risk early.",
+  date: "Mar 2026",
+  href: "/blog/first-post",
+};
+
+const posts = [
+  {
+    title: "Cost transfers: writing justifications that stand up to review",
+    description: "A structure-first approach to narrative, cause, correction, and prevention.",
+    date: "Mar 2026",
+    href: "/blog/cost-transfer-justifications",
+  },
+  {
+    title: "Multi-ledger reconciliation: a practical checklist",
+    description: "How I standardize checks across accounts to find exceptions fast.",
+    date: "Mar 2026",
+    href: "/blog/multi-ledger-recon",
+  },
+  {
+    title: "Forecasting burn rate with scenario assumptions",
+    description: "A lightweight model that flags runway risk without overfitting.",
+    date: "Mar 2026",
+    href: "/blog/burn-rate-forecasting",
+  },
+];
+---
+
+<section class="blog-section" id="blog">
+  <div class="blog-wrap">
+
+    <div class="blog-header">
+      <h2>Blog</h2>
+      <p>
+        Notes on research administration tooling, workflow design, and practical systems thinking.
+      </p>
+    </div>
+
+    <!-- FEATURED -->
+    <a href={featuredPost.href} class="card-link-wrap featured-link">
+      <article class="featured-card">
+        <div class="featured-top">
+          <span class="featured-badge">Featured</span>
+          <span class="meta">{featuredPost.date}</span>
+        </div>
+
+        <h3>{featuredPost.title}</h3>
+        <p>{featuredPost.description}</p>
+        <span class="read-link">Read article →</span>
+      </article>
+    </a>
+
+    <!-- GRID -->
+    <div class="blog-grid">
+      {posts.map((post) => (
+        <a href={post.href} class="card-link-wrap">
+          <article class="blog-card">
+            <div class="meta">{post.date}</div>
+            <h4>{post.title}</h4>
+            <p>{post.description}</p>
+            <span class="read-link">Read article →</span>
+          </article>
+        </a>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  *{
+    box-sizing: border-box;
+  }
+
+  .blog-section{
+    width: 100%;
+    padding: 120px 24px;
+    background: #ffffff;
+  }
+
+  /* MATCHES TOOLS WIDTH */
+  .blog-wrap{
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .blog-header{
+    text-align: center;
+    margin-bottom: 56px;
+  }
+
+  .blog-header h2{
+    margin: 0 0 14px 0;
+    font-family: Cambria, Georgia, "Times New Roman", serif;
+    font-size: 2.5rem;
+    line-height: 1.1;
+    color: #1F2933;
+  }
+
+  .blog-header p{
+    margin: 0 auto;
+    max-width: 760px;
+    color: #6B7280;
+    font-size: 1.08rem;
+    line-height: 1.75;
+  }
+
+  .card-link-wrap{
+    display: block;
+    width: 100%;
+    text-decoration: none !important;
+    color: inherit;
+  }
+
+  .card-link-wrap *{
+    text-decoration: none !important;
+  }
+
+  .featured-link{
+    margin-bottom: 36px;
+  }
+
+  /* FEATURED CARD */
+  .featured-card{
+    width: 100%;
+    padding: 36px;
+    border-radius: 22px;
+    background: linear-gradient(
+      135deg,
+      #f8f7f2 0%,
+      #f2f4f3 52%,
+      #f4f6f8 100%
+    );
+    border: 1px solid rgba(31,41,51,0.08);
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  }
+
+  .card-link-wrap:hover .featured-card{
+    transform: translateY(-4px);
+    box-shadow: 0 18px 34px rgba(0,0,0,0.08);
+    border-color: rgba(42,92,154,0.18);
+  }
+
+  .featured-top{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+
+  .featured-badge{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 30px;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #2E6F5E, #2A5C9A);
+    color: #ffffff;
+    font-size: 0.82rem;
+    font-weight: 600;
+  }
+
+  .featured-card h3{
+    margin: 0 0 14px 0;
+    font-size: 1.8rem;
+    line-height: 1.25;
+    color: #1F2933;
+    transition: color 0.22s ease;
+  }
+
+  .card-link-wrap:hover .featured-card h3{
+    color: #163b67;
+  }
+
+  .featured-card p{
+    margin: 0 0 18px 0;
+    max-width: 880px;
+    color: #4B5563;
+    line-height: 1.8;
+    font-size: 1.04rem;
+  }
+
+  /* GRID */
+  .blog-grid{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    width: 100%;
+  }
+
+  /* CARD */
+  .blog-card{
+    height: 100%;
+    padding: 26px;
+    border-radius: 18px;
+    background: #fcfbf8;
+    border: 1px solid rgba(31,41,51,0.08);
+    transition:
+      transform 0.22s ease,
+      box-shadow 0.22s ease,
+      border-color 0.22s ease,
+      background 0.22s ease;
+  }
+
+  .card-link-wrap:hover .blog-card{
+    transform: translateY(-4px);
+    box-shadow: 0 16px 28px rgba(0,0,0,0.07);
+    border-color: rgba(42,92,154,0.18);
+    background: #ffffff;
+  }
+
+  .blog-card h4{
+    margin: 10px 0 12px 0;
+    font-size: 1.2rem;
+    line-height: 1.35;
+    color: #1F2933;
+    transition: color 0.22s ease;
+  }
+
+  .card-link-wrap:hover .blog-card h4{
+    color: #2A5C9A;
+  }
+
+  .blog-card p{
+    margin: 0 0 14px 0;
+    font-size: 0.98rem;
+    line-height: 1.75;
+    color: #4B5563;
+  }
+
+  .meta{
+    font-size: 0.86rem;
+    color: #7B8794;
+  }
+
+  .read-link{
+    display: inline-flex;
+    align-items: center;
+    color: #2A5C9A;
+    font-weight: 600;
+    transition: transform 0.22s ease, color 0.22s ease;
+  }
+
+  .card-link-wrap:hover .read-link{
+    color: #1d4f86;
+    transform: translateX(2px);
+  }
+
+  @media (max-width: 980px){
+    .blog-grid{
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .featured-card{
+      padding: 30px;
+    }
+  }
+
+  @media (max-width: 720px){
+    .blog-grid{
+      grid-template-columns: 1fr;
+    }
+
+    .featured-card,
+    .blog-card{
+      padding: 24px;
+    }
+  }
+</style>

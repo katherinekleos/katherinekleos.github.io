@@ -1,0 +1,132 @@
+<section class="about-section" id="about">
+  <div class="about-wrap">
+    <div class="about-image-card">
+      <img src="/avatar.jpg" alt="Katherine Alexis Gruber" class="about-image" />
+    </div>
+
+    <div class="about-content">
+      <h2>About Me</h2>
+
+      <p>
+        I work at the intersection of research administration, finance, and practical data
+        tooling. My focus is on creating systems that bring clarity to complex workflows,
+        especially where compliance, forecasting, and process design overlap.
+      </p>
+
+      <p>
+        I’m especially interested in building small, repeatable tools that reduce friction and
+        make work more understandable: cleaner reconciliation, stronger documentation, and
+        workflows that align with operational reality instead of fighting it.
+      </p>
+
+      <a href="/about" class="about-button">Learn more →</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-section{
+    padding: 140px 20px;
+    background: #ffffff;
+  }
+
+  .about-wrap{
+    max-width: 1180px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 360px 700px; /* explicit desktop widths */
+    justify-content: center;
+    gap: 72px;
+    align-items: center;
+  }
+
+  .about-image-card{
+    border-radius: 22px;
+    padding: 6px;
+    background: linear-gradient(
+      135deg,
+      rgba(46,111,94,0.16),
+      rgba(42,92,154,0.10)
+    );
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+  }
+
+  .about-image{
+    width: 100%;
+    display: block;
+    border-radius: 18px;
+    object-fit: cover;
+  }
+
+  .about-content{
+    width: 700px; /* locks the text column width */
+  }
+
+  .about-content h2{
+    margin: 0 0 28px 0;
+    font-family: Cambria, Georgia, "Times New Roman", serif;
+    font-size: 2.45rem;
+    line-height: 1.1;
+    color: #1F2933;
+  }
+
+  .about-content p{
+    margin: 0 0 28px 0;
+    font-size: 1.30rem;   /* making the font bigger */
+    line-height: 1.82;
+    color: #52616B;
+  }
+
+  .about-button{
+    margin-top: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    padding: 0 18px;
+    border-radius: 12px;
+    background: #2A5C9A;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+
+  .about-button:hover{
+    background: #244f84;
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 1100px){
+    .about-wrap{
+      max-width: 1100px;
+      grid-template-columns: 320px 1fr;
+      gap: 56px;
+    }
+
+    .about-content{
+      width: auto;
+    }
+  }
+
+  @media (max-width: 900px){
+    .about-section{
+      padding: 100px 20px;
+    }
+
+    .about-wrap{
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .about-image-card{
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    .about-content{
+      width: 100%;
+      text-align: center;
+    }
+  }
+</style>
