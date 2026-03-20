@@ -1,63 +1,1033 @@
 ---
-import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
-import Layout from '../layouts/BlogPost.astro';
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+const focusAreas = [
+  {
+    title: "Cost Transfer & Compliance Structuring",
+    description:
+      "Clear, defensible documentation aligned with institutional policy and Uniform Guidance.",
+    accent: "violet",
+  },
+  {
+    title: "Cross-System Financial Validation",
+    description:
+      "Reviewing and aligning data across enterprise systems to support reporting integrity.",
+    accent: "blue",
+  },
+  {
+    title: "Multi-Ledger Reconciliation",
+    description:
+      "Cross-system validation to ensure financial accuracy and identify discrepancies early.",
+    accent: "gold",
+  },
+  {
+    title: "Portfolio Forecasting & Financial Oversight",
+    description:
+      "Multi-account forecasting, budget alignment, and financial visibility across sponsored projects.",
+    accent: "red",
+  },
+  {
+    title: "Post-Award Lifecycle Management",
+    description:
+      "Oversight of awards from activation through closeout, ensuring continuity and compliance.",
+    accent: "green",
+  },
+];
+
+const tools = [
+  {
+    title: "Cost Transfer Justification Framework",
+    description:
+      "Structured template for documenting financial corrections with clear cause, action, and compliance alignment.",
+    href: "#",
+    external: false,
+    status: "",
+    accent: "red",
+    icon: "document",
+  },
+  {
+    title: "Financial Data Validation Workflow",
+    description:
+      "Process for reviewing and aligning financial data across systems to support reporting accuracy.",
+    href: "#",
+    external: false,
+    status: "",
+    accent: "blue",
+    icon: "check",
+  },
+  {
+    title: "Multi-Ledger Reconciliation Checklist",
+    description:
+      "Repeatable checklist for identifying discrepancies and validating cross-account financial data.",
+    href: "#",
+    external: false,
+    status: "",
+    accent: "gold",
+    icon: "layers",
+  },
+  {
+    title: "Post-Award Action Tracker",
+    description:
+      "Centralized structure for monitoring extensions, carryforward, rebudgeting, and lifecycle actions.",
+    href: "#",
+    external: false,
+    status: "",
+    accent: "green",
+    icon: "tracker",
+  },
+  {
+    title: "Sponsored Portfolio Forecast Model",
+    description:
+      "Multi-account forecasting tool designed to improve visibility and financial planning across active awards.",
+    href: "#",
+    external: false,
+    status: "In Development",
+    accent: "violet",
+    icon: "chart",
+  },
+];
+
+const selectedWork = [
+  {
+    title: "Geographic Information Systems (GIS)",
+    description:
+      "Applied spatial analysis and mapping tools to support research, interpretation, and visual communication, with select materials and outputs to be made available.",
+    accent: "green",
+  },
+  {
+    title: "Archaeological Fieldwork",
+    description:
+      "Experience in field-based environments grounded in documentation, material interpretation, and analytical structure.",
+    accent: "gold",
+  },
+  {
+    title: "Classical Studies & Languages and Cultures",
+    description:
+      "Academic training centered on language, institutions, and continuity across historical systems.",
+    accent: "red",
+  },
+  {
+    title: "Systems Perspective Across Disciplines",
+    description:
+      "Ongoing interest in how historical systems and methods of interpretation inform modern organizational thinking.",
+    accent: "blue",
+  },
+];
 ---
 
-<Layout
-	title="About Me"
-	description="Lorem ipsum dolor sit amet"
-	pubDate={new Date('August 08 2021')}
-	heroImage={AboutHeroImage}
->
-	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel risus commodo
-		viverra. Adipiscing enim eu turpis egestas pretium. Euismod elementum nisi quis eleifend quam
-		adipiscing. In hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat. Netus
-		et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu non diam phasellus
-		vestibulum lorem. Varius sit amet mattis vulputate enim. Habitasse platea dictumst quisque
-		sagittis. Integer quis auctor elit sed vulputate mi. Dictumst quisque sagittis purus sit amet.
-	</p>
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title="About | Katherine Alexis Gruber" />
+  </head>
 
-	<p>
-		Morbi tristique senectus et netus. Id semper risus in hendrerit gravida rutrum quisque non
-		tellus. Habitasse platea dictumst quisque sagittis purus sit amet. Tellus molestie nunc non
-		blandit massa. Cursus vitae congue mauris rhoncus. Accumsan tortor posuere ac ut. Fringilla urna
-		porttitor rhoncus dolor. Elit ullamcorper dignissim cras tincidunt lobortis. In cursus turpis
-		massa tincidunt dui ut ornare lectus. Integer feugiat scelerisque varius morbi enim nunc.
-		Bibendum neque egestas congue quisque egestas diam. Cras ornare arcu dui vivamus arcu felis
-		bibendum. Dignissim suspendisse in est ante in nibh mauris. Sed tempus urna et pharetra pharetra
-		massa massa ultricies mi.
-	</p>
+  <body>
+    <Header />
 
-	<p>
-		Mollis nunc sed id semper risus in. Convallis a cras semper auctor neque. Diam sit amet nisl
-		suscipit. Lacus viverra vitae congue eu consequat ac felis donec. Egestas integer eget aliquet
-		nibh praesent tristique magna sit amet. Eget magna fermentum iaculis eu non diam. In vitae
-		turpis massa sed elementum. Tristique et egestas quis ipsum suspendisse ultrices. Eget lorem
-		dolor sed viverra ipsum. Vel turpis nunc eget lorem dolor sed viverra. Posuere ac ut consequat
-		semper viverra nam. Laoreet suspendisse interdum consectetur libero id faucibus. Diam phasellus
-		vestibulum lorem sed risus ultricies tristique. Rhoncus dolor purus non enim praesent elementum
-		facilisis. Ultrices tincidunt arcu non sodales neque. Tempus egestas sed sed risus pretium quam
-		vulputate. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus ornare. Fringilla
-		urna porttitor rhoncus dolor purus non. Amet dictum sit amet justo donec enim.
-	</p>
+    <main class="about-page">
+      <div class="about-shell">
+        <section class="intro-panel">
+          <div class="intro-panel__inner">
+            <h1 class="page-title">Katherine Alexis Gruber</h1>
+            <p class="page-role">Post-Award Specialist | Research Administration &amp; Systems</p>
+            <p class="page-positioning">
+              Designing structured financial and compliance systems for sponsored research
+            </p>
 
-	<p>
-		Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Tortor posuere ac ut consequat semper
-		viverra. Tellus mauris a diam maecenas sed enim ut sem viverra. Venenatis urna cursus eget nunc
-		scelerisque viverra mauris in. Arcu ac tortor dignissim convallis aenean et tortor at. Curabitur
-		gravida arcu ac tortor dignissim convallis aenean et tortor. Egestas tellus rutrum tellus
-		pellentesque eu. Fusce ut placerat orci nulla pellentesque dignissim enim sit amet. Ut enim
-		blandit volutpat maecenas volutpat blandit aliquam etiam. Id donec ultrices tincidunt arcu. Id
-		cursus metus aliquam eleifend mi.
-	</p>
+            <div class="intro-copy">
+              <p>
+                Structure is essential in research administration, particularly within sponsored
+                research finance. My work centers on bringing clarity to complex systems—supporting
+                budgeting, reconciliation, compliance, and closeout. At its core, it is about
+                ensuring that what should happen financially is what actually happens.
+              </p>
 
-	<p>
-		Tempus quam pellentesque nec nam aliquam sem. Risus at ultrices mi tempus imperdiet. Id porta
-		nibh venenatis cras sed felis eget velit. Ipsum a arcu cursus vitae. Facilisis magna etiam
-		tempor orci eu lobortis elementum. Tincidunt dui ut ornare lectus sit. Quisque non tellus orci
-		ac. Blandit libero volutpat sed cras. Nec tincidunt praesent semper feugiat nibh sed pulvinar
-		proin gravida. Egestas integer eget aliquet nibh praesent tristique magna.
-	</p>
-</Layout>
+              <p>
+                I’m drawn to patterns—where processes repeat, where they break down, and how they
+                can be rebuilt more cleanly. Whether forecasting across accounts or refining
+                documentation, I approach problems with a systems mindset: simplify, standardize,
+                and make the underlying logic visible. My technical background supports this work,
+                but the goal is always the same—structures that hold under pressure and scale over
+                time.
+              </p>
+
+              <p>
+                Outside of my current role, my background in Classical Studies and Languages and
+                Cultures continues to shape how I think. These fields examine how humans build
+                systems—language, institutions, and continuity across time. I carry that
+                perspective into my work: designing structures that not only function, but make
+                sense to the people who rely on them.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="about-section">
+          <div class="section-heading">
+            <h2>Core Areas of Focus</h2>
+          </div>
+
+          <div class="card-grid card-grid--focus">
+            {focusAreas.map((item) => (
+              <article class={`card card--soft accent-${item.accent}`}>
+                <div class="card-marker" aria-hidden="true"></div>
+                <div class="card-body">
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section class="about-section">
+          <div class="section-heading">
+            <h2>Experience</h2>
+          </div>
+
+          <div class="stack">
+            <article class="card card--feature">
+              <div class="card-body">
+                <div class="experience-head">
+                  <div class="experience-main">
+                    <h3>Post-Award Specialist</h3>
+                    <p class="meta">
+                      Research Administrative Service Units, Office of Research · Tulane University
+                      · New Orleans, LA
+                    </p>
+                  </div>
+                  <p class="date">September 2025 – Present</p>
+                </div>
+
+                <p class="summary">
+                  Oversee post-award financial management across a multi-unit sponsored research
+                  portfolio, ensuring compliance, reporting accuracy, and lifecycle continuity.
+                </p>
+
+                <div class="subblock">
+                  <p class="label">Key achievements</p>
+                  <ul>
+                    <li>
+                      Lead account reconciliation, labor distribution review, and budget forecasting
+                      across active sponsored projects.
+                    </li>
+                    <li>
+                      Advise principal investigators on sponsor regulations, effort certification,
+                      and award lifecycle requirements.
+                    </li>
+                    <li>
+                      Manage post-award actions including carryforward, no-cost extensions,
+                      rebudgeting, and scope modifications.
+                    </li>
+                    <li>
+                      Support institutional ERP transition (Oracle EBS to Oracle Cloud) through
+                      workflow adaptation and reporting validation.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </article>
+
+            <article class="card card--feature">
+              <div class="card-body">
+                <div class="experience-head">
+                  <div class="experience-main">
+                    <h3>Program Manager</h3>
+                    <p class="meta">
+                      Tropical Medicine &amp; Infectious Disease, Celia Scott Weatherhead School of
+                      Public Health and Tropical Medicine · Tulane University · New Orleans, LA
+                    </p>
+                  </div>
+                  <p class="date">August 2024 – September 2025 · 1 year 1 month</p>
+                </div>
+
+                <p class="summary">
+                  Supported departmental research administration through financial tracking,
+                  reporting, and coordination across pre- and post-award functions.
+                </p>
+
+                <div class="subblock">
+                  <p class="label">Key achievements</p>
+                  <ul>
+                    <li>
+                      Conducted monthly account reconciliations and expenditure tracking to ensure
+                      sponsor compliance.
+                    </li>
+                    <li>
+                      Prepared financial reports for principal investigators to support budget
+                      oversight and decision-making.
+                    </li>
+                    <li>
+                      Coordinated personnel and account changes across sponsored projects in
+                      alignment with institutional policy.
+                    </li>
+                    <li>
+                      Assisted with invoice preparation and financial documentation for cost
+                      reimbursement processes.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="about-section">
+          <div class="section-heading">
+            <h2>Tools &amp; Templates</h2>
+          </div>
+
+          <div class="card-grid">
+            {tools.map((tool) => (
+              <a
+                class={`card card--tool accent-${tool.accent}`}
+                href={tool.href}
+                target={tool.external ? "_blank" : undefined}
+                rel={tool.external ? "noreferrer noopener" : undefined}
+                aria-label={`Open ${tool.title}`}
+              >
+                <div class="card-body">
+                  <div class="tool-top">
+                    <div class="tool-icon-wrap">
+                      <div class="tool-icon">
+                        {tool.icon === "document" && (
+                          <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path
+                              d="M8 3.5h6l4 4V20a.5.5 0 0 1-.5.5h-9A2.5 2.5 0 0 1 6 18V6a2.5 2.5 0 0 1 2-2.5Z"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1.7"
+                              stroke-linejoin="round"
+                            />
+                            <path
+                              d="M14 3.5V8h4"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1.7"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        )}
+                        {tool.icon === "check" && (
+                          <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path
+                              d="M9.2 12.8 11.5 15l5.3-6"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1.9"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                            <rect
+                              x="4"
+                              y="4"
+                              width="16"
+                              height="16"
+                              rx="3"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1.7"
+                            />
+                          </svg>
+                        )}
+                        {tool.icon === "layers" && (
+                          <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path
+                              d="m12 4 8 4-8 4-8-4 8-4Z"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1.7"
+                              stroke-linejoin="round"
+                            />
+                            <path
+                              d="m4 12 8 4 8-4"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1.7"
+                              stroke-linejoin="round"
+                            />
+                            <path
+                              d="m4 16 8 4 8-4"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1.7"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        )}
+                        {tool.icon === "tracker" && (
+                          <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path
+                              d="M8 6.5h8M8 12h8M8 17.5h5"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1.8"
+                              stroke-linecap="round"
+                            />
+                            <rect
+                              x="4"
+                              y="3.5"
+                              width="16"
+                              height="17"
+                              rx="3"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1.7"
+                            />
+                          </svg>
+                        )}
+                        {tool.icon === "chart" && (
+                          <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path
+                              d="M5 19.5h14"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1.7"
+                              stroke-linecap="round"
+                            />
+                            <path
+                              d="M7.5 16V11M12 16V8M16.5 16v-5"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1.8"
+                              stroke-linecap="round"
+                            />
+                          </svg>
+                        )}
+                      </div>
+                    </div>
+
+                    <div class="tool-head">
+                      <h3>{tool.title}</h3>
+                      {tool.status && <span class="status-pill">{tool.status}</span>}
+                    </div>
+                  </div>
+
+                  <p>{tool.description}</p>
+
+                  <span class="card-link">
+                    {tool.external ? "View on GitHub" : "View item"}
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <section class="about-section">
+          <div class="section-heading">
+            <h2>Selected Work: Archaeology &amp; Classical Studies</h2>
+          </div>
+
+          <div class="card-grid">
+            {selectedWork.map((item) => (
+              <article class={`card card--soft accent-${item.accent}`}>
+                <div class="card-marker" aria-hidden="true"></div>
+                <div class="card-body">
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section class="about-section">
+          <div class="section-heading">
+            <h2>Education</h2>
+          </div>
+
+          <div class="card-grid card-grid--education">
+            <article class="card card--soft accent-red">
+              <div class="card-marker" aria-hidden="true"></div>
+              <div class="card-body">
+                <h3>Texas Tech University · Lubbock, TX</h3>
+                <p class="edu-degree">Master of Arts, Languages and Cultures</p>
+
+                <div class="subblock subblock--compact">
+                  <p class="label">Experience</p>
+                  <ul class="edu-list">
+                    <li>Athenian Agora Excavations, Volunteer Excavator (Summer 2023)</li>
+                    <li>
+                      American School of Classical Studies at Athens (ASCSA), Summer Session (2022)
+                      — Hill Scholarship (ASCSA); Conference Travel Funding (CMLL); Graduate School
+                      Funding (Texas Tech University)
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </article>
+
+            <article class="card card--soft accent-green">
+              <div class="card-marker" aria-hidden="true"></div>
+              <div class="card-body">
+                <h3>Tulane University · New Orleans, LA</h3>
+                <p class="edu-degree">Bachelor of Arts, Classical Studies</p>
+                <p class="edu-degree">Certificate in Geographic Information Systems (GIS)</p>
+
+                <div class="subblock subblock--compact">
+                  <p class="label">Activities</p>
+                  <ul class="edu-list">
+                    <li>Cookies &amp; Code</li>
+                    <li>Tulane HR Internship</li>
+                  </ul>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <Footer />
+  </body>
+</html>
+
+<style>
+  :global(html, body) {
+    overflow-x: hidden;
+  }
+
+  :global(body) {
+    background:
+      radial-gradient(circle at 12% 10%, rgba(210, 55, 75, 0.12), transparent 24%),
+      radial-gradient(circle at 88% 16%, rgba(67, 122, 255, 0.12), transparent 26%),
+      radial-gradient(circle at 78% 82%, rgba(80, 168, 94, 0.12), transparent 24%),
+      radial-gradient(circle at 14% 84%, rgba(163, 89, 227, 0.11), transparent 24%),
+      radial-gradient(circle at 50% 4%, rgba(235, 178, 70, 0.11), transparent 18%),
+      #fbfbfc;
+    color: #18212b;
+    font-family: Cambria, Georgia, "Times New Roman", serif;
+  }
+
+  .about-page {
+    width: 100%;
+    padding: 2.25rem 1rem 4.5rem;
+  }
+
+  .about-shell {
+    position: relative;
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 1.1rem;
+    border-radius: 32px;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.96)),
+      radial-gradient(circle at top left, rgba(211, 66, 82, 0.12), transparent 28%),
+      radial-gradient(circle at top right, rgba(74, 134, 255, 0.12), transparent 30%),
+      radial-gradient(circle at bottom right, rgba(88, 173, 99, 0.12), transparent 28%),
+      radial-gradient(circle at bottom left, rgba(161, 95, 226, 0.11), transparent 28%);
+    box-shadow:
+      0 20px 60px rgba(24, 33, 43, 0.07),
+      inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  }
+
+  .about-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 32px;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      rgba(214, 73, 83, 0.34),
+      rgba(232, 186, 75, 0.26),
+      rgba(74, 157, 110, 0.28),
+      rgba(78, 125, 255, 0.26),
+      rgba(164, 94, 226, 0.28)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  .intro-panel,
+  .about-section {
+    position: relative;
+    z-index: 1;
+  }
+
+  .intro-panel {
+    margin-bottom: 2.15rem;
+  }
+
+  .intro-panel__inner {
+    border-radius: 26px;
+    padding: 2.4rem 2rem 2.15rem;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.93)),
+      radial-gradient(circle at 6% 0%, rgba(220, 77, 94, 0.08), transparent 22%),
+      radial-gradient(circle at 94% 4%, rgba(71, 124, 255, 0.08), transparent 22%);
+    border: 1px solid rgba(27, 39, 54, 0.08);
+    box-shadow:
+      0 22px 44px rgba(24, 33, 43, 0.07),
+      0 1px 0 rgba(255, 255, 255, 0.8) inset;
+    text-align: center;
+  }
+
+  .page-title {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3.15rem);
+    line-height: 1.05;
+    color: #18212b;
+  }
+
+  .page-role {
+    margin: 0.8rem auto 0;
+    max-width: 780px;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: #243241;
+  }
+
+  .page-positioning {
+    margin: 0.7rem auto 0;
+    max-width: 760px;
+    font-size: 0.99rem;
+    color: #5b6571;
+    font-style: italic;
+  }
+
+  .intro-copy {
+    max-width: 800px;
+    margin: 1.7rem auto 0;
+    text-align: left;
+  }
+
+  .intro-copy p {
+    margin: 0 0 1.1rem;
+    font-size: 1.02rem;
+    line-height: 1.8;
+    color: #263341;
+  }
+
+  .intro-copy p:last-child {
+    margin-bottom: 0;
+  }
+
+  .about-section {
+    margin-top: 2rem;
+  }
+
+  .section-heading {
+    margin-bottom: 1rem;
+    padding-left: 0.15rem;
+  }
+
+  .section-heading h2 {
+    margin: 0;
+    font-size: clamp(1.35rem, 2.4vw, 1.8rem);
+    color: #18212b;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .card-grid--focus,
+  .card-grid--education {
+    align-items: start;
+  }
+
+  .stack {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .card {
+    position: relative;
+    display: block;
+    min-width: 0;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(27, 39, 54, 0.08);
+    box-shadow:
+      0 16px 34px rgba(24, 33, 43, 0.07),
+      0 1px 0 rgba(255, 255, 255, 0.82) inset;
+    overflow: hidden;
+  }
+
+  .card--soft {
+    min-height: 100%;
+    transition:
+      transform 160ms ease,
+      box-shadow 160ms ease,
+      border-color 160ms ease;
+  }
+
+  .card--soft:hover {
+    transform: translateY(-2px);
+  }
+
+  .card--feature .card-body {
+    padding: 1.5rem 1.4rem 1.35rem;
+  }
+
+  .card--tool {
+    text-decoration: none;
+    color: inherit;
+    transition:
+      transform 160ms ease,
+      box-shadow 160ms ease,
+      border-color 160ms ease;
+  }
+
+  .card--tool:hover,
+  .card--tool:focus-visible {
+    transform: translateY(-2px);
+    border-color: rgba(27, 39, 54, 0.12);
+  }
+
+  .card-body {
+    position: relative;
+    z-index: 1;
+    padding: 1.2rem 1.2rem 1.1rem;
+  }
+
+  .card h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 600;
+    line-height: 1.35;
+    color: #19232d;
+  }
+
+  .card p {
+    margin: 0.65rem 0 0;
+    color: #44515e;
+    line-height: 1.65;
+    font-size: 0.95rem;
+  }
+
+  .card-marker {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.82);
+  }
+
+  .card--soft .card-body {
+    padding-top: 2.1rem;
+  }
+
+  .tool-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+  }
+
+  .tool-head {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .tool-icon-wrap {
+    flex: 0 0 auto;
+    padding-top: 0.05rem;
+  }
+
+  .tool-icon {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    color: #18212b;
+    border: 1px solid rgba(27, 39, 54, 0.08);
+    box-shadow:
+      0 10px 24px rgba(24, 33, 43, 0.07),
+      0 1px 0 rgba(255, 255, 255, 0.9) inset;
+  }
+
+  .tool-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .status-pill {
+    display: inline-flex;
+    margin-top: 0.45rem;
+    padding: 0.25rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(24, 33, 43, 0.06);
+    color: #5b6571;
+    font-size: 0.74rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .card-link {
+    display: inline-block;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #19232d;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
+  .experience-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .experience-main {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .card--feature h3 {
+    margin-bottom: 0.2rem;
+    font-size: 1.18rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .meta,
+  .date {
+    margin: 0.35rem 0 0;
+    color: #5b6571;
+  }
+
+  .card--feature .meta,
+  .card--feature .date,
+  .card--feature .summary,
+  .card--feature li,
+  .card--feature .label {
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  .meta {
+    line-height: 1.4;
+  }
+
+  .date {
+    white-space: nowrap;
+    text-align: right;
+  }
+
+  .summary {
+    margin-top: 0.95rem;
+  }
+
+  .subblock {
+    margin-top: 1rem;
+  }
+
+  .subblock--compact {
+    margin-top: 1rem;
+  }
+
+  .label {
+    margin: 0 0 0.55rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #5b6571;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 1.15rem;
+    color: #44515e;
+  }
+
+  li {
+    margin: 0 0 0.5rem;
+    line-height: 1.65;
+  }
+
+  li:last-child {
+    margin-bottom: 0;
+  }
+
+  .edu-degree {
+    margin-top: 0.5rem;
+  }
+
+  .edu-list {
+    margin-top: 0.85rem;
+  }
+
+  .card-grid--education h3 {
+    font-size: 1.18rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .card-grid--education .edu-degree,
+  .card-grid--education li,
+  .card-grid--education .label {
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  .accent-red .card-marker,
+  .accent-red .tool-icon {
+    background: linear-gradient(135deg, #d24d53, #ff7a70);
+  }
+
+  .accent-gold .card-marker,
+  .accent-gold .tool-icon {
+    background: linear-gradient(135deg, #e5b04c, #f5d37a);
+  }
+
+  .accent-green .card-marker,
+  .accent-green .tool-icon {
+    background: linear-gradient(135deg, #4da86b, #7fd199);
+  }
+
+  .accent-blue .card-marker,
+  .accent-blue .tool-icon {
+    background: linear-gradient(135deg, #4c7eff, #6fa2ff);
+  }
+
+  .accent-violet .card-marker,
+  .accent-violet .tool-icon {
+    background: linear-gradient(135deg, #9c63df, #caa8ef);
+  }
+
+  .accent-red.card--soft:hover {
+    box-shadow:
+      0 18px 40px rgba(210, 77, 83, 0.25),
+      0 1px 0 rgba(255, 255, 255, 0.82) inset;
+  }
+
+  .accent-blue.card--soft:hover {
+    box-shadow:
+      0 18px 40px rgba(76, 126, 255, 0.25),
+      0 1px 0 rgba(255, 255, 255, 0.82) inset;
+  }
+
+  .accent-green.card--soft:hover {
+    box-shadow:
+      0 18px 40px rgba(77, 168, 107, 0.25),
+      0 1px 0 rgba(255, 255, 255, 0.82) inset;
+  }
+
+  .accent-gold.card--soft:hover {
+    box-shadow:
+      0 18px 40px rgba(229, 176, 76, 0.28),
+      0 1px 0 rgba(255, 255, 255, 0.82) inset;
+  }
+
+  .accent-violet.card--soft:hover {
+    box-shadow:
+      0 18px 40px rgba(156, 99, 223, 0.28),
+      0 1px 0 rgba(255, 255, 255, 0.82) inset;
+  }
+
+  .accent-red.card--tool:hover,
+  .accent-red.card--tool:focus-visible {
+    box-shadow:
+      0 18px 40px rgba(210, 77, 83, 0.25),
+      0 1px 0 rgba(255, 255, 255, 0.82) inset;
+  }
+
+  .accent-blue.card--tool:hover,
+  .accent-blue.card--tool:focus-visible {
+    box-shadow:
+      0 18px 40px rgba(76, 126, 255, 0.25),
+      0 1px 0 rgba(255, 255, 255, 0.82) inset;
+  }
+
+  .accent-green.card--tool:hover,
+  .accent-green.card--tool:focus-visible {
+    box-shadow:
+      0 18px 40px rgba(77, 168, 107, 0.25),
+      0 1px 0 rgba(255, 255, 255, 0.82) inset;
+  }
+
+  .accent-gold.card--tool:hover,
+  .accent-gold.card--tool:focus-visible {
+    box-shadow:
+      0 18px 40px rgba(229, 176, 76, 0.28),
+      0 1px 0 rgba(255, 255, 255, 0.82) inset;
+  }
+
+  .accent-violet.card--tool:hover,
+  .accent-violet.card--tool:focus-visible {
+    box-shadow:
+      0 18px 40px rgba(156, 99, 223, 0.28),
+      0 1px 0 rgba(255, 255, 255, 0.82) inset;
+  }
+
+  @media (max-width: 900px) {
+    .card-grid,
+    .card-grid--focus,
+    .card-grid--education {
+      grid-template-columns: 1fr;
+    }
+
+    .experience-head {
+      flex-direction: column;
+    }
+
+    .date {
+      white-space: normal;
+      text-align: left;
+      margin-top: 0.2rem;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .about-page {
+      padding: 1.3rem 0.8rem 3.5rem;
+    }
+
+    .about-shell {
+      padding: 0.8rem;
+      border-radius: 24px;
+    }
+
+    .intro-panel__inner {
+      padding: 1.6rem 1.1rem 1.55rem;
+      border-radius: 20px;
+      text-align: left;
+    }
+
+    .intro-copy {
+      margin-top: 1.2rem;
+    }
+
+    .intro-copy p {
+      font-size: 0.98rem;
+      line-height: 1.72;
+    }
+
+    .tool-top {
+      gap: 0.75rem;
+    }
+
+    .tool-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+    }
+
+    .card-body,
+    .card--feature .card-body {
+      padding: 1.1rem 1rem 1rem;
+    }
+
+    .card--soft .card-body {
+      padding-top: 1.95rem;
+    }
+
+    .card-marker {
+      top: 0.9rem;
+      left: 0.95rem;
+    }
+  }
+</style>
