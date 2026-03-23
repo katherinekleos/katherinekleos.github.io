@@ -128,15 +128,15 @@ const selectedWork = [
 
     <main class="about-page">
       <div class="about-shell">
-        <section class="intro-panel">
-          <div class="intro-panel__inner">
-            <h1 class="page-title">Katherine Alexis Gruber</h1>
-            <p class="page-role">Post-Award Specialist | Research Administration &amp; Systems</p>
-            <p class="page-positioning">
+        <section class="about-intro">
+          <div class="about-intro__inner">
+            <h1 class="about-title">Katherine Alexis Gruber</h1>
+            <p class="about-role">Post-Award Specialist | Research Administration &amp; Systems</p>
+            <p class="about-positioning">
               Designing structured financial and compliance systems for sponsored research
             </p>
 
-            <div class="intro-copy">
+            <div class="about-copy">
               <p>
                 Structure is essential in research administration, particularly within sponsored
                 research finance. My work centers on bringing clarity to complex systems—supporting
@@ -165,15 +165,15 @@ const selectedWork = [
         </section>
 
         <section class="about-section">
-          <div class="section-heading">
+          <div class="about-section__heading">
             <h2>Core Areas of Focus</h2>
           </div>
 
-          <div class="card-grid card-grid--focus">
+          <div class="about-grid about-grid--two">
             {focusAreas.map((item) => (
-              <article class={`card card--soft accent-${item.accent}`}>
-                <div class="card-marker" aria-hidden="true"></div>
-                <div class="card-body">
+              <article class={`about-info-card about-accent-${item.accent}`}>
+                <span class="about-info-card__dot" aria-hidden="true"></span>
+                <div class="about-info-card__body">
                   <h3>{item.title}</h3>
                   <p>{item.description}</p>
                 </div>
@@ -183,31 +183,31 @@ const selectedWork = [
         </section>
 
         <section class="about-section">
-          <div class="section-heading">
+          <div class="about-section__heading">
             <h2>Experience</h2>
           </div>
 
-          <div class="stack">
-            <article class="card card--feature">
-              <div class="card-body">
-                <div class="experience-head">
-                  <div class="experience-main">
+          <div class="about-stack">
+            <article class="about-feature-card about-accent-blue">
+              <div class="about-feature-card__body">
+                <div class="about-experience-head">
+                  <div class="about-experience-main">
                     <h3>Post-Award Specialist</h3>
-                    <p class="meta">
+                    <p class="about-meta">
                       Research Administrative Service Units, Office of Research · Tulane University
                       · New Orleans, LA
                     </p>
                   </div>
-                  <p class="date">September 2025 – Present</p>
+                  <p class="about-date">September 2025 – Present</p>
                 </div>
 
-                <p class="summary">
+                <p class="about-summary">
                   Oversee post-award financial management across a multi-unit sponsored research
                   portfolio, ensuring compliance, reporting accuracy, and lifecycle continuity.
                 </p>
 
-                <div class="subblock">
-                  <p class="label">Key achievements</p>
+                <div class="about-subblock">
+                  <p class="about-label">Key achievements</p>
                   <ul>
                     <li>
                       Lead account reconciliation, labor distribution review, and budget forecasting
@@ -222,34 +222,34 @@ const selectedWork = [
                       rebudgeting, and scope modifications.
                     </li>
                     <li>
-                      Support institutional ERP transition (Oracle EBS to Oracle Cloud) through
-                      workflow adaptation and reporting validation.
+                      Support institutional ERP transition through workflow adaptation and reporting
+                      validation.
                     </li>
                   </ul>
                 </div>
               </div>
             </article>
 
-            <article class="card card--feature">
-              <div class="card-body">
-                <div class="experience-head">
-                  <div class="experience-main">
+            <article class="about-feature-card about-accent-green">
+              <div class="about-feature-card__body">
+                <div class="about-experience-head">
+                  <div class="about-experience-main">
                     <h3>Program Manager</h3>
-                    <p class="meta">
+                    <p class="about-meta">
                       Tropical Medicine &amp; Infectious Disease, Celia Scott Weatherhead School of
                       Public Health and Tropical Medicine · Tulane University · New Orleans, LA
                     </p>
                   </div>
-                  <p class="date">August 2024 – September 2025 · 1 year 1 month</p>
+                  <p class="about-date">August 2024 – September 2025 · 1 year 1 month</p>
                 </div>
 
-                <p class="summary">
+                <p class="about-summary">
                   Supported departmental research administration through financial tracking,
                   reporting, and coordination across pre- and post-award functions.
                 </p>
 
-                <div class="subblock">
-                  <p class="label">Key achievements</p>
+                <div class="about-subblock">
+                  <p class="about-label">Key achievements</p>
                   <ul>
                     <li>
                       Conducted monthly account reconciliations and expenditure tracking to ensure
@@ -275,23 +275,23 @@ const selectedWork = [
         </section>
 
         <section class="about-section">
-          <div class="section-heading">
+          <div class="about-section__heading">
             <h2>Tools &amp; Templates</h2>
           </div>
 
-          <div class="card-grid">
+          <div class="about-grid about-grid--two">
             {tools.map((tool) => (
               <a
-                class={`card card--tool accent-${tool.accent}`}
+                class={`about-tool-card about-accent-${tool.accent}`}
                 href={tool.href}
                 target={tool.external ? "_blank" : undefined}
                 rel={tool.external ? "noreferrer noopener" : undefined}
                 aria-label={`Open ${tool.title}`}
               >
-                <div class="card-body">
-                  <div class="tool-top">
-                    <div class="tool-icon-wrap">
-                      <div class="tool-icon">
+                <div class="about-tool-card__body">
+                  <div class="about-tool-card__top">
+                    <div class="about-tool-card__icon-wrap">
+                      <div class="about-tool-card__icon">
                         {tool.icon === "document" && (
                           <svg viewBox="0 0 24 24" aria-hidden="true">
                             <path
@@ -399,15 +399,14 @@ const selectedWork = [
                       </div>
                     </div>
 
-                    <div class="tool-head">
+                    <div class="about-tool-card__head">
                       <h3>{tool.title}</h3>
-                      {tool.status && <span class="status-pill">{tool.status}</span>}
+                      {tool.status && <span class="about-status-pill">{tool.status}</span>}
                     </div>
                   </div>
 
                   <p>{tool.description}</p>
-
-                  <span class="card-link">
+                  <span class="about-tool-card__link">
                     {tool.external ? "View on GitHub" : "View item"}
                   </span>
                 </div>
@@ -417,15 +416,15 @@ const selectedWork = [
         </section>
 
         <section class="about-section">
-          <div class="section-heading">
+          <div class="about-section__heading">
             <h2>Selected Work: Archaeology &amp; Classical Studies</h2>
           </div>
 
-          <div class="card-grid">
+          <div class="about-grid about-grid--two">
             {selectedWork.map((item) => (
-              <article class={`card card--soft accent-${item.accent}`}>
-                <div class="card-marker" aria-hidden="true"></div>
-                <div class="card-body">
+              <article class={`about-info-card about-accent-${item.accent}`}>
+                <span class="about-info-card__dot" aria-hidden="true"></span>
+                <div class="about-info-card__body">
                   <h3>{item.title}</h3>
                   <p>{item.description}</p>
                 </div>
@@ -435,20 +434,20 @@ const selectedWork = [
         </section>
 
         <section class="about-section">
-          <div class="section-heading">
+          <div class="about-section__heading">
             <h2>Education</h2>
           </div>
 
-          <div class="card-grid card-grid--education">
-            <article class="card card--soft accent-red">
-              <div class="card-marker" aria-hidden="true"></div>
-              <div class="card-body">
+          <div class="about-grid about-grid--two">
+            <article class="about-info-card about-accent-red">
+              <span class="about-info-card__dot" aria-hidden="true"></span>
+              <div class="about-info-card__body">
                 <h3>Texas Tech University · Lubbock, TX</h3>
-                <p class="edu-degree">Master of Arts, Languages and Cultures</p>
+                <p class="about-edu-degree">Master of Arts, Languages and Cultures</p>
 
-                <div class="subblock subblock--compact">
-                  <p class="label">Experience</p>
-                  <ul class="edu-list">
+                <div class="about-subblock about-subblock--compact">
+                  <p class="about-label">Experience</p>
+                  <ul class="about-edu-list">
                     <li>Athenian Agora Excavations, Volunteer Excavator (Summer 2023)</li>
                     <li>
                       American School of Classical Studies at Athens (ASCSA), Summer Session (2022)
@@ -460,16 +459,16 @@ const selectedWork = [
               </div>
             </article>
 
-            <article class="card card--soft accent-green">
-              <div class="card-marker" aria-hidden="true"></div>
-              <div class="card-body">
+            <article class="about-info-card about-accent-green">
+              <span class="about-info-card__dot" aria-hidden="true"></span>
+              <div class="about-info-card__body">
                 <h3>Tulane University · New Orleans, LA</h3>
-                <p class="edu-degree">Bachelor of Arts, Classical Studies</p>
-                <p class="edu-degree">Certificate in Geographic Information Systems (GIS)</p>
+                <p class="about-edu-degree">Bachelor of Arts, Classical Studies</p>
+                <p class="about-edu-degree">Certificate in Geographic Information Systems (GIS)</p>
 
-                <div class="subblock subblock--compact">
-                  <p class="label">Activities</p>
-                  <ul class="edu-list">
+                <div class="about-subblock about-subblock--compact">
+                  <p class="about-label">Activities</p>
+                  <ul class="about-edu-list">
                     <li>Cookies &amp; Code</li>
                     <li>Tulane HR Internship</li>
                   </ul>
@@ -546,17 +545,17 @@ const selectedWork = [
     pointer-events: none;
   }
 
-  .intro-panel,
+  .about-intro,
   .about-section {
     position: relative;
     z-index: 1;
   }
 
-  .intro-panel {
+  .about-intro {
     margin-bottom: 2.15rem;
   }
 
-  .intro-panel__inner {
+  .about-intro__inner {
     border-radius: 26px;
     padding: 2.4rem 2rem 2.15rem;
     background:
@@ -570,21 +569,21 @@ const selectedWork = [
     text-align: center;
   }
 
-  .page-title {
+  .about-title {
     margin: 0;
     font-size: clamp(2rem, 4vw, 3.15rem);
     line-height: 1.05;
     color: #18212b;
   }
 
-  .page-role {
+  .about-role {
     margin: 0.8rem auto 0;
     max-width: 780px;
     font-size: clamp(1rem, 2vw, 1.2rem);
     color: #243241;
   }
 
-  .page-positioning {
+  .about-positioning {
     margin: 0.7rem auto 0;
     max-width: 760px;
     font-size: 0.99rem;
@@ -592,20 +591,20 @@ const selectedWork = [
     font-style: italic;
   }
 
-  .intro-copy {
+  .about-copy {
     max-width: 800px;
     margin: 1.7rem auto 0;
     text-align: left;
   }
 
-  .intro-copy p {
+  .about-copy p {
     margin: 0 0 1.1rem;
     font-size: 1.02rem;
     line-height: 1.8;
     color: #263341;
   }
 
-  .intro-copy p:last-child {
+  .about-copy p:last-child {
     margin-bottom: 0;
   }
 
@@ -613,84 +612,118 @@ const selectedWork = [
     margin-top: 2rem;
   }
 
-  .section-heading {
+  .about-section__heading {
     margin-bottom: 1rem;
     padding-left: 0.15rem;
   }
 
-  .section-heading h2 {
+  .about-section__heading h2 {
     margin: 0;
     font-size: clamp(1.35rem, 2.4vw, 1.8rem);
     color: #18212b;
   }
 
-  .card-grid {
+  .about-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1rem;
-  }
-
-  .card-grid--focus,
-  .card-grid--education {
     align-items: start;
   }
 
-  .stack {
+  .about-grid--two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .about-stack {
     display: grid;
     gap: 1rem;
   }
 
-  .card {
+  .about-info-card,
+  .about-feature-card,
+  .about-tool-card {
     position: relative;
-    display: block;
     min-width: 0;
     border-radius: 22px;
-    background: rgba(255, 255, 255, 0.92);
     border: 1px solid rgba(27, 39, 54, 0.08);
-    box-shadow:
-      0 16px 34px rgba(24, 33, 43, 0.07),
-      0 1px 0 rgba(255, 255, 255, 0.82) inset;
     overflow: hidden;
   }
 
-  .card--soft {
-    min-height: 100%;
+  .about-info-card,
+  .about-feature-card {
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow:
+      0 16px 34px rgba(24, 33, 43, 0.07),
+      0 1px 0 rgba(255, 255, 255, 0.82) inset;
     transition:
-      transform 160ms ease,
-      box-shadow 160ms ease,
-      border-color 160ms ease;
+      box-shadow 180ms ease,
+      border-color 180ms ease,
+      background 180ms ease;
   }
 
-  .card--soft:hover {
-    transform: translateY(-2px);
+  .about-info-card::after,
+  .about-feature-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 180ms ease;
   }
 
-  .card--feature .card-body {
-    padding: 1.5rem 1.4rem 1.35rem;
+  .about-info-card:hover,
+  .about-feature-card:hover {
+    border-color: rgba(27, 39, 54, 0.12);
+    transform: none;
   }
 
-  .card--tool {
+  .about-info-card:hover::after,
+  .about-feature-card:hover::after {
+    opacity: 1;
+  }
+
+  .about-tool-card {
+    display: block;
     text-decoration: none;
     color: inherit;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow:
+      0 16px 34px rgba(24, 33, 43, 0.07),
+      0 1px 0 rgba(255, 255, 255, 0.82) inset;
     transition:
       transform 160ms ease,
       box-shadow 160ms ease,
       border-color 160ms ease;
+    will-change: transform;
   }
 
-  .card--tool:hover,
-  .card--tool:focus-visible {
+  .about-tool-card:hover,
+  .about-tool-card:focus-visible {
     transform: translateY(-2px);
     border-color: rgba(27, 39, 54, 0.12);
+    outline: none;
   }
 
-  .card-body {
+  .about-info-card__body,
+  .about-tool-card__body {
     position: relative;
     z-index: 1;
     padding: 1.2rem 1.2rem 1.1rem;
   }
 
-  .card h3 {
+  .about-feature-card__body {
+    position: relative;
+    z-index: 1;
+    padding: 1.5rem 1.4rem 1.35rem;
+  }
+
+  .about-info-card__body {
+    padding-top: 2.1rem;
+  }
+
+  .about-info-card h3,
+  .about-feature-card h3,
+  .about-tool-card h3 {
     margin: 0;
     font-size: 1.15rem;
     font-weight: 600;
@@ -698,14 +731,16 @@ const selectedWork = [
     color: #19232d;
   }
 
-  .card p {
+  .about-info-card p,
+  .about-feature-card p,
+  .about-tool-card p {
     margin: 0.65rem 0 0;
     color: #44515e;
     line-height: 1.65;
     font-size: 0.95rem;
   }
 
-  .card-marker {
+  .about-info-card__dot {
     position: absolute;
     top: 1rem;
     left: 1rem;
@@ -713,29 +748,26 @@ const selectedWork = [
     height: 12px;
     border-radius: 999px;
     box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.82);
+    z-index: 2;
   }
 
-  .card--soft .card-body {
-    padding-top: 2.1rem;
-  }
-
-  .tool-top {
+  .about-tool-card__top {
     display: flex;
     align-items: flex-start;
     gap: 0.9rem;
   }
 
-  .tool-head {
+  .about-tool-card__head {
     min-width: 0;
     flex: 1;
   }
 
-  .tool-icon-wrap {
+  .about-tool-card__icon-wrap {
     flex: 0 0 auto;
     padding-top: 0.05rem;
   }
 
-  .tool-icon {
+  .about-tool-card__icon {
     display: grid;
     place-items: center;
     width: 42px;
@@ -748,12 +780,12 @@ const selectedWork = [
       0 1px 0 rgba(255, 255, 255, 0.9) inset;
   }
 
-  .tool-icon svg {
+  .about-tool-card__icon svg {
     width: 20px;
     height: 20px;
   }
 
-  .status-pill {
+  .about-status-pill {
     display: inline-flex;
     margin-top: 0.45rem;
     padding: 0.25rem 0.55rem;
@@ -765,7 +797,7 @@ const selectedWork = [
     text-transform: uppercase;
   }
 
-  .card-link {
+  .about-tool-card__link {
     display: inline-block;
     margin-top: 1rem;
     font-size: 0.9rem;
@@ -774,62 +806,58 @@ const selectedWork = [
     text-underline-offset: 0.18em;
   }
 
-  .experience-head {
+  .about-experience-head {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     gap: 1rem;
   }
 
-  .experience-main {
+  .about-experience-main {
     min-width: 0;
     flex: 1;
   }
 
-  .card--feature h3 {
+  .about-feature-card h3 {
     margin-bottom: 0.2rem;
     font-size: 1.18rem;
     font-weight: 600;
     line-height: 1.3;
   }
 
-  .meta,
-  .date {
+  .about-meta,
+  .about-date {
     margin: 0.35rem 0 0;
     color: #5b6571;
   }
 
-  .card--feature .meta,
-  .card--feature .date,
-  .card--feature .summary,
-  .card--feature li,
-  .card--feature .label {
+  .about-feature-card .about-meta,
+  .about-feature-card .about-date,
+  .about-feature-card .about-summary,
+  .about-feature-card li,
+  .about-feature-card .about-label {
     font-size: 1rem;
     line-height: 1.65;
   }
 
-  .meta {
+  .about-meta {
     line-height: 1.4;
   }
 
-  .date {
+  .about-date {
     white-space: nowrap;
     text-align: right;
   }
 
-  .summary {
+  .about-summary {
     margin-top: 0.95rem;
   }
 
-  .subblock {
+  .about-subblock {
     margin-top: 1rem;
   }
 
-  .subblock--compact {
-    margin-top: 1rem;
-  }
-
-  .label {
+  .about-label {
     margin: 0 0 0.55rem;
     font-size: 0.78rem;
     letter-spacing: 0.12em;
@@ -837,144 +865,162 @@ const selectedWork = [
     color: #5b6571;
   }
 
-  ul {
+  .about-feature-card ul,
+  .about-info-card ul {
     margin: 0;
     padding-left: 1.15rem;
     color: #44515e;
   }
 
-  li {
+  .about-feature-card li,
+  .about-info-card li {
     margin: 0 0 0.5rem;
     line-height: 1.65;
   }
 
-  li:last-child {
+  .about-feature-card li:last-child,
+  .about-info-card li:last-child {
     margin-bottom: 0;
   }
 
-  .edu-degree {
+  .about-edu-degree {
     margin-top: 0.5rem;
   }
 
-  .edu-list {
+  .about-edu-list {
     margin-top: 0.85rem;
   }
 
-  .card-grid--education h3 {
-    font-size: 1.18rem;
-    font-weight: 600;
-    line-height: 1.3;
-  }
-
-  .card-grid--education .edu-degree,
-  .card-grid--education li,
-  .card-grid--education .label {
-    font-size: 1rem;
-    line-height: 1.65;
-  }
-
-  .accent-red .card-marker,
-  .accent-red .tool-icon {
+  .about-accent-red .about-info-card__dot,
+  .about-accent-red .about-tool-card__icon {
     background: linear-gradient(135deg, #d24d53, #ff7a70);
   }
 
-  .accent-gold .card-marker,
-  .accent-gold .tool-icon {
+  .about-accent-gold .about-info-card__dot,
+  .about-accent-gold .about-tool-card__icon {
     background: linear-gradient(135deg, #e5b04c, #f5d37a);
   }
 
-  .accent-green .card-marker,
-  .accent-green .tool-icon {
+  .about-accent-green .about-info-card__dot,
+  .about-accent-green .about-tool-card__icon {
     background: linear-gradient(135deg, #4da86b, #7fd199);
   }
 
-  .accent-blue .card-marker,
-  .accent-blue .tool-icon {
+  .about-accent-blue .about-info-card__dot,
+  .about-accent-blue .about-tool-card__icon {
     background: linear-gradient(135deg, #4c7eff, #6fa2ff);
   }
 
-  .accent-violet .card-marker,
-  .accent-violet .tool-icon {
+  .about-accent-violet .about-info-card__dot,
+  .about-accent-violet .about-tool-card__icon {
     background: linear-gradient(135deg, #9c63df, #caa8ef);
   }
 
-  .accent-red.card--soft:hover {
+  .about-accent-red.about-info-card::after,
+  .about-accent-red.about-feature-card::after {
+    background: linear-gradient(180deg, rgba(210, 77, 83, 0.10), rgba(210, 77, 83, 0.02));
+  }
+
+  .about-accent-gold.about-info-card::after,
+  .about-accent-gold.about-feature-card::after {
+    background: linear-gradient(180deg, rgba(229, 176, 76, 0.11), rgba(229, 176, 76, 0.025));
+  }
+
+  .about-accent-green.about-info-card::after,
+  .about-accent-green.about-feature-card::after {
+    background: linear-gradient(180deg, rgba(77, 168, 107, 0.10), rgba(77, 168, 107, 0.02));
+  }
+
+  .about-accent-blue.about-info-card::after,
+  .about-accent-blue.about-feature-card::after {
+    background: linear-gradient(180deg, rgba(76, 126, 255, 0.10), rgba(76, 126, 255, 0.02));
+  }
+
+  .about-accent-violet.about-info-card::after,
+  .about-accent-violet.about-feature-card::after {
+    background: linear-gradient(180deg, rgba(156, 99, 223, 0.10), rgba(156, 99, 223, 0.02));
+  }
+
+  .about-accent-red.about-info-card:hover,
+  .about-accent-red.about-feature-card:hover {
+    box-shadow:
+      0 18px 38px rgba(210, 77, 83, 0.14),
+      0 1px 0 rgba(255, 255, 255, 0.82) inset;
+  }
+
+  .about-accent-gold.about-info-card:hover,
+  .about-accent-gold.about-feature-card:hover {
+    box-shadow:
+      0 18px 38px rgba(229, 176, 76, 0.15),
+      0 1px 0 rgba(255, 255, 255, 0.82) inset;
+  }
+
+  .about-accent-green.about-info-card:hover,
+  .about-accent-green.about-feature-card:hover {
+    box-shadow:
+      0 18px 38px rgba(77, 168, 107, 0.14),
+      0 1px 0 rgba(255, 255, 255, 0.82) inset;
+  }
+
+  .about-accent-blue.about-info-card:hover,
+  .about-accent-blue.about-feature-card:hover {
+    box-shadow:
+      0 18px 38px rgba(76, 126, 255, 0.14),
+      0 1px 0 rgba(255, 255, 255, 0.82) inset;
+  }
+
+  .about-accent-violet.about-info-card:hover,
+  .about-accent-violet.about-feature-card:hover {
+    box-shadow:
+      0 18px 38px rgba(156, 99, 223, 0.15),
+      0 1px 0 rgba(255, 255, 255, 0.82) inset;
+  }
+
+  .about-accent-red.about-tool-card:hover,
+  .about-accent-red.about-tool-card:focus-visible {
     box-shadow:
       0 18px 40px rgba(210, 77, 83, 0.25),
       0 1px 0 rgba(255, 255, 255, 0.82) inset;
   }
 
-  .accent-blue.card--soft:hover {
+  .about-accent-blue.about-tool-card:hover,
+  .about-accent-blue.about-tool-card:focus-visible {
     box-shadow:
       0 18px 40px rgba(76, 126, 255, 0.25),
       0 1px 0 rgba(255, 255, 255, 0.82) inset;
   }
 
-  .accent-green.card--soft:hover {
+  .about-accent-green.about-tool-card:hover,
+  .about-accent-green.about-tool-card:focus-visible {
     box-shadow:
       0 18px 40px rgba(77, 168, 107, 0.25),
       0 1px 0 rgba(255, 255, 255, 0.82) inset;
   }
 
-  .accent-gold.card--soft:hover {
+  .about-accent-gold.about-tool-card:hover,
+  .about-accent-gold.about-tool-card:focus-visible {
     box-shadow:
       0 18px 40px rgba(229, 176, 76, 0.28),
       0 1px 0 rgba(255, 255, 255, 0.82) inset;
   }
 
-  .accent-violet.card--soft:hover {
-    box-shadow:
-      0 18px 40px rgba(156, 99, 223, 0.28),
-      0 1px 0 rgba(255, 255, 255, 0.82) inset;
-  }
-
-  .accent-red.card--tool:hover,
-  .accent-red.card--tool:focus-visible {
-    box-shadow:
-      0 18px 40px rgba(210, 77, 83, 0.25),
-      0 1px 0 rgba(255, 255, 255, 0.82) inset;
-  }
-
-  .accent-blue.card--tool:hover,
-  .accent-blue.card--tool:focus-visible {
-    box-shadow:
-      0 18px 40px rgba(76, 126, 255, 0.25),
-      0 1px 0 rgba(255, 255, 255, 0.82) inset;
-  }
-
-  .accent-green.card--tool:hover,
-  .accent-green.card--tool:focus-visible {
-    box-shadow:
-      0 18px 40px rgba(77, 168, 107, 0.25),
-      0 1px 0 rgba(255, 255, 255, 0.82) inset;
-  }
-
-  .accent-gold.card--tool:hover,
-  .accent-gold.card--tool:focus-visible {
-    box-shadow:
-      0 18px 40px rgba(229, 176, 76, 0.28),
-      0 1px 0 rgba(255, 255, 255, 0.82) inset;
-  }
-
-  .accent-violet.card--tool:hover,
-  .accent-violet.card--tool:focus-visible {
+  .about-accent-violet.about-tool-card:hover,
+  .about-accent-violet.about-tool-card:focus-visible {
     box-shadow:
       0 18px 40px rgba(156, 99, 223, 0.28),
       0 1px 0 rgba(255, 255, 255, 0.82) inset;
   }
 
   @media (max-width: 900px) {
-    .card-grid,
-    .card-grid--focus,
-    .card-grid--education {
+    .about-grid--two {
       grid-template-columns: 1fr;
     }
 
-    .experience-head {
+    .about-experience-head {
       flex-direction: column;
     }
 
-    .date {
+    .about-date {
       white-space: normal;
       text-align: left;
       margin-top: 0.2rem;
@@ -991,41 +1037,42 @@ const selectedWork = [
       border-radius: 24px;
     }
 
-    .intro-panel__inner {
+    .about-intro__inner {
       padding: 1.6rem 1.1rem 1.55rem;
       border-radius: 20px;
       text-align: left;
     }
 
-    .intro-copy {
+    .about-copy {
       margin-top: 1.2rem;
     }
 
-    .intro-copy p {
+    .about-copy p {
       font-size: 0.98rem;
       line-height: 1.72;
     }
 
-    .tool-top {
+    .about-tool-card__top {
       gap: 0.75rem;
     }
 
-    .tool-icon {
+    .about-tool-card__icon {
       width: 38px;
       height: 38px;
       border-radius: 12px;
     }
 
-    .card-body,
-    .card--feature .card-body {
+    .about-info-card__body,
+    .about-tool-card__body,
+    .about-feature-card__body {
       padding: 1.1rem 1rem 1rem;
     }
 
-    .card--soft .card-body {
+    .about-info-card__body {
       padding-top: 1.95rem;
     }
 
-    .card-marker {
+    .about-info-card__dot {
       top: 0.9rem;
       left: 0.95rem;
     }
