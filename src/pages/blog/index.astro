@@ -26,7 +26,6 @@ const morePosts = [
   description="Writing on research administration, systems, tools, and practical workflow design."
 >
   <section class="blog-hero section-shell">
-    <p class="eyebrow">Blog</p>
     <h1>Writing on structure, tools, and practical systems.</h1>
     <p class="intro">
       A space for reflections on research administration, workflow design, overlooked tools,
@@ -54,35 +53,21 @@ const morePosts = [
     <h3>Archive</h3>
 
     <div class="archive-grid">
-      {
-        morePosts.map((post) => (
-          <article class="archive-card glass-card">
-            <div class="archive-inner">
-              <p class="archive-date">{post.date}</p>
-              <h4>{post.title}</h4>
-              <p>{post.description}</p>
-            </div>
-          </article>
-        ))
-      }
+      {morePosts.map((post) => (
+        <article class="archive-card glass-card">
+          <div class="archive-inner">
+            <p class="archive-date">{post.date}</p>
+            <h4>{post.title}</h4>
+            <p>{post.description}</p>
+          </div>
+        </article>
+      ))}
     </div>
   </section>
 
   <style>
     .blog-hero {
-      margin-bottom: 2rem;
-    }
-
-    .eyebrow {
-      display: inline-block;
-      margin: 0 0 1rem;
-      padding: 0.45rem 0.8rem;
-      border-radius: 999px;
-      background: var(--accent-soft);
-      color: var(--accent);
-      font-size: 0.88rem;
-      font-weight: 700;
-      letter-spacing: 0.03em;
+      margin-bottom: 2.2rem;
     }
 
     h1 {
@@ -120,11 +105,6 @@ const morePosts = [
     .featured-post:hover {
       transform: translateY(-4px);
       box-shadow: var(--shadow-hover);
-    }
-
-    .featured-media {
-      min-height: 100%;
-      background: #e9f0f4;
     }
 
     .featured-media img {
