@@ -8,15 +8,38 @@ const featuredPost = {
   href: "/blog/excel-tools",
   image: "/assets/excel-tools-header.png",
   date: "March 24, 2026",
+  tags: ["Excel", "Workflow", "Tools"],
 };
 
-const morePosts = [
+const recentPosts = [
+  {
+    title: "AI in Research Administration: Types, Use Cases, and Tradeoffs",
+    description:
+      "A reflection on how AI is showing up in research administration, the different types of tools, and the benefits and risks of using them in structured work.",
+    href: "/blog/ai-in-research",
+    image: "/assets/ai-robots-header.png",
+    date: "March 25, 2026",
+    tags: ["AI", "Automation"],
+  },
+  {
+    title: "When the System Resets: Institutional Knowledge During Platform Transitions",
+    description:
+      "A reflection on institutional knowledge, system transitions, and what becomes visible when institutions reset the platforms they rely on.",
+    href: "/blog/system-resets",
+    image: "/assets/page-under-transition.png",
+    date: "March 25, 2026",
+    tags: ["Systems", "Institutional Knowledge", "Transition"],
+  },
+];
+
+const archivePosts = [
   {
     title: "More writing coming soon",
     description:
       "This space will grow into reflections on tools, process design, and research administration systems.",
     href: "#",
     date: "In progress",
+    tags: [],
   },
 ];
 ---
@@ -26,199 +49,301 @@ const morePosts = [
   description="Writing on research administration, systems, tools, and practical workflow design."
 >
   <section class="blog-hero section-shell">
-    <h1>Writing on structure, tools, and practical systems.</h1>
+    <h1>Writing on structure, tools, and practical systems</h1>
     <p class="intro">
       A space for reflections on research administration, workflow design, overlooked tools,
-      and the quieter forms of operational clarity.
+      and system thinking in practice.
     </p>
   </section>
 
-  <a class="featured-post" href={featuredPost.href}>
-    <div class="featured-media">
-      <img src={featuredPost.image} alt={featuredPost.title} />
-    </div>
-
-    <div class="featured-copy">
-      <p class="featured-label">Featured Post</p>
-      <h2>{featuredPost.title}</h2>
-      <p class="featured-description">{featuredPost.description}</p>
-      <div class="featured-meta">
-        <span>{featuredPost.date}</span>
-        <span class="read-more">Read post →</span>
+  <section class="section-shell">
+    <a class="post-card featured-card" href={featuredPost.href}>
+      <div class="post-image-wrap">
+        <img src={featuredPost.image} alt={featuredPost.title} class="post-image featured-image" />
       </div>
-    </div>
-  </a>
 
-  <section class="archive section-shell">
-    <h3>Archive</h3>
+      <div class="post-content featured-content">
+        <div class="featured-label">Featured</div>
+        <p class="post-date">{featuredPost.date}</p>
+        <h2 class="post-title featured-title">{featuredPost.title}</h2>
+        <p class="post-description">{featuredPost.description}</p>
 
-    <div class="archive-grid">
-      {morePosts.map((post) => (
-        <article class="archive-card glass-card">
-          <div class="archive-inner">
-            <p class="archive-date">{post.date}</p>
-            <h4>{post.title}</h4>
-            <p>{post.description}</p>
+        <div class="post-tags">
+          {featuredPost.tags.map((tag) => (
+            <span class="tag">{tag}</span>
+          ))}
+        </div>
+      </div>
+    </a>
+  </section>
+
+  <section class="section-shell recent-section">
+    <h2 class="section-title">Recent</h2>
+
+    <div class="recent-grid">
+      {recentPosts.map((post) => (
+        <a class="post-card recent-card" href={post.href}>
+          <div class="post-image-wrap">
+            <img src={post.image} alt={post.title} class="post-image" />
           </div>
-        </article>
+
+          <div class="post-content">
+            <p class="post-date">{post.date}</p>
+            <h3 class="recent-title">{post.title}</h3>
+            <p class="post-description">{post.description}</p>
+
+            <div class="post-tags">
+              {post.tags.map((tag) => (
+                <span class="tag">{tag}</span>
+              ))}
+            </div>
+          </div>
+        </a>
       ))}
     </div>
   </section>
 
-  <style>
-    .blog-hero {
-      margin-bottom: 2.2rem;
+  <section class="section-shell archive-section">
+    <h2 class="section-title">Archive</h2>
+
+    <div class="archive-grid">
+      {archivePosts.map((post) => (
+        <a class="archive-card" href={post.href}>
+          <div class="post-content">
+            <p class="post-date">{post.date}</p>
+            <h3 class="archive-card-title">{post.title}</h3>
+            <p class="post-description">{post.description}</p>
+
+            {post.tags.length > 0 && (
+              <div class="post-tags">
+                {post.tags.map((tag) => (
+                  <span class="tag">{tag}</span>
+                ))}
+              </div>
+            )}
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</MainLayout>
+
+<style>
+  .section-shell {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+  }
+
+  .blog-hero {
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
+    margin-bottom: 1.0rem;
+  }
+
+  .blog-hero h1 {
+    margin: 0;
+    max-width: 20ch;
+    font-size: clamp(2.75rem, 6vw, 4.6rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: #16342d;
+  }
+
+  .intro {
+    max-width: 48rem;
+    margin: 1.4rem 0 1.0rem;
+    font-size: 1.18rem;
+    line-height: 1.7;
+    color: #263238;
+  }
+
+  .section-title {
+    margin: 0 0 1rem;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    color: #16342d;
+  }
+
+  .recent-section {
+    margin-top: 3.5rem;
+  }
+
+  .archive-section {
+    margin-top: 3.2rem;
+    padding-bottom: 4rem;
+  }
+
+  .post-card,
+  .archive-card {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(38, 78, 65, 0.12);
+    border-radius: 1.15rem;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    backdrop-filter: blur(4px);
+  }
+
+  .post-card:hover,
+  .archive-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+    border-color: rgba(38, 78, 65, 0.2);
+  }
+
+  .post-card *,
+  .archive-card * {
+    text-decoration: none !important;
+  }
+
+  .featured-card {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    align-items: stretch;
+    min-height: 420px;
+  }
+
+  .post-image-wrap {
+    overflow: hidden;
+  }
+
+  .post-image {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .featured-image {
+    height: 100%;
+    min-height: 420px;
+  }
+
+  .post-content {
+    padding: 1.5rem;
+  }
+
+  .featured-content {
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .featured-label {
+    display: inline-block;
+    align-self: flex-start;
+    margin-bottom: 0.55rem;
+    padding: 0.28rem 0.6rem;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    background: rgba(38, 78, 65, 0.08);
+    color: #264e41;
+    border: 1px solid rgba(38, 78, 65, 0.2);
+  }
+
+  .post-date {
+    margin: 0 0 0.45rem;
+    font-size: 0.9rem;
+    color: #5f6b76;
+  }
+
+  .post-title {
+    margin: 0.45rem 0 0.75rem;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    line-height: 1.1;
+    color: #16342d;
+  }
+
+  .featured-title {
+    max-width: 15ch;
+  }
+
+  .recent-title {
+    margin: 0.45rem 0 0.75rem;
+    font-size: 1.5rem;
+    line-height: 1.25;
+    color: #16342d;
+  }
+
+  .archive-card-title {
+    margin: 0.45rem 0 0.75rem;
+    font-size: 1.3rem;
+    line-height: 1.3;
+    color: #16342d;
+  }
+
+  .post-description {
+    margin: 0;
+    font-size: 1.03rem;
+    line-height: 1.65;
+    color: #24313b;
+  }
+
+  .post-tags {
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    padding: 0.28rem 0.55rem;
+    border: 1px solid rgba(38, 78, 65, 0.2);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    line-height: 1;
+    color: #264e41;
+    background: rgba(38, 78, 65, 0.04);
+  }
+
+  .recent-grid,
+  .archive-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.75rem;
+  }
+
+  @media (max-width: 900px) {
+    .featured-card {
+      grid-template-columns: 1fr;
+      min-height: auto;
     }
 
-    h1 {
-      margin: 0 0 0.85rem;
-      font-size: clamp(2.2rem, 5vw, 3.4rem);
-      line-height: 1.06;
-      letter-spacing: -0.03em;
-      color: #163127;
-      font-weight: 700;
+    .featured-image {
+      min-height: 260px;
+      height: 260px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .recent-grid,
+    .archive-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .post-image {
+      height: 220px;
+    }
+
+    .featured-image {
+      height: 220px;
+      min-height: 220px;
+    }
+
+    .blog-hero {
+      padding-top: 1.75rem;
+      margin-bottom: 2rem;
     }
 
     .intro {
-      margin: 0;
-      font-size: 1.08rem;
-      line-height: 1.8;
-      color: var(--muted);
-      max-width: 48rem;
+      font-size: 1.05rem;
     }
-
-    .featured-post {
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 0;
-      text-decoration: none;
-      color: inherit;
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: var(--radius-xl);
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      transition: transform 0.22s ease, box-shadow 0.22s ease;
-      margin-bottom: 2.5rem;
-    }
-
-    .featured-post:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-hover);
-    }
-
-    .featured-media img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      aspect-ratio: 16 / 10;
-    }
-
-    .featured-copy {
-      padding: 1.75rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .featured-label {
-      margin: 0 0 0.8rem;
-      color: var(--accent);
-      font-size: 0.9rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    h2 {
-      margin: 0 0 0.8rem;
-      font-size: clamp(1.65rem, 3vw, 2.15rem);
-      line-height: 1.16;
-      color: #18382d;
-      font-weight: 700;
-    }
-
-    .featured-description {
-      margin: 0 0 1rem;
-      font-size: 1.03rem;
-      line-height: 1.8;
-      color: var(--muted);
-    }
-
-    .featured-meta {
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-      align-items: center;
-      font-size: 0.96rem;
-      color: #6b7280;
-      margin-top: auto;
-    }
-
-    .read-more {
-      color: var(--accent);
-      font-weight: 700;
-    }
-
-    .archive h3 {
-      margin: 0 0 1rem;
-      font-size: 1.3rem;
-      color: #18382d;
-      font-weight: 700;
-    }
-
-    .archive-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1rem;
-    }
-
-    .archive-card {
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
-    }
-
-    .archive-card:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-hover);
-    }
-
-    .archive-inner {
-      padding: 1.25rem 1.35rem;
-    }
-
-    .archive-date {
-      margin: 0 0 0.5rem;
-      font-size: 0.9rem;
-      color: #6b7280;
-    }
-
-    h4 {
-      margin: 0 0 0.55rem;
-      font-size: 1.2rem;
-      color: #18382d;
-      font-weight: 700;
-    }
-
-    .archive-inner p:last-child {
-      margin-bottom: 0;
-      color: var(--muted);
-      line-height: 1.8;
-    }
-
-    @media (max-width: 860px) {
-      .featured-post {
-        grid-template-columns: 1fr;
-      }
-
-      .featured-copy {
-        padding: 1.25rem;
-      }
-
-      .featured-meta {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-  </style>
-</MainLayout>
+  }
+</style>
