@@ -1,0 +1,308 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+
+const title = "Not Everything Needs to Be Manual: Small Excel Tools That Changed My Workflow";
+const description =
+  "A practical reflection on overlooked Excel tools in research administration, including Office Scripts, Focus Cell, and simple Excel dashboards.";
+---
+
+<MainLayout title={title} description={description}>
+  <figure class="hero-image">
+    <img
+      src="/assets/excel-tools-header.png"
+      alt="Illustrated workspace scene showing a woman at a desk with a spreadsheet on screen."
+    />
+  </figure>
+
+  <section class="post-header section-shell">
+    <p class="eyebrow">Featured Post</p>
+    <h1>{title}</h1>
+    <p class="dek">
+      A few overlooked Excel tools that made repetitive reporting, spreadsheet navigation,
+      and dashboard building easier to manage in research administration.
+    </p>
+    <p class="meta">March 24, 2026 · Featured writing</p>
+  </section>
+
+  <article class="post-body glass-card section-shell">
+    <p>We all have tools we know exist but rarely use.</p>
+
+    <p>
+      In research administration, Excel is the default workspace for nearly everything—budgets,
+      reports, reconciliations, quick calculations, and more. Much of that work is repetitive,
+      with the structure changing little from month to month.
+    </p>
+
+    <p>Yet, I found myself rebuilding the same things repeatedly.</p>
+
+    <p>Eventually, I realized I was spending time on tasks Excel was built to handle.</p>
+
+    <h2>Office Scripts</h2>
+
+    <p>
+      I discovered Microsoft Office Scripts while exploring ways to automate my workflow. If you
+      want to try it, you can find Office Scripts in Excel for the Web under the Automate tab.
+      It’s available through most work or school Microsoft 365 accounts, and you can either record
+      a script or start from examples.
+    </p>
+
+    <p>
+      With so much attention on AI, it made me pause and ask a simpler question: what tools are we
+      already overlooking?
+    </p>
+
+    <p>Office Scripts was one of them.</p>
+
+    <p>
+      I had been repeating the same steps—cleaning exported data, adjusting formats, and setting up
+      reports the same way each time. Nothing complex, just consistent.
+    </p>
+
+    <p>
+      Office Scripts lets you turn that sequence into something repeatable. For example, I automated
+      a monthly process where I clean exported transaction data: removing extra columns, reformatting
+      dates, and flagging missing information. Now, instead of rebuilding the process each time, I
+      run the script and it handles everything in seconds.
+    </p>
+
+    <p>
+      It’s not about replacing the work—it’s about standardizing the parts that don’t need manual
+      attention every time.
+    </p>
+
+    <h2>“Focus Cell” Feature</h2>
+
+    <p>
+      Though simple, this feature has made a noticeable difference in how I work with larger
+      spreadsheets.
+    </p>
+
+    <p>
+      With long reports or dense data, it’s easy to lose your place—especially when moving quickly
+      across rows and columns. I found myself double-checking my position more than I’d like to
+      admit.
+    </p>
+
+    <p>
+      A focus-style setup—where the active row and column are highlighted—eliminates that problem
+      almost immediately. In Excel, go to View → Show → Focus Cell. It keeps your place anchored by
+      clearly showing both the row and column of the cell you’re working in.
+    </p>
+
+    <p>
+      It doesn’t calculate or automate—it simply provides a clear visual anchor while you work.
+    </p>
+
+    <p>That small shift has mattered more than I expected.</p>
+
+    <h2>Simple Dashboards</h2>
+
+    <p>This is another one that sounds more complicated than it actually is.</p>
+
+    <p>
+      By dashboard, I don’t mean anything overly designed or presentation-ready. I simply mean a
+      single place for key information—something you can glance at and immediately understand what’s
+      going on.
+    </p>
+
+    <p>
+      For me, that usually includes current balances, monthly burn, and anything trending over or
+      under expectation.
+    </p>
+
+    <p>
+      Before this, I was jumping between multiple tabs trying to piece together the full picture.
+      The information was there—it just wasn’t centralized.
+    </p>
+
+    <p>
+      Pulling those pieces into a simple dashboard reduced the back-and-forth and made it easier to
+      catch issues early.
+    </p>
+
+    <p>It’s less about building something impressive and more about building something useful.</p>
+
+    <h2>Excel Dashboards</h2>
+
+    <p>
+      Most of the time, the data already exists—it’s just spread across tabs or buried in a larger
+      dataset.
+    </p>
+
+    <p>
+      Once your data is structured—even something as simple as organizing it into a clean table—you
+      can start building. PivotTables make it easy to summarize what matters, whether that is time,
+      category, or account, and charts turn those summaries into something easier to read.
+    </p>
+
+    <div class="start-box">
+      <p class="start-label">If you want to get started:</p>
+      <ol>
+        <li>Make sure your data is clean and organized into a table with headers.</li>
+        <li>Insert a PivotTable on a new sheet and use it to summarize the numbers you care about most.</li>
+        <li>Add a chart based on that summary.</li>
+        <li>Move those pieces onto a single sheet to create a dashboard view.</li>
+        <li>Add slicers if you want an easy way to filter the information and adjust the view without rebuilding everything.</li>
+      </ol>
+    </div>
+
+    <p>
+      Even with just a few steps, you end up with a live snapshot that updates as your data changes.
+    </p>
+
+    <p>
+      What really changed things for me was the interactivity. Instead of jumping between tabs,
+      everything lives in one place and updates together.
+    </p>
+
+    <p>
+      If you want to take it further, learning Power BI—or working with your IT team to build
+      something more structured—is a great next step. But even within Excel, a simple dashboard goes
+      a long way.
+    </p>
+
+    <div class="closing-note">
+      <p>
+        We spend a lot of time looking for new tools, but sometimes the better move is just using
+        the ones we already have more intentionally. An easy way to make the most of these small
+        improvements is by sharing what you've built with colleagues. For example, you can save time
+        across your team by sharing useful Excel templates or scripts, or storing them in a shared
+        folder everyone can access. Even a quick demonstration during a meeting can spark ideas and
+        help others standardize their workflow. This kind of sharing makes it easier for research
+        administrators to lift up their whole group, not just their individual processes.
+      </p>
+    </div>
+  </article>
+
+  <style>
+    .hero-image {
+      margin: 0 0 1.5rem;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      background: #eaf0f5;
+    }
+
+    .hero-image img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 8.5;
+      object-fit: cover;
+    }
+
+    .post-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin: 0 0 1rem;
+      padding: 0.45rem 0.8rem;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    h1 {
+      margin: 0 0 0.9rem;
+      font-size: clamp(2.3rem, 5vw, 3.7rem);
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      color: #163127;
+      font-weight: 700;
+    }
+
+    .dek {
+      margin: 0 0 0.9rem;
+      font-size: 1.08rem;
+      line-height: 1.85;
+      color: var(--muted);
+      max-width: 44rem;
+    }
+
+    .meta {
+      margin: 0;
+      font-size: 0.95rem;
+      color: #6b7280;
+    }
+
+    .post-body {
+      padding: clamp(1.35rem, 2.5vw, 2.2rem);
+    }
+
+    .post-body p {
+      margin: 0 0 1.2rem;
+      font-size: 1.08rem;
+      line-height: 1.95;
+      color: var(--text);
+    }
+
+    .post-body h2 {
+      margin: 2.2rem 0 0.85rem;
+      font-size: 1.5rem;
+      line-height: 1.22;
+      color: #18382d;
+      font-weight: 700;
+    }
+
+    .post-body ol {
+      margin: 0.45rem 0 0 1.35rem;
+      padding: 0;
+    }
+
+    .post-body li {
+      margin: 0 0 0.55rem;
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: var(--text);
+    }
+
+    .start-box {
+      margin: 1.5rem 0;
+      padding: 1.05rem 1.15rem;
+      border-radius: 18px;
+      background: #f8fbff;
+      border: 1px solid rgba(58, 88, 120, 0.12);
+    }
+
+    .start-label {
+      margin: 0 0 0.6rem;
+      font-weight: 700;
+      color: #234;
+      font-size: 1rem;
+    }
+
+    .closing-note {
+      margin-top: 1.6rem;
+      padding: 1rem 1.05rem;
+      border-left: 4px solid var(--accent);
+      background: rgba(38, 78, 65, 0.06);
+      border-radius: 14px;
+    }
+
+    .closing-note p {
+      margin: 0;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: clamp(2rem, 9vw, 2.7rem);
+      }
+
+      .dek,
+      .post-body p,
+      .post-body li {
+        font-size: 1rem;
+        line-height: 1.85;
+      }
+
+      .post-body h2 {
+        font-size: 1.35rem;
+      }
+    }
+  </style>
+</MainLayout>

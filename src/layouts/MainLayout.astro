@@ -1,0 +1,74 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Katherine Alexis Gruber" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} />
+    <style is:global>
+      :root {
+        --bg-top: #f8fbfa;
+        --bg-bottom: #f3f7fb;
+        --surface: rgba(255, 255, 255, 0.92);
+        --text: #1f2937;
+        --muted: #5f6b7a;
+        --accent: #264e41;
+        --accent-soft: rgba(38, 78, 65, 0.08);
+        --line: rgba(38, 78, 65, 0.12);
+        --shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+        --shadow-hover: 0 24px 48px rgba(15, 23, 42, 0.12);
+        --radius-xl: 28px;
+        --radius-lg: 22px;
+        --content: 780px;
+        --frame: 1120px;
+      }
+
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+        color: var(--text);
+        font-family: Cambria, Georgia, serif;
+      }
+
+      main.site-main {
+        width: min(var(--frame), calc(100% - 2rem));
+        margin: 0 auto;
+        padding: 2rem 0 4rem;
+      }
+
+      .glass-card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow);
+      }
+
+      .section-shell {
+        width: min(var(--content), 100%);
+        margin: 0 auto;
+      }
+
+      a {
+        color: inherit;
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main class="site-main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

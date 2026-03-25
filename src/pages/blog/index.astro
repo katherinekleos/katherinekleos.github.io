@@ -1,114 +1,244 @@
 ---
-import { Image } from 'astro:assets';
-import { getCollection } from 'astro:content';
-import BaseHead from '../../components/BaseHead.astro';
-import Footer from '../../components/Footer.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
-import Header from '../../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import MainLayout from "../../layouts/MainLayout.astro";
 
-const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+const featuredPost = {
+  title: "Not Everything Needs to Be Manual: Small Excel Tools That Changed My Workflow",
+  description:
+    "A practical reflection on overlooked Excel tools in research administration, including Office Scripts, Focus Cell, and simple Excel dashboards.",
+  href: "/blog/excel-tools",
+  image: "/assets/excel-tools-header.png",
+  date: "March 24, 2026",
+};
+
+const morePosts = [
+  {
+    title: "More writing coming soon",
+    description:
+      "This space will grow into reflections on tools, process design, and research administration systems.",
+    href: "#",
+    date: "In progress",
+  },
+];
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
-			main {
-				width: 960px;
-			}
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-			}
-			ul li {
-				width: calc(50% - 1rem);
-			}
-			ul li * {
-				text-decoration: none;
-				transition: 0.2s ease;
-			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li a {
-				display: block;
-			}
-			.title {
-				margin: 0;
-				color: rgb(var(--black));
-				line-height: 1;
-			}
-			.date {
-				margin: 0;
-				color: rgb(var(--gray));
-			}
-			ul li a:hover h4,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
-			}
-			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
-				}
-				ul li {
-					width: 100%;
-					text-align: center;
-				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
-				}
-			}
-		</style>
-	</head>
-	<body>
-		<Header />
-		<main>
-			<section>
-				<ul>
-					{
-						posts.map((post) => (
-							<li>
-								<a href={`/blog/${post.id}/`}>
-									{post.data.heroImage && (
-										<Image width={720} height={360} src={post.data.heroImage} alt="" />
-									)}
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
-								</a>
-							</li>
-						))
-					}
-				</ul>
-			</section>
-		</main>
-		<Footer />
-	</body>
-</html>
+<MainLayout
+  title="Blog"
+  description="Writing on research administration, systems, tools, and practical workflow design."
+>
+  <section class="blog-hero section-shell">
+    <p class="eyebrow">Blog</p>
+    <h1>Writing on structure, tools, and practical systems.</h1>
+    <p class="intro">
+      A space for reflections on research administration, workflow design, overlooked tools,
+      and the quieter forms of operational clarity.
+    </p>
+  </section>
+
+  <a class="featured-post" href={featuredPost.href}>
+    <div class="featured-media">
+      <img src={featuredPost.image} alt={featuredPost.title} />
+    </div>
+
+    <div class="featured-copy">
+      <p class="featured-label">Featured Post</p>
+      <h2>{featuredPost.title}</h2>
+      <p class="featured-description">{featuredPost.description}</p>
+      <div class="featured-meta">
+        <span>{featuredPost.date}</span>
+        <span class="read-more">Read post →</span>
+      </div>
+    </div>
+  </a>
+
+  <section class="archive section-shell">
+    <h3>Archive</h3>
+
+    <div class="archive-grid">
+      {
+        morePosts.map((post) => (
+          <article class="archive-card glass-card">
+            <div class="archive-inner">
+              <p class="archive-date">{post.date}</p>
+              <h4>{post.title}</h4>
+              <p>{post.description}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <style>
+    .blog-hero {
+      margin-bottom: 2rem;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin: 0 0 1rem;
+      padding: 0.45rem 0.8rem;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    h1 {
+      margin: 0 0 0.85rem;
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      line-height: 1.06;
+      letter-spacing: -0.03em;
+      color: #163127;
+      font-weight: 700;
+    }
+
+    .intro {
+      margin: 0;
+      font-size: 1.08rem;
+      line-height: 1.8;
+      color: var(--muted);
+      max-width: 48rem;
+    }
+
+    .featured-post {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 0;
+      text-decoration: none;
+      color: inherit;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+      margin-bottom: 2.5rem;
+    }
+
+    .featured-post:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .featured-media {
+      min-height: 100%;
+      background: #e9f0f4;
+    }
+
+    .featured-media img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      aspect-ratio: 16 / 10;
+    }
+
+    .featured-copy {
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .featured-label {
+      margin: 0 0 0.8rem;
+      color: var(--accent);
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    h2 {
+      margin: 0 0 0.8rem;
+      font-size: clamp(1.65rem, 3vw, 2.15rem);
+      line-height: 1.16;
+      color: #18382d;
+      font-weight: 700;
+    }
+
+    .featured-description {
+      margin: 0 0 1rem;
+      font-size: 1.03rem;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+
+    .featured-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+      font-size: 0.96rem;
+      color: #6b7280;
+      margin-top: auto;
+    }
+
+    .read-more {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .archive h3 {
+      margin: 0 0 1rem;
+      font-size: 1.3rem;
+      color: #18382d;
+      font-weight: 700;
+    }
+
+    .archive-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .archive-card {
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .archive-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .archive-inner {
+      padding: 1.25rem 1.35rem;
+    }
+
+    .archive-date {
+      margin: 0 0 0.5rem;
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+
+    h4 {
+      margin: 0 0 0.55rem;
+      font-size: 1.2rem;
+      color: #18382d;
+      font-weight: 700;
+    }
+
+    .archive-inner p:last-child {
+      margin-bottom: 0;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    @media (max-width: 860px) {
+      .featured-post {
+        grid-template-columns: 1fr;
+      }
+
+      .featured-copy {
+        padding: 1.25rem;
+      }
+
+      .featured-meta {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</MainLayout>
