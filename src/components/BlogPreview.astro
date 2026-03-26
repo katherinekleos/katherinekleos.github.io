@@ -1,35 +1,5 @@
 ---
-const featuredPost = {
-  title: "Not Everything Needs to Be Manual: Small Excel Tools That Changed My Workflow",
-  description:
-    "A practical reflection on overlooked Excel tools in research administration, including Office Scripts, Focus Cell, and simple Excel dashboards.",
-  date: "Mar 2026",
-  href: "/blog/excel-tools",
-};
-
-const posts = [
-  {
-    title: "More writing coming soon",
-    description:
-      "This space will continue to grow with reflections on tools, workflow design, and practical systems in research administration.",
-    date: "In progress",
-    href: "/blog",
-  },
-  {
-    title: "On deck: implementation, structure, and overlooked tools",
-    description:
-      "Future posts will look more closely at how small systems choices shape clarity, risk, and repeatability in day-to-day work.",
-    date: "In progress",
-    href: "/blog",
-  },
-  {
-    title: "More to come",
-    description:
-      "This section will expand over time into a fuller archive of writing on operations, templates, and practical automation.",
-    date: "In progress",
-    href: "/blog",
-  },
-];
+import { featuredPost, recentPosts } from "../data/blogPosts";
 ---
 
 <section class="blog-section" id="blog">
@@ -37,15 +7,19 @@ const posts = [
     <div class="blog-header">
       <h2>Blog</h2>
       <p>
-        Notes on research administration tooling, workflow design, and practical systems thinking.
+        Notes on research administration tooling, workflow design, and practical
+        systems thinking.
       </p>
     </div>
 
+    <!-- Featured -->
     <a href={featuredPost.href} class="card-link-wrap featured-link">
       <article class="featured-card">
         <div class="featured-top">
           <span class="featured-badge">Featured</span>
-          <span class="meta">{featuredPost.date}</span>
+          <span class="meta">
+            {featuredPost.displayDate ?? featuredPost.date}
+          </span>
         </div>
 
         <h3>{featuredPost.title}</h3>
@@ -54,13 +28,18 @@ const posts = [
       </article>
     </a>
 
+    <!-- Recent -->
     <div class="blog-grid">
-      {posts.map((post) => (
+      {recentPosts.slice(0, 3).map((post) => (
         <a href={post.href} class="card-link-wrap">
           <article class="blog-card">
-            <div class="meta">{post.date}</div>
+            <div class="meta">
+              {post.displayDate ?? post.date}
+            </div>
+
             <h4>{post.title}</h4>
             <p>{post.description}</p>
+
             <span class="read-link">Read article →</span>
           </article>
         </a>

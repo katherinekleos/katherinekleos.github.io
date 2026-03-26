@@ -1,47 +1,7 @@
 ---
 import MainLayout from "../../layouts/MainLayout.astro";
-
-const featuredPost = {
-  title: "Not Everything Needs to Be Manual: Small Excel Tools That Changed My Workflow",
-  description:
-    "A practical reflection on overlooked Excel tools in research administration, including Office Scripts, Focus Cell, and simple Excel dashboards.",
-  href: "/blog/excel-tools",
-  image: "/assets/excel-tools-header.png",
-  date: "March 24, 2026",
-  tags: ["Excel", "Workflow", "Tools"],
-};
-
-const recentPosts = [
-  {
-    title: "AI in Research Administration: Types, Use Cases, and Tradeoffs",
-    description:
-      "A reflection on how AI is showing up in research administration, the different types of tools, and the benefits and risks of using them in structured work.",
-    href: "/blog/ai-in-research",
-    image: "/assets/ai-robots-header.png",
-    date: "March 25, 2026",
-    tags: ["AI", "Automation"],
-  },
-  {
-    title: "When the System Resets: Institutional Knowledge During Platform Transitions",
-    description:
-      "A reflection on institutional knowledge, system transitions, and what becomes visible when institutions reset the platforms they rely on.",
-    href: "/blog/system-resets",
-    image: "/assets/page-under-transition.png",
-    date: "March 25, 2026",
-    tags: ["Systems", "Institutional Knowledge", "Transition"],
-  },
-];
-
-const archivePosts = [
-  {
-    title: "More writing coming soon",
-    description:
-      "This space will grow into reflections on tools, process design, and research administration systems.",
-    href: "#",
-    date: "In progress",
-    tags: [],
-  },
-];
+import BlogCard from "../../components/blog/BlogCard.astro";
+import { featuredPost, recentPosts } from "../../data/blogPosts";
 ---
 
 <MainLayout
@@ -51,78 +11,39 @@ const archivePosts = [
   <section class="blog-hero section-shell">
     <h1>Writing on structure, tools, and practical systems</h1>
     <p class="intro">
-      A space for reflections on research administration, workflow design, overlooked tools,
-      and system thinking in practice.
+      A space for reflections on research administration, workflow design,
+      overlooked tools, and system thinking in practice.
     </p>
   </section>
 
-  <section class="section-shell">
-    <a class="post-card featured-card" href={featuredPost.href}>
-      <div class="post-image-wrap">
-        <img src={featuredPost.image} alt={featuredPost.title} class="post-image featured-image" />
-      </div>
-
-      <div class="post-content featured-content">
-        <div class="featured-label">Featured</div>
-        <p class="post-date">{featuredPost.date}</p>
-        <h2 class="post-title featured-title">{featuredPost.title}</h2>
-        <p class="post-description">{featuredPost.description}</p>
-
-        <div class="post-tags">
-          {featuredPost.tags.map((tag) => (
-            <span class="tag">{tag}</span>
-          ))}
-        </div>
-      </div>
-    </a>
+  <section class="section-shell featured-section">
+    <BlogCard
+      title={featuredPost.title}
+      description={featuredPost.description}
+      href={featuredPost.href}
+      image={featuredPost.image}
+      date={featuredPost.date}
+      displayDate={featuredPost.displayDate}
+      tags={featuredPost.tags}
+      variant="featured"
+    />
   </section>
 
   <section class="section-shell recent-section">
     <h2 class="section-title">Recent</h2>
 
-    <div class="recent-grid">
+    <div class="recent-stack">
       {recentPosts.map((post) => (
-        <a class="post-card recent-card" href={post.href}>
-          <div class="post-image-wrap">
-            <img src={post.image} alt={post.title} class="post-image" />
-          </div>
-
-          <div class="post-content">
-            <p class="post-date">{post.date}</p>
-            <h3 class="recent-title">{post.title}</h3>
-            <p class="post-description">{post.description}</p>
-
-            <div class="post-tags">
-              {post.tags.map((tag) => (
-                <span class="tag">{tag}</span>
-              ))}
-            </div>
-          </div>
-        </a>
-      ))}
-    </div>
-  </section>
-
-  <section class="section-shell archive-section">
-    <h2 class="section-title">Archive</h2>
-
-    <div class="archive-grid">
-      {archivePosts.map((post) => (
-        <a class="archive-card" href={post.href}>
-          <div class="post-content">
-            <p class="post-date">{post.date}</p>
-            <h3 class="archive-card-title">{post.title}</h3>
-            <p class="post-description">{post.description}</p>
-
-            {post.tags.length > 0 && (
-              <div class="post-tags">
-                {post.tags.map((tag) => (
-                  <span class="tag">{tag}</span>
-                ))}
-              </div>
-            )}
-          </div>
-        </a>
+        <BlogCard
+          title={post.title}
+          description={post.description}
+          href={post.href}
+          image={post.image}
+          date={post.date}
+          displayDate={post.displayDate}
+          tags={post.tags}
+          variant="recent"
+        />
       ))}
     </div>
   </section>
@@ -138,7 +59,7 @@ const archivePosts = [
   .blog-hero {
     padding-top: 1.5rem;
     padding-bottom: 2rem;
-    margin-bottom: 1.0rem;
+    margin-bottom: 1rem;
   }
 
   .blog-hero h1 {
@@ -152,191 +73,34 @@ const archivePosts = [
 
   .intro {
     max-width: 48rem;
-    margin: 1.4rem 0 1.0rem;
+    margin: 1.4rem 0 1rem;
     font-size: 1.18rem;
     line-height: 1.7;
     color: #263238;
   }
 
+  .featured-section {
+    margin-bottom: 3.25rem;
+  }
+
+  .recent-section {
+    padding-bottom: 4rem;
+  }
+
   .section-title {
-    margin: 0 0 1rem;
+    margin: 0 0 1.2rem;
     font-size: 1.5rem;
     line-height: 1.2;
     color: #16342d;
   }
 
-  .recent-section {
-    margin-top: 3.5rem;
-  }
-
-  .archive-section {
-    margin-top: 3.2rem;
-    padding-bottom: 4rem;
-  }
-
-  .post-card,
-  .archive-card {
-    display: block;
-    color: inherit;
-    text-decoration: none;
-    background: rgba(255, 255, 255, 0.72);
-    border: 1px solid rgba(38, 78, 65, 0.12);
-    border-radius: 1.15rem;
-    overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-    backdrop-filter: blur(4px);
-  }
-
-  .post-card:hover,
-  .archive-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
-    border-color: rgba(38, 78, 65, 0.2);
-  }
-
-  .post-card *,
-  .archive-card * {
-    text-decoration: none !important;
-  }
-
-  .featured-card {
-    display: grid;
-    grid-template-columns: 1.15fr 1fr;
-    align-items: stretch;
-    min-height: 420px;
-  }
-
-  .post-image-wrap {
-    overflow: hidden;
-  }
-
-  .post-image {
-    width: 100%;
-    height: 240px;
-    object-fit: cover;
-    display: block;
-  }
-
-  .featured-image {
-    height: 100%;
-    min-height: 420px;
-  }
-
-  .post-content {
-    padding: 1.5rem;
-  }
-
-  .featured-content {
-    padding: 1.75rem;
+  .recent-stack {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-  }
-
-  .featured-label {
-    display: inline-block;
-    align-self: flex-start;
-    margin-bottom: 0.55rem;
-    padding: 0.28rem 0.6rem;
-    font-size: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    border-radius: 999px;
-    background: rgba(38, 78, 65, 0.08);
-    color: #264e41;
-    border: 1px solid rgba(38, 78, 65, 0.2);
-  }
-
-  .post-date {
-    margin: 0 0 0.45rem;
-    font-size: 0.9rem;
-    color: #5f6b76;
-  }
-
-  .post-title {
-    margin: 0.45rem 0 0.75rem;
-    font-size: clamp(2rem, 3.5vw, 3rem);
-    line-height: 1.1;
-    color: #16342d;
-  }
-
-  .featured-title {
-    max-width: 15ch;
-  }
-
-  .recent-title {
-    margin: 0.45rem 0 0.75rem;
-    font-size: 1.5rem;
-    line-height: 1.25;
-    color: #16342d;
-  }
-
-  .archive-card-title {
-    margin: 0.45rem 0 0.75rem;
-    font-size: 1.3rem;
-    line-height: 1.3;
-    color: #16342d;
-  }
-
-  .post-description {
-    margin: 0;
-    font-size: 1.03rem;
-    line-height: 1.65;
-    color: #24313b;
-  }
-
-  .post-tags {
-    margin-top: 1rem;
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-
-  .tag {
-    padding: 0.28rem 0.55rem;
-    border: 1px solid rgba(38, 78, 65, 0.2);
-    border-radius: 999px;
-    font-size: 0.75rem;
-    line-height: 1;
-    color: #264e41;
-    background: rgba(38, 78, 65, 0.04);
-  }
-
-  .recent-grid,
-  .archive-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.75rem;
-  }
-
-  @media (max-width: 900px) {
-    .featured-card {
-      grid-template-columns: 1fr;
-      min-height: auto;
-    }
-
-    .featured-image {
-      min-height: 260px;
-      height: 260px;
-    }
+    gap: 1.5rem;
   }
 
   @media (max-width: 768px) {
-    .recent-grid,
-    .archive-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .post-image {
-      height: 220px;
-    }
-
-    .featured-image {
-      height: 220px;
-      min-height: 220px;
-    }
-
     .blog-hero {
       padding-top: 1.75rem;
       margin-bottom: 2rem;
@@ -344,6 +108,10 @@ const archivePosts = [
 
     .intro {
       font-size: 1.05rem;
+    }
+
+    .recent-stack {
+      gap: 1.25rem;
     }
   }
 </style>
