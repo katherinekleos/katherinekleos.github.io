@@ -1,0 +1,1052 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+---
+
+<MainLayout
+  title="Cost Share Calculator"
+  description="Dynamic cost share and salary cap planning tool."
+>
+  <section class="tool-shell">
+    <div class="tool-hero">
+      <p class="tool-eyebrow">Tools &amp; Templates</p>
+      <h1>Cost Share Calculator</h1>
+      <p class="tool-intro">
+        Plan salary cap distributions across fiscal years and review adjustment scenarios in one place.
+      </p>
+    </div>
+
+    <div class="tool-card tool-card-instructions">
+      <div class="section-heading">
+        <h2>How to Use This Tool</h2>
+        <p>
+          Enter the project dates first, then complete the key inputs. The calculator will generate
+          fiscal-year rows automatically and apply the salary cap logic by year.
+        </p>
+      </div>
+
+      <div class="instruction-grid">
+        <div class="instruction-item">
+          <strong>Proration method</strong>
+          <p>
+            This tool uses month-based fiscal year proration so results are aligned to fiscal-year
+            month segments rather than daily allocation.
+          </p>
+        </div>
+
+        <div class="instruction-item">
+          <strong>Grant vs. cost share</strong>
+          <p>
+            If projected salary is at or below the cap, grant LOE equals total LOE. If projected
+            salary exceeds the cap, grant LOE is reduced and the remainder moves to cost share.
+          </p>
+        </div>
+
+        <div class="instruction-item">
+          <strong>Adjustment section</strong>
+          <p>
+            Use the adjustment table to test a known grant salary or known grant LOE for a selected
+            fiscal year and review the reverse-calculated split for a defined adjustment period.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <div class="section-heading">
+        <h2>Project Details</h2>
+        <p>Enter the project dates to generate the fiscal year breakdown automatically.</p>
+      </div>
+
+      <div class="input-grid">
+        <label class="field">
+          <span>Project start date</span>
+          <input id="projectStart" type="date" />
+        </label>
+
+        <label class="field">
+          <span>Project end date</span>
+          <input id="projectEnd" type="date" />
+        </label>
+      </div>
+
+      <p class="field-note">
+        This tool uses month-based fiscal year proration and treats the entered end date as
+        inclusive. Enter the last day of the project period as reflected on the NOA and follow
+        institutional salary allocation policies. This calculator is intended for planning
+        purposes—final decisions should align with the award and sponsor terms.
+      </p>
+    </div>
+
+    <div class="tool-card">
+      <div class="section-heading">
+        <h2>Key Inputs</h2>
+        <p>These values drive the salary cap and cost share calculations for each generated fiscal year.</p>
+      </div>
+
+      <div class="input-grid input-grid-3">
+        <label class="field">
+          <span>Base salary</span>
+          <input id="baseSalary" type="number" min="0" step="0.01" placeholder="100000" />
+        </label>
+
+        <label class="field">
+          <span>Annual salary growth %</span>
+          <input id="salaryGrowth" type="number" step="0.01" placeholder="3" />
+        </label>
+
+        <label class="field">
+          <span>Total LOE %</span>
+          <input id="totalLoe" type="number" min="0" max="100" step="0.01" placeholder="20" />
+        </label>
+
+        <label class="field">
+          <span>Fringe rate %</span>
+          <input id="fringeRate" type="number" min="0" step="0.01" placeholder="30" />
+        </label>
+
+        <label class="field">
+          <span>Salary cap</span>
+          <input id="salaryCap" type="number" min="0" step="0.01" value="228000" />
+        </label>
+
+        <label class="field">
+          <span>Name / scenario label</span>
+          <input id="scenarioLabel" type="text" placeholder="Optional" />
+        </label>
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <div class="section-heading">
+        <h2>Fiscal Year Breakdown</h2>
+        <p>
+          The online version is dynamic and can generate as many fiscal years as needed based on
+          the project dates.
+        </p>
+      </div>
+
+      <div id="fyEmptyState" class="empty-state">
+        Enter a project start and end date to generate the fiscal year table.
+      </div>
+
+      <div id="fyTableWrap" class="table-wrap" hidden>
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th class="fy-col">Fiscal Year</th>
+              <th>Start</th>
+              <th>End</th>
+              <th>Months</th>
+              <th>Proration</th>
+            </tr>
+          </thead>
+          <tbody id="fyTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <div class="section-heading">
+        <h2>Main Cost Share Calculation</h2>
+        <p>Grant LOE is capped when salary exceeds the cap. Cost share LOE is the remaining effort.</p>
+      </div>
+
+      <div id="calcEmptyState" class="empty-state">
+        Enter project dates and key inputs to calculate the fiscal year results.
+      </div>
+
+      <div id="calcScrollHint" class="scroll-hint" hidden>
+        Scroll horizontally to view all calculation columns.
+      </div>
+
+      <div id="calcTableWrap" class="table-wrap" hidden>
+        <table class="results-table wide-table">
+          <thead>
+            <tr>
+              <th class="fy-col">FY</th>
+              <th>Months</th>
+              <th>Proration</th>
+              <th>Projected Salary</th>
+              <th>Salary Cap</th>
+              <th>Total LOE %</th>
+              <th>Grant LOE %</th>
+              <th>C/S LOE %</th>
+              <th>Grant Salary</th>
+              <th>Grant Fringe</th>
+              <th>C/S Salary</th>
+              <th>C/S Fringe</th>
+              <th>Total Grant Cost</th>
+              <th>Total C/S Cost</th>
+            </tr>
+          </thead>
+          <tbody id="calcTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <div class="section-heading">
+        <h2>Summary</h2>
+        <p>High-level totals across all generated fiscal years.</p>
+      </div>
+
+      <div id="summaryEmptyState" class="empty-state">
+        Summary totals will appear once the calculations are generated.
+      </div>
+
+      <div id="summaryGrid" class="summary-grid" hidden>
+        <div class="summary-item">
+          <span class="summary-label">Total Grant Salary</span>
+          <strong id="summaryGrantSalary">$0.00</strong>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Total Grant Fringe</span>
+          <strong id="summaryGrantFringe">$0.00</strong>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Total Cost Share Salary</span>
+          <strong id="summaryCssSalary">$0.00</strong>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Total Cost Share Fringe</span>
+          <strong id="summaryCssFringe">$0.00</strong>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Total Grant Cost</span>
+          <strong id="summaryGrantCost">$0.00</strong>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Total Cost Share Cost</span>
+          <strong id="summaryCssCost">$0.00</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <div class="section-heading">
+        <h2>Adjustment / Reverse Calculation</h2>
+        <p>Select a fiscal year and test a known grant salary or known grant LOE for that year.</p>
+      </div>
+
+      <p class="field-note">
+        Adjustment calculations apply within a single selected fiscal year. Enter the number of
+        months to prorate for the adjustment period. If salary changed during that fiscal year,
+        use the salary override field or confirm the correct salary basis before relying on the result.
+      </p>
+
+      <div id="adjustmentEmptyState" class="empty-state">
+        Generate the main calculation first to activate the adjustment section.
+      </div>
+
+      <div id="adjustmentWrap" hidden>
+        <div class="input-grid input-grid-3">
+          <label class="field">
+            <span>Selected fiscal year</span>
+            <select id="adjustFy"></select>
+          </label>
+
+          <label class="field">
+            <span>Months to prorate</span>
+            <input id="adjustMonths" type="number" min="0" step="0.01" placeholder="e.g. 3" />
+          </label>
+
+          <label class="field">
+            <span>Salary override for adjustment period</span>
+            <input id="adjustSalaryOverride" type="number" min="0" step="0.01" placeholder="Optional" />
+          </label>
+
+          <label class="field">
+            <span>Known grant salary</span>
+            <input id="knownGrantSalary" type="number" min="0" step="0.01" placeholder="Optional" />
+          </label>
+
+          <label class="field">
+            <span>Known grant LOE %</span>
+            <input id="knownGrantLoe" type="number" min="0" max="100" step="0.01" placeholder="Optional" />
+          </label>
+        </div>
+
+        <div id="adjustScrollHint" class="scroll-hint" hidden>
+          Scroll horizontally to view all adjustment columns.
+        </div>
+
+        <div class="table-wrap" id="adjustTableWrap" hidden>
+          <table class="results-table adjust-table">
+            <thead>
+              <tr>
+                <th class="fy-col">Selected FY</th>
+                <th>Salary Used</th>
+                <th>Months</th>
+                <th>Proration</th>
+                <th>Total LOE %</th>
+                <th>Reverse Grant LOE %</th>
+                <th>Reverse C/S LOE %</th>
+                <th>Reverse Grant Salary</th>
+                <th>Reverse Grant Fringe</th>
+                <th>Reverse C/S Salary</th>
+                <th>Reverse C/S Fringe</th>
+              </tr>
+            </thead>
+            <tbody id="adjustTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const startInput = document.getElementById("projectStart");
+    const endInput = document.getElementById("projectEnd");
+
+    const baseSalaryInput = document.getElementById("baseSalary");
+    const salaryGrowthInput = document.getElementById("salaryGrowth");
+    const totalLoeInput = document.getElementById("totalLoe");
+    const fringeRateInput = document.getElementById("fringeRate");
+    const salaryCapInput = document.getElementById("salaryCap");
+
+    const fyEmptyState = document.getElementById("fyEmptyState");
+    const fyTableWrap = document.getElementById("fyTableWrap");
+    const fyTableBody = document.getElementById("fyTableBody");
+
+    const calcEmptyState = document.getElementById("calcEmptyState");
+    const calcScrollHint = document.getElementById("calcScrollHint");
+    const calcTableWrap = document.getElementById("calcTableWrap");
+    const calcTableBody = document.getElementById("calcTableBody");
+
+    const summaryEmptyState = document.getElementById("summaryEmptyState");
+    const summaryGrid = document.getElementById("summaryGrid");
+
+    const summaryGrantSalary = document.getElementById("summaryGrantSalary");
+    const summaryGrantFringe = document.getElementById("summaryGrantFringe");
+    const summaryCssSalary = document.getElementById("summaryCssSalary");
+    const summaryCssFringe = document.getElementById("summaryCssFringe");
+    const summaryGrantCost = document.getElementById("summaryGrantCost");
+    const summaryCssCost = document.getElementById("summaryCssCost");
+
+    const adjustmentEmptyState = document.getElementById("adjustmentEmptyState");
+    const adjustmentWrap = document.getElementById("adjustmentWrap");
+    const adjustFySelect = document.getElementById("adjustFy");
+    const adjustMonthsInput = document.getElementById("adjustMonths");
+    const adjustSalaryOverrideInput = document.getElementById("adjustSalaryOverride");
+    const knownGrantSalaryInput = document.getElementById("knownGrantSalary");
+    const knownGrantLoeInput = document.getElementById("knownGrantLoe");
+    const adjustScrollHint = document.getElementById("adjustScrollHint");
+    const adjustTableWrap = document.getElementById("adjustTableWrap");
+    const adjustTableBody = document.getElementById("adjustTableBody");
+
+    let currentRows = [];
+
+    function parseLocalDate(value) {
+      if (!value) return null;
+      const [year, month, day] = value.split("-").map(Number);
+      return new Date(year, month - 1, day);
+    }
+
+    function parseNumber(value) {
+      if (value === "" || value === null || value === undefined) return null;
+      const parsed = Number(value);
+      return Number.isFinite(parsed) ? parsed : null;
+    }
+
+    function formatDate(date) {
+      return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
+    }
+
+    function formatCurrency(value) {
+      return value.toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+      });
+    }
+
+    function formatPercent(value) {
+      return `${value.toFixed(2)}%`;
+    }
+
+    function getFiscalYearLabel(date) {
+      const year = date.getMonth() >= 6 ? date.getFullYear() + 1 : date.getFullYear();
+      return `FY ${year}`;
+    }
+
+    function getFiscalYearStart(date) {
+      const year = date.getMonth() >= 6 ? date.getFullYear() : date.getFullYear() - 1;
+      return new Date(year, 6, 1);
+    }
+
+    function getFiscalYearEnd(date) {
+      const fyStart = getFiscalYearStart(date);
+      return new Date(fyStart.getFullYear() + 1, 5, 30);
+    }
+
+    function addDays(date, days) {
+      const next = new Date(date);
+      next.setDate(next.getDate() + days);
+      return next;
+    }
+
+    function monthsBetweenInclusive(start, end) {
+      const years = end.getFullYear() - start.getFullYear();
+      const months = end.getMonth() - start.getMonth();
+      const total = years * 12 + months + 1;
+      return total > 0 ? total : 0;
+    }
+
+    function generateFiscalYears(projectStart, projectEnd) {
+      const rows = [];
+      let cursor = new Date(projectStart);
+
+      while (cursor <= projectEnd) {
+        const fyStart = getFiscalYearStart(cursor);
+        const fyEnd = getFiscalYearEnd(cursor);
+
+        const segmentStart = cursor > fyStart ? cursor : fyStart;
+        const segmentEnd = projectEnd < fyEnd ? projectEnd : fyEnd;
+
+        const months = monthsBetweenInclusive(segmentStart, segmentEnd);
+        const proration = months / 12;
+
+        rows.push({
+          fiscalYear: getFiscalYearLabel(cursor),
+          start: new Date(segmentStart),
+          end: new Date(segmentEnd),
+          months,
+          proration,
+        });
+
+        cursor = addDays(segmentEnd, 1);
+      }
+
+      return rows;
+    }
+
+    function renderFiscalYears(rows) {
+      fyTableBody.innerHTML = "";
+
+      if (!rows.length) {
+        fyEmptyState.hidden = false;
+        fyTableWrap.hidden = true;
+        fyEmptyState.textContent = "Enter a project start and end date to generate the fiscal year table.";
+        return;
+      }
+
+      rows.forEach((row, index) => {
+        const tr = document.createElement("tr");
+        tr.className = index % 2 === 0 ? "row-blue-a" : "row-blue-b";
+        tr.innerHTML = `
+          <td class="fy-cell">${row.fiscalYear}</td>
+          <td>${formatDate(row.start)}</td>
+          <td>${formatDate(row.end)}</td>
+          <td>${row.months}</td>
+          <td>${row.proration.toFixed(4)}</td>
+        `;
+        fyTableBody.appendChild(tr);
+      });
+
+      fyEmptyState.hidden = true;
+      fyTableWrap.hidden = false;
+    }
+
+    function calculateRows(baseRows, baseSalary, growthPct, totalLoePct, fringePct, salaryCap) {
+      const growthRate = growthPct / 100;
+      const totalLoe = totalLoePct / 100;
+      const fringeRate = fringePct / 100;
+
+      return baseRows.map((row, index) => {
+        const projectedSalary = baseSalary * Math.pow(1 + growthRate, index);
+        const capRatio = projectedSalary > 0 ? Math.min(1, salaryCap / projectedSalary) : 0;
+
+        const grantLoe = totalLoe * capRatio;
+        const cssLoe = totalLoe - grantLoe;
+
+        const grantSalary = projectedSalary * grantLoe * row.proration;
+        const grantFringe = grantSalary * fringeRate;
+
+        const cssSalary = projectedSalary * cssLoe * row.proration;
+        const cssFringe = cssSalary * fringeRate;
+
+        return {
+          ...row,
+          projectedSalary,
+          salaryCap,
+          totalLoePct,
+          grantLoePct: grantLoe * 100,
+          cssLoePct: cssLoe * 100,
+          grantSalary,
+          grantFringe,
+          cssSalary,
+          cssFringe,
+          totalGrantCost: grantSalary + grantFringe,
+          totalCssCost: cssSalary + cssFringe,
+        };
+      });
+    }
+
+    function renderCalculation(rows) {
+      calcTableBody.innerHTML = "";
+
+      if (!rows.length) {
+        calcEmptyState.hidden = false;
+        calcTableWrap.hidden = true;
+        calcScrollHint.hidden = true;
+        return;
+      }
+
+      rows.forEach((row, index) => {
+        const tr = document.createElement("tr");
+        tr.className = index % 2 === 0 ? "row-blue-a" : "row-blue-b";
+        tr.innerHTML = `
+          <td class="fy-cell">${row.fiscalYear}</td>
+          <td>${row.months}</td>
+          <td>${row.proration.toFixed(4)}</td>
+          <td>${formatCurrency(row.projectedSalary)}</td>
+          <td>${formatCurrency(row.salaryCap)}</td>
+          <td>${formatPercent(row.totalLoePct)}</td>
+          <td>${formatPercent(row.grantLoePct)}</td>
+          <td>${formatPercent(row.cssLoePct)}</td>
+          <td>${formatCurrency(row.grantSalary)}</td>
+          <td>${formatCurrency(row.grantFringe)}</td>
+          <td>${formatCurrency(row.cssSalary)}</td>
+          <td>${formatCurrency(row.cssFringe)}</td>
+          <td>${formatCurrency(row.totalGrantCost)}</td>
+          <td>${formatCurrency(row.totalCssCost)}</td>
+        `;
+        calcTableBody.appendChild(tr);
+      });
+
+      calcEmptyState.hidden = true;
+      calcTableWrap.hidden = false;
+      calcScrollHint.hidden = false;
+    }
+
+    function renderSummary(rows) {
+      if (!rows.length) {
+        summaryEmptyState.hidden = false;
+        summaryGrid.hidden = true;
+        return;
+      }
+
+      const totals = rows.reduce(
+        (acc, row) => {
+          acc.grantSalary += row.grantSalary;
+          acc.grantFringe += row.grantFringe;
+          acc.cssSalary += row.cssSalary;
+          acc.cssFringe += row.cssFringe;
+          acc.grantCost += row.totalGrantCost;
+          acc.cssCost += row.totalCssCost;
+          return acc;
+        },
+        {
+          grantSalary: 0,
+          grantFringe: 0,
+          cssSalary: 0,
+          cssFringe: 0,
+          grantCost: 0,
+          cssCost: 0,
+        }
+      );
+
+      summaryGrantSalary.textContent = formatCurrency(totals.grantSalary);
+      summaryGrantFringe.textContent = formatCurrency(totals.grantFringe);
+      summaryCssSalary.textContent = formatCurrency(totals.cssSalary);
+      summaryCssFringe.textContent = formatCurrency(totals.cssFringe);
+      summaryGrantCost.textContent = formatCurrency(totals.grantCost);
+      summaryCssCost.textContent = formatCurrency(totals.cssCost);
+
+      summaryEmptyState.hidden = true;
+      summaryGrid.hidden = false;
+    }
+
+    function populateAdjustmentDropdown(rows) {
+      adjustFySelect.innerHTML = "";
+
+      rows.forEach((row, index) => {
+        const option = document.createElement("option");
+        option.value = String(index);
+        option.textContent = row.fiscalYear;
+        adjustFySelect.appendChild(option);
+      });
+
+      adjustmentEmptyState.hidden = rows.length > 0;
+      adjustmentWrap.hidden = rows.length === 0;
+    }
+
+    function renderAdjustment() {
+      adjustTableBody.innerHTML = "";
+
+      if (!currentRows.length) {
+        adjustmentEmptyState.hidden = false;
+        adjustmentWrap.hidden = true;
+        adjustTableWrap.hidden = true;
+        adjustScrollHint.hidden = true;
+        return;
+      }
+
+      const selectedIndex = Number(adjustFySelect.value || 0);
+      const row = currentRows[selectedIndex];
+      if (!row) return;
+
+      const fringePct = parseNumber(fringeRateInput.value) ?? 0;
+      const fringeRate = fringePct / 100;
+      const totalLoePct = parseNumber(totalLoeInput.value) ?? 0;
+
+      const adjustMonths = parseNumber(adjustMonthsInput.value);
+      const knownGrantSalary = parseNumber(knownGrantSalaryInput.value);
+      const knownGrantLoe = parseNumber(knownGrantLoeInput.value);
+      const salaryOverride = parseNumber(adjustSalaryOverrideInput.value);
+
+      if (adjustMonths === null) {
+        adjustmentEmptyState.hidden = false;
+        adjustmentWrap.hidden = false;
+        adjustTableWrap.hidden = true;
+        adjustScrollHint.hidden = true;
+        adjustmentEmptyState.textContent =
+          "Enter months to prorate for the selected adjustment period.";
+        return;
+      }
+
+      const proration = adjustMonths / 12;
+      const salaryUsed = salaryOverride !== null ? salaryOverride : row.projectedSalary;
+
+      let reverseGrantLoePct = row.grantLoePct;
+      let reverseGrantSalary = salaryUsed * (reverseGrantLoePct / 100) * proration;
+
+      if (knownGrantSalary !== null && salaryUsed > 0 && proration > 0) {
+        reverseGrantSalary = knownGrantSalary;
+        reverseGrantLoePct = (knownGrantSalary / (salaryUsed * proration)) * 100;
+      } else if (knownGrantLoe !== null) {
+        reverseGrantLoePct = knownGrantLoe;
+        reverseGrantSalary = salaryUsed * (knownGrantLoe / 100) * proration;
+      }
+
+      const reverseCssLoePct = Math.max(totalLoePct - reverseGrantLoePct, 0);
+      const reverseCssSalary = salaryUsed * (reverseCssLoePct / 100) * proration;
+
+      const reverseGrantFringe = reverseGrantSalary * fringeRate;
+      const reverseCssFringe = reverseCssSalary * fringeRate;
+
+      const tr = document.createElement("tr");
+      tr.className = "row-blue-a";
+      tr.innerHTML = `
+        <td class="fy-cell">${row.fiscalYear}</td>
+        <td>${formatCurrency(salaryUsed)}</td>
+        <td>${adjustMonths.toFixed(2)}</td>
+        <td>${proration.toFixed(4)}</td>
+        <td>${formatPercent(totalLoePct)}</td>
+        <td>${formatPercent(reverseGrantLoePct)}</td>
+        <td>${formatPercent(reverseCssLoePct)}</td>
+        <td>${formatCurrency(reverseGrantSalary)}</td>
+        <td>${formatCurrency(reverseGrantFringe)}</td>
+        <td>${formatCurrency(reverseCssSalary)}</td>
+        <td>${formatCurrency(reverseCssFringe)}</td>
+      `;
+      adjustTableBody.appendChild(tr);
+
+      adjustmentEmptyState.hidden = true;
+      adjustmentWrap.hidden = false;
+      adjustTableWrap.hidden = false;
+      adjustScrollHint.hidden = false;
+    }
+
+    function resetCalculationViews() {
+      currentRows = [];
+      calcTableBody.innerHTML = "";
+      calcEmptyState.hidden = false;
+      calcTableWrap.hidden = true;
+      calcScrollHint.hidden = true;
+
+      summaryEmptyState.hidden = false;
+      summaryGrid.hidden = true;
+
+      adjustmentEmptyState.hidden = false;
+      adjustmentWrap.hidden = true;
+      adjustTableWrap.hidden = true;
+      adjustScrollHint.hidden = true;
+      adjustFySelect.innerHTML = "";
+      adjustTableBody.innerHTML = "";
+      adjustmentEmptyState.textContent =
+        "Generate the main calculation first to activate the adjustment section.";
+    }
+
+    function updateTool() {
+      const projectStart = parseLocalDate(startInput.value);
+      const projectEnd = parseLocalDate(endInput.value);
+
+      if (!projectStart || !projectEnd) {
+        fyTableBody.innerHTML = "";
+        fyEmptyState.hidden = false;
+        fyTableWrap.hidden = true;
+        fyEmptyState.textContent = "Enter a project start and end date to generate the fiscal year table.";
+        resetCalculationViews();
+        return;
+      }
+
+      if (projectEnd < projectStart) {
+        fyTableBody.innerHTML = "";
+        fyEmptyState.hidden = false;
+        fyTableWrap.hidden = true;
+        fyEmptyState.textContent = "Project end date must be on or after the project start date.";
+        resetCalculationViews();
+        return;
+      }
+
+      const baseRows = generateFiscalYears(projectStart, projectEnd);
+      renderFiscalYears(baseRows);
+
+      const baseSalary = parseNumber(baseSalaryInput.value);
+      const growthPct = parseNumber(salaryGrowthInput.value);
+      const totalLoePct = parseNumber(totalLoeInput.value);
+      const fringePct = parseNumber(fringeRateInput.value);
+      const salaryCap = parseNumber(salaryCapInput.value);
+
+      const hasCalcInputs =
+        baseSalary !== null &&
+        growthPct !== null &&
+        totalLoePct !== null &&
+        fringePct !== null &&
+        salaryCap !== null;
+
+      if (!hasCalcInputs) {
+        resetCalculationViews();
+        return;
+      }
+
+      currentRows = calculateRows(
+        baseRows,
+        baseSalary,
+        growthPct,
+        totalLoePct,
+        fringePct,
+        salaryCap
+      );
+
+      renderCalculation(currentRows);
+      renderSummary(currentRows);
+      populateAdjustmentDropdown(currentRows);
+      renderAdjustment();
+    }
+
+    [
+      startInput,
+      endInput,
+      baseSalaryInput,
+      salaryGrowthInput,
+      totalLoeInput,
+      fringeRateInput,
+      salaryCapInput,
+      adjustMonthsInput,
+      adjustSalaryOverrideInput,
+      knownGrantSalaryInput,
+      knownGrantLoeInput,
+    ].forEach((input) => {
+      input?.addEventListener("input", updateTool);
+    });
+
+    adjustFySelect?.addEventListener("change", renderAdjustment);
+  </script>
+
+  <style is:global>
+    * {
+      box-sizing: border-box;
+    }
+
+    .tool-shell {
+      width: min(1180px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 3rem 0 5rem;
+    }
+
+    .tool-hero {
+      margin-bottom: 2rem;
+    }
+
+    .tool-eyebrow {
+      margin: 0 0 0.5rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #5f6f6a;
+    }
+
+    .tool-hero h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.1;
+      color: #1f352d;
+    }
+
+    .tool-intro {
+      margin: 0.85rem 0 0;
+      max-width: 46rem;
+      font-size: 1.02rem;
+      line-height: 1.7;
+      color: #465751;
+    }
+
+    .tool-card {
+      width: 100%;
+      max-width: 100%;
+      overflow: hidden;
+      margin-top: 1.5rem;
+      padding: 1.5rem;
+      border: 1px solid rgba(38, 78, 65, 0.12);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 18px 40px rgba(28, 52, 45, 0.06);
+    }
+
+    .tool-card-instructions {
+      background: linear-gradient(180deg, rgba(232, 242, 248, 0.9), rgba(255, 255, 255, 0.96));
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 1.35rem;
+      color: #1f352d;
+    }
+
+    .section-heading p {
+      margin: 0.45rem 0 0;
+      color: #566861;
+      line-height: 1.65;
+      max-width: 54rem;
+    }
+
+    .instruction-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .instruction-item {
+      padding: 1rem 1.05rem;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(114, 160, 188, 0.18);
+    }
+
+    .instruction-item strong {
+      display: block;
+      margin-bottom: 0.45rem;
+      color: #244253;
+      font-size: 0.98rem;
+    }
+
+    .instruction-item p {
+      margin: 0;
+      line-height: 1.65;
+      color: #4f646f;
+      font-size: 0.95rem;
+    }
+
+    .input-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+      width: 100%;
+    }
+
+    .input-grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      min-width: 0;
+    }
+
+    .field span {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #29473d;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      min-width: 0;
+      min-height: 48px;
+      padding: 0.8rem 0.95rem;
+      border: 1px solid rgba(38, 78, 65, 0.18);
+      border-radius: 14px;
+      background: #fff;
+      font: inherit;
+      color: #21352f;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      outline: none;
+      border-color: rgba(38, 78, 65, 0.45);
+      box-shadow: 0 0 0 4px rgba(88, 148, 129, 0.12);
+    }
+
+    .field-note {
+      margin-top: 1rem;
+      padding: 0.85rem 0.95rem;
+      font-size: 0.86rem;
+      line-height: 1.65;
+      color: #5a6d66;
+      background: rgba(38, 78, 65, 0.05);
+      border-radius: 12px;
+      border: 1px solid rgba(38, 78, 65, 0.08);
+    }
+
+    .empty-state {
+      margin-top: 1.2rem;
+      padding: 1rem 1.1rem;
+      border-radius: 16px;
+      background: rgba(38, 78, 65, 0.05);
+      color: #51635d;
+      line-height: 1.6;
+    }
+
+    .scroll-hint {
+      margin-top: 1rem;
+      padding: 0.8rem 1rem;
+      border-radius: 14px;
+      background: rgba(217, 234, 244, 0.85);
+      color: #355567;
+      font-size: 0.93rem;
+      border: 1px solid rgba(114, 160, 188, 0.18);
+    }
+
+    .table-wrap {
+      width: 100%;
+      max-width: 100%;
+      margin-top: 1.1rem;
+      overflow-x: auto;
+      overflow-y: hidden;
+      border-radius: 18px;
+      border: 1px solid rgba(38, 78, 65, 0.08);
+      background: rgba(255, 255, 255, 0.88);
+    }
+
+    .results-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      min-width: 700px;
+    }
+
+    .wide-table {
+      min-width: 1500px;
+    }
+
+    .adjust-table {
+      min-width: 1250px;
+    }
+
+    .results-table th,
+    .results-table td {
+      padding: 0.9rem 0.95rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(38, 78, 65, 0.08);
+      vertical-align: top;
+      white-space: nowrap;
+    }
+
+    .results-table thead th {
+      background: #edf5f8;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: #44606d;
+    }
+
+    .results-table td {
+      color: #223730;
+    }
+
+    .fy-col {
+      min-width: 110px;
+    }
+
+    .fy-cell {
+      min-width: 110px;
+      font-weight: 600;
+      color: #244253;
+    }
+
+    .row-blue-a td {
+      background: rgba(243, 249, 252, 0.88);
+    }
+
+    .row-blue-b td {
+      background: rgba(233, 244, 249, 0.88);
+    }
+
+    .row-blue-a .fy-cell {
+      background: rgba(230, 242, 248, 0.98);
+    }
+
+    .row-blue-b .fy-cell {
+      background: rgba(220, 236, 245, 0.98);
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+      width: 100%;
+    }
+
+    .summary-item {
+      min-width: 0;
+      padding: 1rem 1.05rem;
+      border-radius: 18px;
+      background: rgba(38, 78, 65, 0.05);
+      border: 1px solid rgba(38, 78, 65, 0.08);
+    }
+
+    .summary-label {
+      display: block;
+      margin-bottom: 0.45rem;
+      font-size: 0.88rem;
+      color: #546660;
+    }
+
+    .summary-item strong {
+      font-size: 1.1rem;
+      color: #1f352d;
+    }
+
+    @media (max-width: 980px) {
+      .instruction-grid,
+      .input-grid-3,
+      .summary-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .tool-shell {
+        width: min(100% - 1.25rem, 1180px);
+        padding: 2rem 0 4rem;
+      }
+
+      .tool-card {
+        padding: 1.2rem;
+        border-radius: 20px;
+      }
+
+      .instruction-grid,
+      .input-grid,
+      .input-grid-3,
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</MainLayout>
