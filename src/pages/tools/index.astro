@@ -1,0 +1,117 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import ToolCard from "../../components/ToolCard.astro";
+import { featuredTool, toolList } from "../../data/tools";
+
+const sortedTools = [...toolList].sort((a, b) =>
+  a.title.localeCompare(b.title)
+);
+---
+
+<MainLayout
+  title="Tools & Templates"
+  description="Practical tools and templates for research administration, budgeting, effort planning, and documentation."
+>
+  <section class="tools-hero section-shell">
+    <h1>Practical tools for structured administrative work</h1>
+
+    <p class="tools-intro">
+      A growing collection of tools and templates designed to reduce friction,
+      support clearer decisions, and make research administration work more usable.
+    </p>
+  </section>
+
+  <section class="section-shell featured-tools">
+    <div class="section-heading">
+      <h2>Featured Tool</h2>
+    </div>
+
+    <ToolCard {...featuredTool} featured={true} />
+  </section>
+
+  <section class="section-shell tools-list-section">
+    <div class="section-heading">
+      <h2>All Tools</h2>
+      <p>Alphabetized for easier browsing. Dates reflect the most recent update.</p>
+    </div>
+
+    <div class="tools-grid">
+      {sortedTools.map((tool) => (
+        <ToolCard {...tool} />
+      ))}
+    </div>
+  </section>
+</MainLayout>
+
+<style>
+  .section-shell {
+    width: min(1120px, calc(100% - 2rem));
+    margin: 0 auto;
+  }
+
+  .tools-hero {
+    padding: 4.5rem 0 2.5rem;
+  }
+
+  /* ✅ Controlled wider headline */
+  .tools-hero h1 {
+    margin: 0;
+    max-width: 20ch;
+    font-size: clamp(2.6rem, 5vw, 4.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: #17352d;
+  }
+
+  /* ✅ Slightly wider intro for balance */
+  .tools-intro {
+    margin: 1.3rem 0 0;
+    max-width: 780px;
+    font-size: 1.08rem;
+    line-height: 1.8;
+    color: #41564d;
+  }
+
+  .featured-tools {
+    padding: 1.5rem 0 2rem;
+  }
+
+  .tools-list-section {
+    padding: 1rem 0 5rem;
+  }
+
+  .section-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-bottom: 1.35rem;
+  }
+
+  .section-heading h2 {
+    margin: 0;
+    font-size: 1.55rem;
+    color: #17352d;
+  }
+
+  .section-heading p {
+    margin: 0;
+    color: #5b6f67;
+    line-height: 1.65;
+  }
+
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.35rem;
+  }
+
+  @media (max-width: 900px) {
+    .tools-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .tools-hero h1 {
+      max-width: 100%;
+    }
+  }
+</style>
