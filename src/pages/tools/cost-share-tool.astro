@@ -13,6 +13,27 @@ import MainLayout from "../../layouts/MainLayout.astro";
       <p class="tool-intro">
         Plan salary cap distributions across fiscal years and review adjustment scenarios in one place.
       </p>
+
+      <div class="tool-download-callout">
+        <div class="tool-download-card">
+          <div class="tool-download-copy">
+            <p class="tool-download-label">Excel Template Available</p>
+            <h2>Prefer to work in Excel?</h2>
+            <p>
+              Download the blank cost share template and complete it offline in the spreadsheet
+              format.
+            </p>
+          </div>
+
+          <a
+            class="download-button"
+            href="/downloads/Cost-Share-Template-BLANK-KAG3.xlsx"
+            download
+          >
+            Download Excel Template
+          </a>
+        </div>
+      </div>
     </div>
 
     <div class="tool-card tool-card-instructions">
@@ -86,27 +107,63 @@ import MainLayout from "../../layouts/MainLayout.astro";
       <div class="input-grid input-grid-3">
         <label class="field">
           <span>Base salary</span>
-          <input id="baseSalary" type="number" min="0" step="0.01" placeholder="100000" />
+          <input
+            id="baseSalary"
+            type="text"
+            inputmode="decimal"
+            placeholder="$100,000.00"
+            autocomplete="off"
+          />
         </label>
 
         <label class="field">
           <span>Annual salary growth %</span>
-          <input id="salaryGrowth" type="number" step="0.01" placeholder="3" />
+          <input
+            id="salaryGrowth"
+            type="text"
+            inputmode="decimal"
+            placeholder="3.00%"
+            autocomplete="off"
+          />
+          <small class="field-helper">Enter as a percentage, not a decimal.</small>
         </label>
 
         <label class="field">
           <span>Total LOE %</span>
-          <input id="totalLoe" type="number" min="0" max="100" step="0.01" placeholder="20" />
+          <input
+            id="totalLoe"
+            type="text"
+            inputmode="decimal"
+            placeholder="20.00%"
+            autocomplete="off"
+          />
+          <small class="field-helper">Enter as a percentage, not a decimal.</small>
         </label>
 
         <label class="field">
           <span>Fringe rate %</span>
-          <input id="fringeRate" type="number" min="0" step="0.01" placeholder="30" />
+          <input
+            id="fringeRate"
+            type="text"
+            inputmode="decimal"
+            placeholder="30.00%"
+            autocomplete="off"
+          />
+          <small class="field-helper">Enter as a percentage, not a decimal.</small>
         </label>
 
         <label class="field">
           <span>Salary cap</span>
-          <input id="salaryCap" type="number" min="0" step="0.01" value="228000" />
+          <input
+            id="salaryCap"
+            type="text"
+            inputmode="decimal"
+            value="$228,000.00"
+            autocomplete="off"
+          />
+          <small class="field-helper">
+            Set as $228,000 per NIH salary cap effective as of January 11, 2026.
+          </small>
         </label>
 
         <label class="field">
@@ -195,29 +252,36 @@ import MainLayout from "../../layouts/MainLayout.astro";
       </div>
 
       <div id="summaryGrid" class="summary-grid" hidden>
-        <div class="summary-item">
-          <span class="summary-label">Total Grant Salary</span>
-          <strong id="summaryGrantSalary">$0.00</strong>
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">Total Grant Fringe</span>
-          <strong id="summaryGrantFringe">$0.00</strong>
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">Total Cost Share Salary</span>
-          <strong id="summaryCssSalary">$0.00</strong>
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">Total Cost Share Fringe</span>
-          <strong id="summaryCssFringe">$0.00</strong>
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">Total Grant Cost</span>
-          <strong id="summaryGrantCost">$0.00</strong>
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">Total Cost Share Cost</span>
-          <strong id="summaryCssCost">$0.00</strong>
+        <div class="summary-stack">
+          <div class="summary-row summary-row-grant">
+            <div class="summary-item">
+              <span class="summary-label">Total Grant Salary</span>
+              <strong id="summaryGrantSalary">$0.00</strong>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Total Grant Fringe</span>
+              <strong id="summaryGrantFringe">$0.00</strong>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Total Grant Cost</span>
+              <strong id="summaryGrantCost">$0.00</strong>
+            </div>
+          </div>
+
+          <div class="summary-row summary-row-costshare">
+            <div class="summary-item">
+              <span class="summary-label">Total Cost Share Salary</span>
+              <strong id="summaryCssSalary">$0.00</strong>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Total Cost Share Fringe</span>
+              <strong id="summaryCssFringe">$0.00</strong>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Total Cost Share Cost</span>
+              <strong id="summaryCssCost">$0.00</strong>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -252,17 +316,36 @@ import MainLayout from "../../layouts/MainLayout.astro";
 
           <label class="field">
             <span>Salary override for adjustment period</span>
-            <input id="adjustSalaryOverride" type="number" min="0" step="0.01" placeholder="Optional" />
+            <input
+              id="adjustSalaryOverride"
+              type="text"
+              inputmode="decimal"
+              placeholder="$315,000.00"
+              autocomplete="off"
+            />
           </label>
 
           <label class="field">
             <span>Known grant salary</span>
-            <input id="knownGrantSalary" type="number" min="0" step="0.01" placeholder="Optional" />
+            <input
+              id="knownGrantSalary"
+              type="text"
+              inputmode="decimal"
+              placeholder="$15,000.00"
+              autocomplete="off"
+            />
           </label>
 
           <label class="field">
             <span>Known grant LOE %</span>
-            <input id="knownGrantLoe" type="number" min="0" max="100" step="0.01" placeholder="Optional" />
+            <input
+              id="knownGrantLoe"
+              type="number"
+              min="0"
+              max="100"
+              step="0.01"
+              placeholder="10.00"
+            />
           </label>
         </div>
 
@@ -344,7 +427,9 @@ import MainLayout from "../../layouts/MainLayout.astro";
 
     function parseNumber(value) {
       if (value === "" || value === null || value === undefined) return null;
-      const parsed = Number(value);
+      const cleaned = String(value).replace(/[$,%\s,]/g, "");
+      if (cleaned === "") return null;
+      const parsed = Number(cleaned);
       return Number.isFinite(parsed) ? parsed : null;
     }
 
@@ -365,6 +450,41 @@ import MainLayout from "../../layouts/MainLayout.astro";
 
     function formatPercent(value) {
       return `${value.toFixed(2)}%`;
+    }
+
+    function formatCurrencyInput(value) {
+      const parsed = parseNumber(value);
+      if (parsed === null) return "";
+      return parsed.toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+    }
+
+    function formatPercentInput(value) {
+      const parsed = parseNumber(value);
+      if (parsed === null) return "";
+      return `${parsed.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}%`;
+    }
+
+    function attachFormattedInput(input, formatter) {
+      if (!input) return;
+
+      input.addEventListener("focus", () => {
+        const parsed = parseNumber(input.value);
+        input.value = parsed === null ? "" : String(parsed);
+      });
+
+      input.addEventListener("blur", () => {
+        if (input.value.trim() === "") return;
+        input.value = formatter(input.value);
+        updateTool();
+      });
     }
 
     function getFiscalYearLabel(date) {
@@ -729,6 +849,30 @@ import MainLayout from "../../layouts/MainLayout.astro";
       renderAdjustment();
     }
 
+    attachFormattedInput(baseSalaryInput, formatCurrencyInput);
+    attachFormattedInput(salaryCapInput, formatCurrencyInput);
+    attachFormattedInput(salaryGrowthInput, formatPercentInput);
+    attachFormattedInput(totalLoeInput, formatPercentInput);
+    attachFormattedInput(fringeRateInput, formatPercentInput);
+    attachFormattedInput(adjustSalaryOverrideInput, formatCurrencyInput);
+    attachFormattedInput(knownGrantSalaryInput, formatCurrencyInput);
+
+    if (salaryCapInput && !salaryCapInput.value) {
+      salaryCapInput.value = "$228,000.00";
+    }
+
+    [
+      [baseSalaryInput, formatCurrencyInput],
+      [salaryCapInput, formatCurrencyInput],
+      [salaryGrowthInput, formatPercentInput],
+      [totalLoeInput, formatPercentInput],
+      [fringeRateInput, formatPercentInput],
+    ].forEach(([input, formatter]) => {
+      if (input && input.value) {
+        input.value = formatter(input.value);
+      }
+    });
+
     [
       startInput,
       endInput,
@@ -785,6 +929,80 @@ import MainLayout from "../../layouts/MainLayout.astro";
       font-size: 1.02rem;
       line-height: 1.7;
       color: #465751;
+    }
+
+    .tool-download-callout {
+      margin-top: 1.25rem;
+      padding: 2px;
+      border-radius: 26px;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 111, 145, 0.9),
+        rgba(255, 195, 113, 0.9),
+        rgba(130, 200, 255, 0.9),
+        rgba(139, 214, 160, 0.9),
+        rgba(193, 154, 255, 0.9)
+      );
+      box-shadow: 0 18px 36px rgba(56, 85, 103, 0.12);
+    }
+
+    .tool-download-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+      padding: 1.2rem 1.25rem;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .tool-download-copy {
+      min-width: 0;
+    }
+
+    .tool-download-label {
+      margin: 0 0 0.35rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #6b5f88;
+    }
+
+    .tool-download-copy h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      color: #1f352d;
+    }
+
+    .tool-download-copy p {
+      margin: 0.45rem 0 0;
+      line-height: 1.6;
+      color: #556863;
+      max-width: 42rem;
+    }
+
+    .download-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      min-height: 48px;
+      padding: 0.85rem 1.15rem;
+      border-radius: 14px;
+      background: #264e41;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      line-height: 1;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      box-shadow: 0 10px 24px rgba(38, 78, 65, 0.18);
+    }
+
+    .download-button:hover {
+      background: #2d5b4d;
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(38, 78, 65, 0.22);
     }
 
     .tool-card {
@@ -888,6 +1106,14 @@ import MainLayout from "../../layouts/MainLayout.astro";
       outline: none;
       border-color: rgba(38, 78, 65, 0.45);
       box-shadow: 0 0 0 4px rgba(88, 148, 129, 0.12);
+    }
+
+    .field-helper {
+      display: block;
+      margin-top: 0.35rem;
+      font-size: 0.8rem;
+      line-height: 1.45;
+      color: #60736d;
     }
 
     .field-note {
@@ -995,11 +1221,19 @@ import MainLayout from "../../layouts/MainLayout.astro";
     }
 
     .summary-grid {
+      width: 100%;
+    }
+
+    .summary-stack {
+      display: grid;
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .summary-row {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 1rem;
-      margin-top: 1.25rem;
-      width: 100%;
     }
 
     .summary-item {
@@ -1008,6 +1242,15 @@ import MainLayout from "../../layouts/MainLayout.astro";
       border-radius: 18px;
       background: rgba(38, 78, 65, 0.05);
       border: 1px solid rgba(38, 78, 65, 0.08);
+    }
+
+    .summary-row-grant .summary-item {
+      background: rgba(38, 78, 65, 0.06);
+    }
+
+    .summary-row-costshare .summary-item {
+      background: rgba(217, 234, 244, 0.72);
+      border-color: rgba(114, 160, 188, 0.18);
     }
 
     .summary-label {
@@ -1025,8 +1268,17 @@ import MainLayout from "../../layouts/MainLayout.astro";
     @media (max-width: 980px) {
       .instruction-grid,
       .input-grid-3,
-      .summary-grid {
+      .summary-row,
+      .tool-download-card {
         grid-template-columns: 1fr 1fr;
+      }
+
+      .tool-download-card {
+        display: grid;
+      }
+
+      .download-button {
+        justify-self: start;
       }
     }
 
@@ -1044,8 +1296,13 @@ import MainLayout from "../../layouts/MainLayout.astro";
       .instruction-grid,
       .input-grid,
       .input-grid-3,
-      .summary-grid {
+      .summary-row,
+      .tool-download-card {
         grid-template-columns: 1fr;
+      }
+
+      .download-button {
+        width: 100%;
       }
     }
   </style>

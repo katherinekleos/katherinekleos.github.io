@@ -3,10 +3,10 @@ export const featuredTool = {
   description:
     "A practical calculator for estimating salary cap and cost share distributions across grant and non-grant accounts.",
   href: "/tools/cost-share-tool",
-  image: "/assets/cost-share-header.png",
+  image: "/assets/tools/cost-share-tool-card.png",
   type: "Tool",
   status: "In Development",
-  lastUpdated: "March 26, 2026",
+  lastUpdated: "March 28, 2026",
 };
 
 export const toolList = [
@@ -15,19 +15,19 @@ export const toolList = [
     description:
       "A guided tool for building clearer and more defensible cost transfer explanations across complex funding situations.",
     href: "/tools/cost-transfer-justification",
-    image: "/assets/cost-transfer-header.png",
+    image: "/assets/tools/cost-transfer-justification-tool-card.png",
     type: "Tool",
     status: "Planned",
-    lastUpdated: "March 26, 2026",
+    lastUpdated: "March 28, 2026",
   },
   {
     title: "LOE Burn Planner",
     description:
       "A planning tool for testing effort and salary scenarios across multiple people to estimate planned spend, remaining balance, and burn pacing.",
     href: "/tools/loe-burn-planner",
-    image: "/assets/loe-burn-header.png",
+    image: "/assets/tools/loe-burn-planner-card.png",
     type: "Tool",
     status: "Planned",
-    lastUpdated: "March 26, 2026",
+    lastUpdated: "March 28, 2026",
   },
 ];

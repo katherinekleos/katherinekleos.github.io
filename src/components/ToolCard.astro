@@ -23,54 +23,90 @@ const {
 ---
 
 <a class={`tool-card ${featured ? "featured" : ""}`} href={href}>
-  {image && (
-    <div class="tool-card-image-wrap">
-      <img src={image} alt={title} class="tool-card-image" loading="lazy" />
+  <div class="tool-card-border">
+    <div class="tool-card-inner">
+      {image && (
+        <div class="tool-card-image-wrap">
+          <img src={image} alt={title} class="tool-card-image" loading="lazy" />
+        </div>
+      )}
+
+      <div class="tool-card-content">
+        <div class="tool-card-pills">
+          <span class="tool-pill">{type}</span>
+          {status && <span class="status-pill">{status}</span>}
+        </div>
+
+        <h2 class="tool-card-title">{title}</h2>
+
+        {lastUpdated && (
+          <p class="tool-card-date">Last updated: {lastUpdated}</p>
+        )}
+
+        <p class="tool-card-description">{description}</p>
+
+        <span class="tool-card-link">
+          Open Tool <span aria-hidden="true">→</span>
+        </span>
+      </div>
     </div>
-  )}
-
-  <div class="tool-card-content">
-    <div class="tool-card-pills">
-      <span class="tool-pill">{type}</span>
-      {status && <span class="status-pill">{status}</span>}
-    </div>
-
-    <h2 class="tool-card-title">{title}</h2>
-
-    {lastUpdated && (
-      <p class="tool-card-date">Last updated: {lastUpdated}</p>
-    )}
-
-    <p class="tool-card-description">{description}</p>
-
-    <span class="tool-card-link">
-      Open Tool <span aria-hidden="true">→</span>
-    </span>
   </div>
 </a>
 
 <style>
   .tool-card {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: block;
     text-decoration: none;
     color: inherit;
-    background: rgba(255, 255, 255, 0.82);
-    border: 1px solid rgba(38, 78, 65, 0.12);
+    min-height: 100%;
     border-radius: 1.5rem;
-    overflow: hidden;
+  }
+
+  .tool-card,
+  .tool-card *,
+  .tool-card *::before,
+  .tool-card *::after {
+    box-sizing: border-box;
+  }
+
+  .tool-card-border {
+    position: relative;
+    border-radius: 1.5rem;
+    padding: 2px;
+    background: linear-gradient(
+      135deg,
+      #ff7eb3 0%,
+      #7afcff 20%,
+      #7cffc4 40%,
+      #fff27a 60%,
+      #caa6ff 80%,
+      #ff9f6e 100%
+    );
     box-shadow: 0 18px 40px rgba(21, 37, 31, 0.08);
     transition:
       transform 0.22s ease,
-      box-shadow 0.22s ease,
-      border-color 0.22s ease;
-    min-height: 100%;
+      box-shadow 0.22s ease;
+    will-change: transform;
   }
 
-  .tool-card:hover {
+  .tool-card-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: calc(1.5rem - 2px);
+    overflow: hidden;
+    min-height: 100%;
+    backdrop-filter: blur(8px);
+  }
+
+  .tool-card:hover .tool-card-border,
+  .tool-card:focus-visible .tool-card-border {
     transform: translateY(-4px);
-    box-shadow: 0 24px 48px rgba(21, 37, 31, 0.12);
-    border-color: rgba(38, 78, 65, 0.2);
+    box-shadow: 0 24px 48px rgba(21, 37, 31, 0.14);
+  }
+
+  .tool-card:focus-visible {
+    outline: none;
   }
 
   .tool-card-image-wrap {
@@ -146,12 +182,12 @@ const {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
+    padding-top: 0.25rem;
     font-weight: 600;
     color: #264e41;
-    padding-top: 0.25rem;
   }
 
-  .featured {
+  .featured .tool-card-inner {
     grid-template-columns: 1.15fr 1fr;
   }
 
@@ -169,8 +205,14 @@ const {
   }
 
   @media (max-width: 900px) {
-    .featured {
+    .featured .tool-card-inner {
       grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tool-card-border {
+      transition: none;
     }
   }
 </style>
