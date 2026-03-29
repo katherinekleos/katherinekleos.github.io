@@ -1,0 +1,1413 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+---
+
+<MainLayout
+  title="Cost Transfer Justification Tool"
+  description="Tulane-specific cost transfer justification tool with payroll-based amount and percentage calculations."
+>
+  <section class="tool-shell">
+    <div class="page-header">
+      <p class="eyebrow">Tools & Templates</p>
+      <h1>Cost Transfer Justification Tool</h1>
+      <p class="intro">
+        Structure a cost transfer explanation with Tulane-specific payroll date logic,
+        payroll-based debit and credit calculations, and generated justification language.
+      </p>
+    </div>
+
+    <form id="ctj-form" class="tool-form" novalidate>
+      <section class="card">
+        <div class="section-heading">
+          <h2>Request Details</h2>
+          <p>Enter the basic information for the transfer request.</p>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            <span>Contact Person</span>
+            <input type="text" id="contactPerson" />
+          </label>
+
+          <label>
+            <span>Employee Name</span>
+            <input type="text" id="employeeName" />
+          </label>
+
+          <label>
+            <span>Department</span>
+            <input type="text" id="department" />
+          </label>
+
+          <label>
+            <span>Institution</span>
+            <select id="institution">
+              <option value="Tulane">Tulane</option>
+              <option value="Other">Other Institution</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Payroll Type</span>
+            <select id="payrollType">
+              <option value="Biweekly">Biweekly</option>
+              <option value="Monthly">Monthly</option>
+            </select>
+          </label>
+
+          <label class="full-width">
+            <span>Reason Category</span>
+            <select id="reasonCategory">
+              <option value="realignment">Salary realignment to reflect actual effort / project activity</option>
+              <option value="new_award">New award established / funding available after original charge</option>
+              <option value="correction">Incorrect original charge requiring correction</option>
+              <option value="administrative_delay">Administrative timing / processing delay</option>
+              <option value="other">Other explanation</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-heading">
+          <h2>Payroll Base</h2>
+          <p>
+            Enter the payroll amount that will be used to calculate the percentage or amount
+            being moved.
+          </p>
+        </div>
+
+        <div class="form-grid one-col">
+          <label>
+            <span id="payrollBaseLabel">Amount Paid in Retro Period</span>
+            <input type="text" id="payrollBaseAmount" inputmode="decimal" />
+          </label>
+        </div>
+
+        <div id="payrollBaseHelper" class="helper-box muted">
+          For biweekly payroll, enter the amount paid in the retro period. For monthly payroll,
+          enter the monthly salary amount.
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-heading">
+          <h2>Retro Date Range</h2>
+          <p>
+            Tulane biweekly payroll uses official payroll boundary dates. Other institution
+            or payroll combinations may be entered manually.
+          </p>
+        </div>
+
+        <div id="tulaneBiweeklyDates" class="form-grid">
+          <label>
+            <span>Retro Start Date</span>
+            <select id="retroStartBiweekly"></select>
+          </label>
+
+          <label>
+            <span>Retro End Date</span>
+            <select id="retroEndBiweekly"></select>
+          </label>
+        </div>
+
+        <div id="manualDates" class="form-grid hidden">
+          <label>
+            <span>Retro Start Date</span>
+            <input type="date" id="retroStartManual" />
+          </label>
+
+          <label>
+            <span>Retro End Date</span>
+            <input type="date" id="retroEndManual" />
+          </label>
+        </div>
+
+        <div id="dateHelper" class="helper-box muted"></div>
+      </section>
+
+      <section class="card">
+        <div class="section-heading">
+          <h2>Debit and Credit Entry</h2>
+          <p>
+            Enter one or more debit and credit lines as needed. The number of debit or credit
+            accounts does not matter, but the total debit change must equal the total credit change.
+          </p>
+        </div>
+
+        <div class="entry-guidance">
+          <p><strong>Debit and Credit Guidance</strong></p>
+          <p>
+            Debit the account that should properly receive the charge. Credit the account where the
+            charge was originally posted incorrectly. Enter percentages as whole-number percentages,
+            such as <strong>20</strong> for 20%, not <strong>0.20</strong>.
+          </p>
+          <p>
+            You may enter either Percent or Amount on a row, and the other value will calculate automatically.
+          </p>
+          <p class="entry-note">
+            <strong>Status interpretation:</strong> Positive (+) values mean <em>debit is higher</em>.
+            Negative (−) values mean <em>credit is higher</em>.
+          </p>
+        </div>
+
+        <div class="transfer-table-wrap">
+          <table class="transfer-table">
+            <thead>
+              <tr>
+                <th>Entry Type</th>
+                <th>Account</th>
+                <th>Percent</th>
+                <th>Amount</th>
+                <th>Remove</th>
+              </tr>
+            </thead>
+            <tbody id="transferRows"></tbody>
+          </table>
+        </div>
+
+        <div class="table-actions">
+          <button type="button" id="addTransferRowBtn" class="secondary-btn">+ Add Row</button>
+        </div>
+
+        <div class="totals-inline">
+          <div class="totals-chip">
+            <span class="totals-label">Debit:</span>
+            <span id="debitPercentTotal" class="totals-value">0.00%</span>
+            <span class="totals-separator">|</span>
+            <span id="debitAmountTotal" class="totals-value">$0.00</span>
+          </div>
+
+          <div class="totals-chip">
+            <span class="totals-label">Credit:</span>
+            <span id="creditPercentTotal" class="totals-value">0.00%</span>
+            <span class="totals-separator">|</span>
+            <span id="creditAmountTotal" class="totals-value">$0.00</span>
+          </div>
+
+          <div class="totals-chip status-chip">
+            <span class="totals-label">Status:</span>
+            <span id="balanceStatus" class="totals-value" data-status="neutral">Not yet balanced</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-heading">
+          <h2>Generate Justification Help</h2>
+          <p>
+            Use the guided selections below to shape the final justification language.
+          </p>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            <span>Cause of Transfer</span>
+            <select id="causeHelper">
+              <option value="">Select cause</option>
+              <option value="incorrect_initial_allocation">Incorrect initial payroll allocation</option>
+              <option value="new_funding_established">New funding established after original charge</option>
+              <option value="effort_realignment">Effort realignment</option>
+              <option value="administrative_delay">Administrative delay</option>
+              <option value="other">Other</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Why This Transfer Is Appropriate</span>
+            <select id="whyHelper">
+              <option value="">Select explanation</option>
+              <option value="reflects_actual_effort">Reflects actual effort</option>
+              <option value="aligns_with_correct_project">Aligns with the correct project</option>
+              <option value="moves_to_appropriate_funding">Moves the expense to the appropriate funding source</option>
+              <option value="corrects_posting_error">Corrects the original posting error</option>
+              <option value="other">Other</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Prevention / Forward-Looking Step</span>
+            <select id="preventionHelper">
+              <option value="">Select prevention step</option>
+              <option value="future_payroll_review">Future payroll distributions will be reviewed earlier</option>
+              <option value="monitor_funding_setup">Funding setup timing will be monitored more closely</option>
+              <option value="update_ld_promptly">Labor distributions will be updated promptly</option>
+              <option value="strengthen_internal_review">Internal review will be strengthened</option>
+              <option value="other">Other</option>
+            </select>
+          </label>
+
+          <label class="full-width">
+            <span>What Happened?</span>
+            <textarea id="whatHappened" rows="4"></textarea>
+          </label>
+
+          <label class="full-width">
+            <span>Why Is the New Account Appropriate?</span>
+            <textarea id="whyAppropriate" rows="4"></textarea>
+          </label>
+
+          <label class="full-width">
+            <span>How Will Similar Issues Be Prevented Going Forward?</span>
+            <textarea id="preventionPlan" rows="3"></textarea>
+          </label>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-heading">
+          <h2>Generate Output</h2>
+          <p>
+            Review the summary and justification before copying it into a form or saving
+            to PDF.
+          </p>
+        </div>
+
+        <div id="validationMessage" class="helper-box error hidden"></div>
+
+        <div class="action-row">
+          <button type="button" id="generateBtn" class="primary-btn">Generate Justification</button>
+          <button type="button" id="printBtn" class="secondary-btn">Print / Save as PDF</button>
+        </div>
+
+        <div id="outputEmpty" class="empty-state">
+          Complete the fields above and select <strong>Generate Justification</strong>.
+        </div>
+
+        <div id="outputContent" class="hidden">
+          <div class="preview-block">
+            <h3>Summary</h3>
+            <div id="summaryOutput" class="preview-surface"></div>
+          </div>
+
+          <div class="preview-block">
+            <h3>Suggested Justification</h3>
+            <div id="justificationOutput" class="preview-surface prose-output"></div>
+          </div>
+        </div>
+      </section>
+    </form>
+  </section>
+</MainLayout>
+
+<script is:inline>
+  const tulaneBiweeklyPayPeriods = [
+    { start: "2025-06-13", end: "2025-06-26", label: "June 13, 2025 - June 26, 2025" },
+    { start: "2025-06-27", end: "2025-07-10", label: "June 27, 2025 - July 10, 2025" },
+    { start: "2025-07-11", end: "2025-07-24", label: "July 11, 2025 - July 24, 2025" },
+    { start: "2025-07-25", end: "2025-08-07", label: "July 25, 2025 - August 7, 2025" },
+    { start: "2025-08-08", end: "2025-08-21", label: "August 8, 2025 - August 21, 2025" },
+    { start: "2025-08-22", end: "2025-09-04", label: "August 22, 2025 - September 4, 2025" },
+    { start: "2025-09-05", end: "2025-09-18", label: "September 5, 2025 - September 18, 2025" },
+    { start: "2025-09-19", end: "2025-10-02", label: "September 19, 2025 - October 2, 2025" },
+    { start: "2025-10-03", end: "2025-10-16", label: "October 3, 2025 - October 16, 2025" },
+    { start: "2025-10-17", end: "2025-10-30", label: "October 17, 2025 - October 30, 2025" },
+    { start: "2025-10-31", end: "2025-11-13", label: "October 31, 2025 - November 13, 2025" },
+    { start: "2025-11-14", end: "2025-11-27", label: "November 14, 2025 - November 27, 2025" },
+    { start: "2025-11-28", end: "2025-12-11", label: "November 28, 2025 - December 11, 2025" },
+    { start: "2025-12-12", end: "2025-12-25", label: "December 12, 2025 - December 25, 2025" },
+    { start: "2025-12-26", end: "2026-01-08", label: "December 26, 2025 - January 8, 2026" },
+    { start: "2026-01-09", end: "2026-01-22", label: "January 9, 2026 - January 22, 2026" },
+    { start: "2026-01-23", end: "2026-02-05", label: "January 23, 2026 - February 5, 2026" },
+    { start: "2026-02-06", end: "2026-02-19", label: "February 6, 2026 - February 19, 2026" },
+    { start: "2026-02-20", end: "2026-03-05", label: "February 20, 2026 - March 5, 2026" },
+    { start: "2026-03-06", end: "2026-03-19", label: "March 6, 2026 - March 19, 2026" },
+    { start: "2026-03-20", end: "2026-04-02", label: "March 20, 2026 - April 2, 2026" },
+    { start: "2026-04-03", end: "2026-04-16", label: "April 3, 2026 - April 16, 2026" },
+    { start: "2026-04-17", end: "2026-04-30", label: "April 17, 2026 - April 30, 2026" },
+    { start: "2026-05-01", end: "2026-05-14", label: "May 1, 2026 - May 14, 2026" },
+    { start: "2026-05-15", end: "2026-05-28", label: "May 15, 2026 - May 28, 2026" },
+    { start: "2026-05-29", end: "2026-06-11", label: "May 29, 2026 - June 11, 2026" },
+    { start: "2026-06-12", end: "2026-06-25", label: "June 12, 2026 - June 25, 2026" }
+  ];
+
+  const institutionEl = document.getElementById("institution");
+  const payrollTypeEl = document.getElementById("payrollType");
+  const payrollBaseLabelEl = document.getElementById("payrollBaseLabel");
+  const payrollBaseAmountEl = document.getElementById("payrollBaseAmount");
+  const payrollBaseHelperEl = document.getElementById("payrollBaseHelper");
+
+  const tulaneBiweeklyDatesEl = document.getElementById("tulaneBiweeklyDates");
+  const manualDatesEl = document.getElementById("manualDates");
+  const retroStartBiweeklyEl = document.getElementById("retroStartBiweekly");
+  const retroEndBiweeklyEl = document.getElementById("retroEndBiweekly");
+  const retroStartManualEl = document.getElementById("retroStartManual");
+  const retroEndManualEl = document.getElementById("retroEndManual");
+  const dateHelperEl = document.getElementById("dateHelper");
+
+  const transferRowsEl = document.getElementById("transferRows");
+  const addTransferRowBtn = document.getElementById("addTransferRowBtn");
+  const debitPercentTotalEl = document.getElementById("debitPercentTotal");
+  const debitAmountTotalEl = document.getElementById("debitAmountTotal");
+  const creditPercentTotalEl = document.getElementById("creditPercentTotal");
+  const creditAmountTotalEl = document.getElementById("creditAmountTotal");
+  const balanceStatusEl = document.getElementById("balanceStatus");
+
+  const validationMessageEl = document.getElementById("validationMessage");
+  const generateBtn = document.getElementById("generateBtn");
+  const printBtn = document.getElementById("printBtn");
+  const outputEmptyEl = document.getElementById("outputEmpty");
+  const outputContentEl = document.getElementById("outputContent");
+  const summaryOutputEl = document.getElementById("summaryOutput");
+  const justificationOutputEl = document.getElementById("justificationOutput");
+
+  function roundTwo(value) {
+    return Math.round((Number(value || 0) + Number.EPSILON) * 100) / 100;
+  }
+
+  function parseCurrencyInput(value) {
+    const cleaned = String(value || "").replace(/[^0-9.]/g, "");
+    return roundTwo(Number(cleaned || 0));
+  }
+
+  function formatCurrency(value) {
+    return Number(value || 0).toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD"
+    });
+  }
+
+  function formatCurrencyInput(value) {
+    const numeric = parseCurrencyInput(value);
+    if (!numeric) return "";
+    return numeric.toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+
+  function formatDate(dateString) {
+    if (!dateString) return "";
+    const date = new Date(dateString + "T12:00:00");
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    });
+  }
+
+  function formatPercent(value) {
+    return `${roundTwo(value).toFixed(2)}%`;
+  }
+
+  function formatSignedPercent(value) {
+    const rounded = roundTwo(value);
+    if (rounded > 0) return `+${rounded.toFixed(2)}%`;
+    if (rounded < 0) return `${rounded.toFixed(2)}%`;
+    return `0.00%`;
+  }
+
+  function formatSignedCurrency(value) {
+    const rounded = roundTwo(value);
+    const absolute = formatCurrency(Math.abs(rounded));
+    if (rounded > 0) return `+${absolute}`;
+    if (rounded < 0) return `-${absolute}`;
+    return formatCurrency(0);
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function daysBetweenInclusive(start, end) {
+    if (!start || !end) return 0;
+    const startDate = new Date(start + "T12:00:00");
+    const endDate = new Date(end + "T12:00:00");
+    const diffMs = endDate - startDate;
+    return Math.floor(diffMs / (1000 * 60 * 60 * 24)) + 1;
+  }
+
+  function isTulaneBiweekly() {
+    return institutionEl.value === "Tulane" && payrollTypeEl.value === "Biweekly";
+  }
+
+  function getPayrollBase() {
+    return parseCurrencyInput(payrollBaseAmountEl.value);
+  }
+
+  function updatePayrollBaseLabel() {
+    if (payrollTypeEl.value === "Monthly") {
+      payrollBaseLabelEl.textContent = "Monthly Salary Amount";
+      payrollBaseHelperEl.textContent =
+        "For monthly payroll, enter the monthly salary amount that will be used to calculate the percentage and amount being moved.";
+    } else {
+      payrollBaseLabelEl.textContent = "Amount Paid in Retro Period";
+      payrollBaseHelperEl.textContent =
+        "For biweekly payroll, enter the amount paid in the retro period that will be used to calculate the percentage and amount being moved.";
+    }
+  }
+
+  function populateBiweeklyStartDates() {
+    retroStartBiweeklyEl.innerHTML = `<option value="">Select start date</option>`;
+    tulaneBiweeklyPayPeriods.forEach((period) => {
+      const option = document.createElement("option");
+      option.value = period.start;
+      option.textContent = formatDate(period.start);
+      retroStartBiweeklyEl.appendChild(option);
+    });
+  }
+
+  function populateBiweeklyEndDates(selectedStart = "") {
+    retroEndBiweeklyEl.innerHTML = `<option value="">Select end date</option>`;
+
+    const filtered = selectedStart
+      ? tulaneBiweeklyPayPeriods.filter((period) => period.start >= selectedStart)
+      : tulaneBiweeklyPayPeriods;
+
+    filtered.forEach((period) => {
+      const option = document.createElement("option");
+      option.value = period.end;
+      option.textContent = formatDate(period.end);
+      retroEndBiweeklyEl.appendChild(option);
+    });
+  }
+
+  function updateDateMode() {
+    const useTulaneBiweekly = isTulaneBiweekly();
+
+    tulaneBiweeklyDatesEl.classList.toggle("hidden", !useTulaneBiweekly);
+    manualDatesEl.classList.toggle("hidden", useTulaneBiweekly);
+
+    if (useTulaneBiweekly) {
+      dateHelperEl.textContent =
+        "Tulane biweekly retros must use official payroll boundary dates from the start-date and end-date dropdowns.";
+    } else if (institutionEl.value === "Tulane" && payrollTypeEl.value === "Monthly") {
+      dateHelperEl.textContent =
+        "Tulane monthly payroll can be entered manually based on the applicable retro window.";
+    } else {
+      dateHelperEl.textContent =
+        "Other institution or payroll combinations may be entered manually based on local payroll requirements.";
+    }
+  }
+
+  function getDateRange() {
+    if (isTulaneBiweekly()) {
+      return {
+        start: retroStartBiweeklyEl.value,
+        end: retroEndBiweeklyEl.value
+      };
+    }
+
+    return {
+      start: retroStartManualEl.value,
+      end: retroEndManualEl.value
+    };
+  }
+
+  function calculateAmountFromPercent(percent, payrollBase) {
+    if (!payrollBase || !percent) return 0;
+    return roundTwo((Number(percent) / 100) * payrollBase);
+  }
+
+  function calculatePercentFromAmount(amount, payrollBase) {
+    if (!payrollBase || !amount) return 0;
+    return roundTwo((Number(amount) / payrollBase) * 100);
+  }
+
+  function createTransferRow() {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>
+        <select class="transfer-type">
+          <option value="Debit">Debit</option>
+          <option value="Credit">Credit</option>
+        </select>
+      </td>
+      <td>
+        <input type="text" class="transfer-account" />
+      </td>
+      <td>
+        <input type="number" class="transfer-percent" min="0" step="0.01" />
+      </td>
+      <td>
+        <input type="number" class="transfer-amount" min="0" step="0.01" />
+      </td>
+      <td>
+        <button type="button" class="remove-row-btn" aria-label="Remove transfer row">Remove</button>
+      </td>
+    `;
+
+    const typeEl = row.querySelector(".transfer-type");
+    const accountEl = row.querySelector(".transfer-account");
+    const percentEl = row.querySelector(".transfer-percent");
+    const amountEl = row.querySelector(".transfer-amount");
+    const removeBtn = row.querySelector(".remove-row-btn");
+
+    row.dataset.lastEdited = "";
+
+    percentEl.addEventListener("input", () => {
+      row.dataset.lastEdited = "percent";
+      syncRow(row);
+      updateTransferTotals();
+    });
+
+    amountEl.addEventListener("input", () => {
+      row.dataset.lastEdited = "amount";
+      syncRow(row);
+      updateTransferTotals();
+    });
+
+    typeEl.addEventListener("change", updateTransferTotals);
+    accountEl.addEventListener("input", updateTransferTotals);
+
+    removeBtn.addEventListener("click", () => {
+      row.remove();
+      updateTransferTotals();
+    });
+
+    transferRowsEl.appendChild(row);
+    updateTransferTotals();
+  }
+
+  function syncRow(row) {
+    const payrollBase = getPayrollBase();
+    const percentEl = row.querySelector(".transfer-percent");
+    const amountEl = row.querySelector(".transfer-amount");
+    const lastEdited = row.dataset.lastEdited || "";
+
+    const percentValue = percentEl.value.trim();
+    const amountValue = amountEl.value.trim();
+
+    if (!payrollBase) {
+      return;
+    }
+
+    if (lastEdited === "percent") {
+      if (percentValue === "") {
+        amountEl.value = "";
+      } else {
+        const amount = calculateAmountFromPercent(percentValue, payrollBase);
+        amountEl.value = amount ? amount.toFixed(2) : "";
+      }
+    }
+
+    if (lastEdited === "amount") {
+      if (amountValue === "") {
+        percentEl.value = "";
+      } else {
+        const percent = calculatePercentFromAmount(amountValue, payrollBase);
+        percentEl.value = percent ? percent.toFixed(2) : "";
+      }
+    }
+  }
+
+  function syncAllRows() {
+    Array.from(transferRowsEl.querySelectorAll("tr")).forEach((row) => {
+      if (row.dataset.lastEdited) {
+        syncRow(row);
+      }
+    });
+    updateTransferTotals();
+  }
+
+  function getTransferRows() {
+    return Array.from(transferRowsEl.querySelectorAll("tr")).map((row) => ({
+      type: row.querySelector(".transfer-type")?.value || "",
+      account: row.querySelector(".transfer-account")?.value.trim() || "",
+      percent: row.querySelector(".transfer-percent")?.value.trim() || "",
+      amount: row.querySelector(".transfer-amount")?.value.trim() || "",
+      lastEdited: row.dataset.lastEdited || ""
+    }));
+  }
+
+  function updateTransferTotals() {
+    const rows = getTransferRows();
+    let debitPercent = 0;
+    let debitAmount = 0;
+    let creditPercent = 0;
+    let creditAmount = 0;
+
+    rows.forEach((row) => {
+      const percent = roundTwo(Number(row.percent || 0));
+      const amount = roundTwo(Number(row.amount || 0));
+
+      if (!percent && !amount) return;
+
+      if (row.type === "Debit") {
+        debitPercent += percent;
+        debitAmount += amount;
+      } else if (row.type === "Credit") {
+        creditPercent += percent;
+        creditAmount += amount;
+      }
+    });
+
+    debitPercent = roundTwo(debitPercent);
+    debitAmount = roundTwo(debitAmount);
+    creditPercent = roundTwo(creditPercent);
+    creditAmount = roundTwo(creditAmount);
+
+    debitPercentTotalEl.textContent = formatPercent(debitPercent);
+    debitAmountTotalEl.textContent = formatCurrency(debitAmount);
+    creditPercentTotalEl.textContent = formatPercent(creditPercent);
+    creditAmountTotalEl.textContent = formatCurrency(creditAmount);
+
+    const hasValues =
+      debitPercent > 0 || debitAmount > 0 || creditPercent > 0 || creditAmount > 0;
+
+    if (!hasValues) {
+      balanceStatusEl.textContent = "Not yet balanced";
+      balanceStatusEl.dataset.status = "neutral";
+      return;
+    }
+
+    const percentBalanced = debitPercent === creditPercent;
+    const amountBalanced = debitAmount === creditAmount;
+
+    if (percentBalanced && amountBalanced) {
+      balanceStatusEl.textContent = "Balanced";
+      balanceStatusEl.dataset.status = "balanced";
+      return;
+    }
+
+    const signedPercentDiff = roundTwo(debitPercent - creditPercent);
+    const signedAmountDiff = roundTwo(debitAmount - creditAmount);
+
+    balanceStatusEl.textContent = `Out of Balance (${formatSignedPercent(signedPercentDiff)} | ${formatSignedCurrency(signedAmountDiff)})`;
+    balanceStatusEl.dataset.status = "unbalanced";
+  }
+
+  function validateDateRange() {
+    const { start, end } = getDateRange();
+
+    if (!start || !end) {
+      return {
+        valid: false,
+        message: "Please select both a retro start date and retro end date."
+      };
+    }
+
+    if (end < start) {
+      return {
+        valid: false,
+        message: "Retro end date must be on or after the selected start date."
+      };
+    }
+
+    if (isTulaneBiweekly()) {
+      const validStart = tulaneBiweeklyPayPeriods.some((period) => period.start === start);
+      const validEnd = tulaneBiweeklyPayPeriods.some((period) => period.end === end);
+
+      if (!validStart || !validEnd) {
+        return {
+          valid: false,
+          message: "Tulane biweekly retros must use valid payroll period boundary dates."
+        };
+      }
+    }
+
+    return { valid: true, message: "" };
+  }
+
+  function validatePayrollBase() {
+    const payrollBase = getPayrollBase();
+
+    if (!payrollBase || payrollBase <= 0) {
+      return {
+        valid: false,
+        message:
+          payrollTypeEl.value === "Monthly"
+            ? "Please enter the monthly salary amount."
+            : "Please enter the amount paid in the retro period."
+      };
+    }
+
+    return { valid: true, value: payrollBase };
+  }
+
+  function validateTransferRows() {
+    const rows = getTransferRows();
+    const completedRows = rows.filter((row) => row.account || row.percent || row.amount);
+
+    if (completedRows.length === 0) {
+      return {
+        valid: false,
+        message: "Enter at least one debit or credit line."
+      };
+    }
+
+    const missingAccount = completedRows.some((row) => !row.account);
+    if (missingAccount) {
+      return {
+        valid: false,
+        message: "Each entered transfer row must include an account."
+      };
+    }
+
+    const missingValues = completedRows.some((row) => !row.percent && !row.amount);
+    if (missingValues) {
+      return {
+        valid: false,
+        message: "Each entered transfer row must include either a percentage or an amount."
+      };
+    }
+
+    const missingDirection = !completedRows.some((row) => row.type === "Debit") ||
+      !completedRows.some((row) => row.type === "Credit");
+
+    if (missingDirection) {
+      return {
+        valid: false,
+        message: "The transfer must include at least one debit line and at least one credit line."
+      };
+    }
+
+    let debitPercent = 0;
+    let debitAmount = 0;
+    let creditPercent = 0;
+    let creditAmount = 0;
+
+    completedRows.forEach((row) => {
+      const percent = roundTwo(Number(row.percent || 0));
+      const amount = roundTwo(Number(row.amount || 0));
+
+      if (row.type === "Debit") {
+        debitPercent += percent;
+        debitAmount += amount;
+      } else if (row.type === "Credit") {
+        creditPercent += percent;
+        creditAmount += amount;
+      }
+    });
+
+    debitPercent = roundTwo(debitPercent);
+    debitAmount = roundTwo(debitAmount);
+    creditPercent = roundTwo(creditPercent);
+    creditAmount = roundTwo(creditAmount);
+
+    if (debitPercent !== creditPercent || debitAmount !== creditAmount) {
+      return {
+        valid: false,
+        message: "Debit and credit totals must match exactly for both percentage and amount before generating the justification."
+      };
+    }
+
+    return {
+      valid: true,
+      rows: completedRows.map((row) => ({
+        ...row,
+        percent: roundTwo(Number(row.percent || 0)),
+        amount: roundTwo(Number(row.amount || 0))
+      })),
+      debitPercent,
+      debitAmount,
+      creditPercent,
+      creditAmount
+    };
+  }
+
+  function helperTextFromValue(value, type) {
+    const maps = {
+      cause: {
+        incorrect_initial_allocation: "The original payroll allocation was not posted to the intended account at the time of processing.",
+        new_funding_established: "The appropriate funding source was established or became available after the original charge posted.",
+        effort_realignment: "Payroll distribution required realignment to better reflect actual effort and project activity.",
+        administrative_delay: "Administrative timing or processing delays contributed to the original posting pattern.",
+        other: ""
+      },
+      why: {
+        reflects_actual_effort: "The new allocation reflects the actual effort supported during the retro period.",
+        aligns_with_correct_project: "The transfer aligns the charge with the correct project and activity.",
+        moves_to_appropriate_funding: "The expense is being moved to the appropriate available funding source.",
+        corrects_posting_error: "The transfer corrects the original posting so the accounting reflects the proper charge location.",
+        other: ""
+      },
+      prevention: {
+        future_payroll_review: "Future payroll distributions will be reviewed earlier.",
+        monitor_funding_setup: "Funding setup timing will be monitored more closely.",
+        update_ld_promptly: "Labor distributions will be updated promptly when changes are identified.",
+        strengthen_internal_review: "Internal review procedures will be strengthened before charges post.",
+        other: ""
+      }
+    };
+
+    return maps[type]?.[value] || "";
+  }
+
+  function buildReasonText(reasonCategory) {
+    switch (reasonCategory) {
+      case "realignment":
+        return "Following review of payroll activity, the salary distribution required realignment to reflect the actual effort and project activity supported during the retro period.";
+      case "new_award":
+        return "Following receipt or activation of new funding, payroll required retroactive adjustment so that charges align with the account supporting the employee's actual project activity during the retro period.";
+      case "correction":
+        return "The original payroll charge posted in error and should be corrected through the debit and credit entries listed below so payroll aligns with the correct account structure.";
+      case "administrative_delay":
+        return "Due to administrative timing or processing delays, payroll charges remained on an incorrect account structure during the retro window and now require adjustment.";
+      default:
+        return "This transfer is being processed to ensure payroll is recorded on the appropriate funding source and reflects the actual activity supported during the retro period.";
+    }
+  }
+
+  function getSelectedPeriodCount(start, end) {
+    if (!isTulaneBiweekly()) return 0;
+
+    return tulaneBiweeklyPayPeriods.filter(
+      (period) => period.start >= start && period.end <= end
+    ).length;
+  }
+
+  function generateSummaryHtml(data) {
+    const rowsHtml = data.transferRows
+      .map((row) => `
+        <tr>
+          <td>${escapeHtml(row.type)}</td>
+          <td>${escapeHtml(row.account)}</td>
+          <td>${escapeHtml(formatPercent(row.percent))}</td>
+          <td>${escapeHtml(formatCurrency(row.amount))}</td>
+        </tr>
+      `)
+      .join("");
+
+    return `
+      <div class="summary-grid">
+        <div><strong>Contact Person:</strong> ${escapeHtml(data.contactPerson || "—")}</div>
+        <div><strong>Employee Name:</strong> ${escapeHtml(data.employeeName || "—")}</div>
+        <div><strong>Department:</strong> ${escapeHtml(data.department || "—")}</div>
+        <div><strong>Institution:</strong> ${escapeHtml(data.institution)}</div>
+        <div><strong>Payroll Type:</strong> ${escapeHtml(data.payrollType)}</div>
+        <div><strong>Payroll Base:</strong> ${escapeHtml(formatCurrency(data.payrollBase))}</div>
+        <div><strong>Reason Category:</strong> ${escapeHtml(data.reasonCategoryLabel)}</div>
+        <div><strong>Retro Period:</strong> ${escapeHtml(data.startLabel)} to ${escapeHtml(data.endLabel)}</div>
+        <div><strong>Days Covered:</strong> ${escapeHtml(String(data.dayCount))}</div>
+        ${
+          data.payPeriodCount
+            ? `<div><strong>Biweekly Pay Periods Covered:</strong> ${escapeHtml(String(data.payPeriodCount))}</div>`
+            : ""
+        }
+        <div><strong>Debit Total:</strong> ${escapeHtml(formatPercent(data.debitPercent))} | ${escapeHtml(formatCurrency(data.debitAmount))}</div>
+        <div><strong>Credit Total:</strong> ${escapeHtml(formatPercent(data.creditPercent))} | ${escapeHtml(formatCurrency(data.creditAmount))}</div>
+      </div>
+
+      <div class="summary-table-wrap">
+        <table class="summary-table">
+          <thead>
+            <tr>
+              <th>Entry Type</th>
+              <th>Account</th>
+              <th>Percent</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rowsHtml}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  function generateJustificationHtml(data) {
+    const transferList = data.transferRows
+      .map((row) => `${row.type.toLowerCase()} ${row.account} for ${formatPercent(row.percent)} (${formatCurrency(row.amount)})`)
+      .join("; ");
+
+    const causeText = helperTextFromValue(data.causeHelper, "cause");
+    const whyText = helperTextFromValue(data.whyHelper, "why");
+    const preventionText = helperTextFromValue(data.preventionHelper, "prevention");
+
+    const paragraphs = [
+      buildReasonText(data.reasonCategory),
+      causeText,
+      data.whatHappened || "",
+      `The payroll base used for this calculation is ${formatCurrency(data.payrollBase)}. The retro period covers ${data.startLabel} through ${data.endLabel}${data.payPeriodCount ? `, representing ${data.payPeriodCount} Tulane biweekly pay period(s)` : ""}. The transfer is balanced through the following entries: ${transferList}.`,
+      whyText,
+      data.whyAppropriate || "",
+      preventionText,
+      data.preventionPlan || ""
+    ].filter(Boolean);
+
+    return paragraphs.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("");
+  }
+
+  function generateOutput() {
+    const payrollBaseValidation = validatePayrollBase();
+    if (!payrollBaseValidation.valid) {
+      validationMessageEl.textContent = payrollBaseValidation.message;
+      validationMessageEl.classList.remove("hidden");
+      return;
+    }
+
+    const dateValidation = validateDateRange();
+    if (!dateValidation.valid) {
+      validationMessageEl.textContent = dateValidation.message;
+      validationMessageEl.classList.remove("hidden");
+      return;
+    }
+
+    const transferValidation = validateTransferRows();
+    if (!transferValidation.valid) {
+      validationMessageEl.textContent = transferValidation.message;
+      validationMessageEl.classList.remove("hidden");
+      return;
+    }
+
+    validationMessageEl.classList.add("hidden");
+    validationMessageEl.textContent = "";
+
+    const { start, end } = getDateRange();
+    const reasonCategorySelect = document.getElementById("reasonCategory");
+
+    const data = {
+      contactPerson: document.getElementById("contactPerson").value.trim(),
+      employeeName: document.getElementById("employeeName").value.trim(),
+      department: document.getElementById("department").value.trim(),
+      institution: institutionEl.value,
+      payrollType: payrollTypeEl.value,
+      payrollBase: payrollBaseValidation.value,
+      reasonCategory: reasonCategorySelect.value,
+      reasonCategoryLabel: reasonCategorySelect.options[reasonCategorySelect.selectedIndex].text,
+      causeHelper: document.getElementById("causeHelper").value,
+      whyHelper: document.getElementById("whyHelper").value,
+      preventionHelper: document.getElementById("preventionHelper").value,
+      whatHappened: document.getElementById("whatHappened").value.trim(),
+      whyAppropriate: document.getElementById("whyAppropriate").value.trim(),
+      preventionPlan: document.getElementById("preventionPlan").value.trim(),
+      startLabel: formatDate(start),
+      endLabel: formatDate(end),
+      dayCount: daysBetweenInclusive(start, end),
+      payPeriodCount: getSelectedPeriodCount(start, end),
+      transferRows: transferValidation.rows,
+      debitPercent: transferValidation.debitPercent,
+      debitAmount: transferValidation.debitAmount,
+      creditPercent: transferValidation.creditPercent,
+      creditAmount: transferValidation.creditAmount
+    };
+
+    summaryOutputEl.innerHTML = generateSummaryHtml(data);
+    justificationOutputEl.innerHTML = generateJustificationHtml(data);
+
+    outputEmptyEl.classList.add("hidden");
+    outputContentEl.classList.remove("hidden");
+  }
+
+  retroStartBiweeklyEl.addEventListener("change", () => {
+    const selectedStart = retroStartBiweeklyEl.value;
+    populateBiweeklyEndDates(selectedStart);
+
+    if (retroEndBiweeklyEl.value && retroEndBiweeklyEl.value < selectedStart) {
+      retroEndBiweeklyEl.value = "";
+    }
+  });
+
+  institutionEl.addEventListener("change", () => {
+    updateDateMode();
+  });
+
+  payrollTypeEl.addEventListener("change", () => {
+    updateDateMode();
+    updatePayrollBaseLabel();
+  });
+
+  payrollBaseAmountEl.addEventListener("focus", () => {
+    const numeric = parseCurrencyInput(payrollBaseAmountEl.value);
+    payrollBaseAmountEl.value = numeric ? String(numeric) : "";
+  });
+
+  payrollBaseAmountEl.addEventListener("blur", () => {
+    payrollBaseAmountEl.value = formatCurrencyInput(payrollBaseAmountEl.value);
+    syncAllRows();
+  });
+
+  payrollBaseAmountEl.addEventListener("input", () => {
+    syncAllRows();
+  });
+
+  addTransferRowBtn.addEventListener("click", createTransferRow);
+  generateBtn.addEventListener("click", generateOutput);
+  printBtn.addEventListener("click", () => window.print());
+
+  populateBiweeklyStartDates();
+  populateBiweeklyEndDates();
+  updateDateMode();
+  updatePayrollBaseLabel();
+  createTransferRow();
+</script>
+
+<style>
+  :global(:root) {
+    --tool-green: #264e41;
+    --tool-green-dark: #1f4035;
+    --tool-border: #d9d7d2;
+    --tool-text: #22302b;
+    --tool-muted: #5f6d67;
+    --tool-bg: #fbfaf7;
+    --tool-shadow: 0 14px 32px rgba(19, 36, 31, 0.08);
+    --tool-radius: 22px;
+    --tool-error-bg: #fff2f2;
+    --tool-error-border: #e3b8b8;
+    --tool-error-text: #8d2d2d;
+  }
+
+  .tool-shell {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 4rem;
+  }
+
+  .page-header {
+    margin-bottom: 2rem;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.45rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--tool-green);
+  }
+
+  .page-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    line-height: 1.1;
+    color: var(--tool-green-dark);
+  }
+
+  .intro {
+    max-width: 860px;
+    margin-top: 0.8rem;
+    font-size: 1.06rem;
+    line-height: 1.7;
+    color: var(--tool-muted);
+  }
+
+  .tool-form {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid var(--tool-border);
+    border-radius: var(--tool-radius);
+    box-shadow: var(--tool-shadow);
+    padding: 1.5rem;
+  }
+
+  .section-heading {
+    margin-bottom: 1.1rem;
+  }
+
+  .section-heading h2 {
+    margin: 0;
+    color: var(--tool-green-dark);
+    font-size: clamp(1.45rem, 2.4vw, 2rem);
+  }
+
+  .section-heading p {
+    margin: 0.45rem 0 0;
+    color: var(--tool-muted);
+    line-height: 1.6;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .form-grid.one-col {
+    grid-template-columns: 1fr;
+    max-width: 340px;
+  }
+
+  .full-width {
+    grid-column: 1 / -1;
+  }
+
+  label {
+    display: grid;
+    gap: 0.45rem;
+    color: var(--tool-text);
+    font-weight: 600;
+  }
+
+  label span {
+    font-size: 0.96rem;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid var(--tool-border);
+    border-radius: 14px;
+    padding: 0.85rem 0.95rem;
+    font: inherit;
+    color: var(--tool-text);
+    background: #fff;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 110px;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: 2px solid rgba(38, 78, 65, 0.18);
+    border-color: var(--tool-green);
+  }
+
+  .helper-box {
+    margin-top: 0.9rem;
+    border-radius: 14px;
+    padding: 0.9rem 1rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+
+  .helper-box.muted {
+    background: var(--tool-bg);
+    border: 1px solid var(--tool-border);
+    color: var(--tool-muted);
+  }
+
+  .helper-box.error {
+    background: var(--tool-error-bg);
+    border: 1px solid var(--tool-error-border);
+    color: var(--tool-error-text);
+  }
+
+  .entry-guidance {
+    margin-top: 0.8rem;
+    margin-bottom: 1rem;
+    padding: 0.9rem 1rem;
+    background: var(--tool-bg);
+    border: 1px solid var(--tool-border);
+    border-left: 4px solid var(--tool-green);
+    border-radius: 14px;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--tool-text);
+  }
+
+  .entry-guidance p {
+    margin: 0.3rem 0;
+  }
+
+  .entry-note {
+    color: var(--tool-muted);
+  }
+
+  .transfer-table-wrap,
+  .summary-table-wrap {
+    overflow-x: auto;
+    margin-top: 1rem;
+  }
+
+  .transfer-table,
+  .summary-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .transfer-table th,
+  .transfer-table td,
+  .summary-table th,
+  .summary-table td {
+    border-bottom: 1px solid var(--tool-border);
+    padding: 0.8rem 0.6rem;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .transfer-table th,
+  .summary-table th {
+    color: var(--tool-green-dark);
+    font-size: 0.95rem;
+  }
+
+  .table-actions {
+    margin-top: 1rem;
+  }
+
+  .totals-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    align-items: center;
+    margin-top: 1rem;
+  }
+
+  .totals-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    border: 1px solid var(--tool-border);
+    border-radius: 999px;
+    padding: 0.7rem 1rem;
+    background: var(--tool-bg);
+  }
+
+  .totals-label {
+    font-weight: 700;
+    color: var(--tool-green-dark);
+  }
+
+  .totals-value {
+    color: var(--tool-text);
+    font-weight: 600;
+  }
+
+  .totals-separator {
+    color: var(--tool-muted);
+  }
+
+  .status-chip .totals-value[data-status="balanced"] {
+    color: #1d6b3b;
+  }
+
+  .status-chip .totals-value[data-status="unbalanced"] {
+    color: #8d2d2d;
+  }
+
+  .primary-btn,
+  .secondary-btn,
+  .remove-row-btn {
+    appearance: none;
+    border: 1px solid var(--tool-green);
+    border-radius: 999px;
+    padding: 0.78rem 1.1rem;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.15s ease, opacity 0.15s ease;
+  }
+
+  .primary-btn {
+    background: var(--tool-green);
+    color: #fff;
+  }
+
+  .secondary-btn,
+  .remove-row-btn {
+    background: #fff;
+    color: var(--tool-green);
+  }
+
+  .primary-btn:hover,
+  .secondary-btn:hover,
+  .remove-row-btn:hover {
+    transform: translateY(-1px);
+  }
+
+  .action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 0.5rem;
+  }
+
+  .empty-state {
+    margin-top: 1rem;
+    border: 1px dashed var(--tool-border);
+    border-radius: 18px;
+    padding: 1rem;
+    color: var(--tool-muted);
+    background: var(--tool-bg);
+  }
+
+  .preview-block + .preview-block {
+    margin-top: 1.25rem;
+  }
+
+  .preview-block h3 {
+    margin: 1.25rem 0 0.65rem;
+    color: var(--tool-green-dark);
+  }
+
+  .preview-surface {
+    border: 1px solid var(--tool-border);
+    border-radius: 18px;
+    background: #fff;
+    padding: 1rem;
+    line-height: 1.65;
+    color: var(--tool-text);
+  }
+
+  .summary-grid {
+    display: grid;
+    gap: 0.55rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose-output p {
+    margin: 0 0 1rem;
+  }
+
+  .prose-output p:last-child {
+    margin-bottom: 0;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  @media (max-width: 780px) {
+    .tool-shell {
+      padding-inline: 1rem;
+    }
+
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .action-row {
+      flex-direction: column;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      width: 100%;
+    }
+
+    .totals-inline {
+      align-items: stretch;
+    }
+
+    .totals-chip {
+      width: 100%;
+      justify-content: flex-start;
+      border-radius: 18px;
+      flex-wrap: wrap;
+    }
+  }
+
+  @media print {
+    header,
+    footer,
+    nav,
+    .eyebrow,
+    .intro,
+    .action-row,
+    .table-actions,
+    .remove-row-btn,
+    #addTransferRowBtn,
+    #validationMessage:empty {
+      display: none !important;
+    }
+
+    .tool-shell {
+      max-width: 100%;
+      padding: 0;
+      margin: 0;
+    }
+
+    .card {
+      box-shadow: none;
+      border: 1px solid #ccc;
+      break-inside: avoid;
+    }
+  }
+</style>
