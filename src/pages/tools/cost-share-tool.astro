@@ -14,7 +14,7 @@ import MainLayout from "../../layouts/MainLayout.astro";
         Plan salary cap distributions across fiscal years and review adjustment scenarios in one place.
       </p>
 
-      <div class="tool-download-callout">
+      <div class="tool-download-callout no-print">
         <div class="tool-download-card">
           <div class="tool-download-copy">
             <p class="tool-download-label">Excel Template Available</p>
@@ -36,7 +36,7 @@ import MainLayout from "../../layouts/MainLayout.astro";
       </div>
     </div>
 
-    <div class="tool-card tool-card-instructions">
+    <div class="tool-card tool-card-instructions print-section">
       <div class="section-heading">
         <h2>How to Use This Tool</h2>
         <p>
@@ -72,7 +72,7 @@ import MainLayout from "../../layouts/MainLayout.astro";
       </div>
     </div>
 
-    <div class="tool-card">
+    <div class="tool-card print-section">
       <div class="section-heading">
         <h2>Project Details</h2>
         <p>Enter the project dates to generate the fiscal year breakdown automatically.</p>
@@ -98,7 +98,7 @@ import MainLayout from "../../layouts/MainLayout.astro";
       </p>
     </div>
 
-    <div class="tool-card">
+    <div class="tool-card print-section">
       <div class="section-heading">
         <h2>Key Inputs</h2>
         <p>These values drive the salary cap and cost share calculations for each generated fiscal year.</p>
@@ -173,7 +173,7 @@ import MainLayout from "../../layouts/MainLayout.astro";
       </div>
     </div>
 
-    <div class="tool-card">
+    <div class="tool-card print-section">
       <div class="section-heading">
         <h2>Fiscal Year Breakdown</h2>
         <p>
@@ -202,7 +202,7 @@ import MainLayout from "../../layouts/MainLayout.astro";
       </div>
     </div>
 
-    <div class="tool-card">
+    <div class="tool-card print-section">
       <div class="section-heading">
         <h2>Main Cost Share Calculation</h2>
         <p>Grant LOE is capped when salary exceeds the cap. Cost share LOE is the remaining effort.</p>
@@ -212,7 +212,7 @@ import MainLayout from "../../layouts/MainLayout.astro";
         Enter project dates and key inputs to calculate the fiscal year results.
       </div>
 
-      <div id="calcScrollHint" class="scroll-hint" hidden>
+      <div id="calcScrollHint" class="scroll-hint no-print" hidden>
         Scroll horizontally to view all calculation columns.
       </div>
 
@@ -241,7 +241,7 @@ import MainLayout from "../../layouts/MainLayout.astro";
       </div>
     </div>
 
-    <div class="tool-card">
+    <div class="tool-card print-section">
       <div class="section-heading">
         <h2>Summary</h2>
         <p>High-level totals across all generated fiscal years.</p>
@@ -286,7 +286,7 @@ import MainLayout from "../../layouts/MainLayout.astro";
       </div>
     </div>
 
-    <div class="tool-card">
+    <div class="tool-card print-section">
       <div class="section-heading">
         <h2>Adjustment / Reverse Calculation</h2>
         <p>Select a fiscal year and test a known grant salary or known grant LOE for that year.</p>
@@ -349,7 +349,7 @@ import MainLayout from "../../layouts/MainLayout.astro";
           </label>
         </div>
 
-        <div id="adjustScrollHint" class="scroll-hint" hidden>
+        <div id="adjustScrollHint" class="scroll-hint no-print" hidden>
           Scroll horizontally to view all adjustment columns.
         </div>
 
@@ -374,6 +374,16 @@ import MainLayout from "../../layouts/MainLayout.astro";
           </table>
         </div>
       </div>
+    </div>
+
+    <div class="tool-print-actions no-print">
+      <p class="tool-print-note">
+        Need a clean record of the calculator output? Use the print dialog and choose
+        <strong>Save as PDF</strong>.
+      </p>
+      <button type="button" class="print-button" onclick="window.print()">
+        Print / Save as PDF
+      </button>
     </div>
   </section>
 
@@ -427,7 +437,7 @@ import MainLayout from "../../layouts/MainLayout.astro";
 
     function parseNumber(value) {
       if (value === "" || value === null || value === undefined) return null;
-      const cleaned = String(value).replace(/[$,%\s,]/g, "");
+      const cleaned = String(value).replace(/[$,%\\s,]/g, "");
       if (cleaned === "") return null;
       const parsed = Number(cleaned);
       return Number.isFinite(parsed) ? parsed : null;
@@ -1265,6 +1275,55 @@ import MainLayout from "../../layouts/MainLayout.astro";
       color: #1f352d;
     }
 
+    .tool-print-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 1.75rem;
+      padding: 1.15rem 1.25rem;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid rgba(38, 78, 65, 0.12);
+      box-shadow: 0 18px 40px rgba(28, 52, 45, 0.06);
+    }
+
+    .tool-print-note {
+      margin: 0;
+      color: #556863;
+      line-height: 1.6;
+    }
+
+    .print-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      min-height: 48px;
+      padding: 0.85rem 1.15rem;
+      border: none;
+      border-radius: 14px;
+      background: #264e41;
+      color: #fff;
+      font: inherit;
+      font-weight: 700;
+      line-height: 1;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      box-shadow: 0 10px 24px rgba(38, 78, 65, 0.18);
+    }
+
+    .print-button:hover {
+      background: #2d5b4d;
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(38, 78, 65, 0.22);
+    }
+
+    .print-button:focus-visible {
+      outline: 2px solid rgba(38, 78, 65, 0.35);
+      outline-offset: 3px;
+    }
+
     @media (max-width: 980px) {
       .instruction-grid,
       .input-grid-3,
@@ -1280,6 +1339,15 @@ import MainLayout from "../../layouts/MainLayout.astro";
       .download-button {
         justify-self: start;
       }
+
+      .tool-print-actions {
+        display: grid;
+        justify-content: stretch;
+      }
+
+      .print-button {
+        justify-self: start;
+      }
     }
 
     @media (max-width: 720px) {
@@ -1288,7 +1356,8 @@ import MainLayout from "../../layouts/MainLayout.astro";
         padding: 2rem 0 4rem;
       }
 
-      .tool-card {
+      .tool-card,
+      .tool-print-actions {
         padding: 1.2rem;
         border-radius: 20px;
       }
@@ -1301,8 +1370,211 @@ import MainLayout from "../../layouts/MainLayout.astro";
         grid-template-columns: 1fr;
       }
 
-      .download-button {
+      .download-button,
+      .print-button {
         width: 100%;
+      }
+    }
+
+    @media print {
+      @page {
+        size: letter landscape;
+        margin: 0.35in;
+      }
+
+      html,
+      body {
+        background: #fff !important;
+        color: #000 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      header,
+      nav,
+      footer,
+      .no-print {
+        display: none !important;
+      }
+
+      * {
+        box-shadow: none !important;
+        text-shadow: none !important;
+        filter: none !important;
+      }
+
+      .tool-shell {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      .tool-hero {
+        margin: 0 0 0.3rem !important;
+      }
+
+      .tool-eyebrow {
+        margin-bottom: 0.1rem !important;
+        color: #000 !important;
+      }
+
+      .tool-hero h1 {
+        font-size: 18pt !important;
+        color: #000 !important;
+        margin-bottom: 0.15rem !important;
+      }
+
+      .tool-intro,
+      .section-heading p,
+      .field-note,
+      .tool-print-note,
+      .instruction-item p,
+      .summary-label,
+      .empty-state,
+      .field-helper {
+        color: #000 !important;
+      }
+
+      .tool-card,
+      .tool-print-actions {
+        margin-top: 0.35rem !important;
+        padding: 0.45rem !important;
+        border: 1px solid #cfd7d3 !important;
+        border-radius: 0 !important;
+        background: #fff !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      .tool-card-instructions {
+        background: #fff !important;
+      }
+
+      .instruction-grid,
+      .input-grid,
+      .input-grid-3,
+      .summary-row {
+        gap: 0.35rem !important;
+      }
+
+      .instruction-item,
+      .summary-item,
+      .field-note,
+      .empty-state {
+        padding: 0.35rem !important;
+        border: 1px solid #d6deda !important;
+        border-radius: 0 !important;
+        background: #fff !important;
+      }
+
+      .field input,
+      .field select {
+        min-height: 32px !important;
+        padding: 0.25rem 0.35rem !important;
+        border: 1px solid #cfd7d3 !important;
+        border-radius: 0 !important;
+        color: #000 !important;
+        background: #fff !important;
+      }
+
+      .table-wrap {
+        overflow: visible !important;
+        overflow-x: visible !important;
+        overflow-y: visible !important;
+        border: 1px solid #cfd7d3 !important;
+        border-radius: 0 !important;
+        background: #fff !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+
+      .results-table,
+      .wide-table,
+      .adjust-table {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        border-collapse: collapse !important;
+        table-layout: fixed !important;
+      }
+
+      .results-table th,
+      .results-table td {
+        padding: 3px 4px !important;
+        border: 1px solid #cfd7d3 !important;
+        color: #000 !important;
+        background: #fff !important;
+        vertical-align: top !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+        overflow-wrap: anywhere !important;
+        hyphens: auto !important;
+      }
+
+      .results-table thead th,
+      .row-blue-a td,
+      .row-blue-b td,
+      .row-blue-a .fy-cell,
+      .row-blue-b .fy-cell {
+        background: #fff !important;
+        color: #000 !important;
+      }
+
+      .fy-cell {
+        color: #000 !important;
+        font-weight: 700 !important;
+      }
+
+      thead {
+        display: table-header-group;
+      }
+
+      tr,
+      td,
+      th,
+      .print-section {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      .scroll-hint {
+        display: none !important;
+      }
+
+      #fyTableWrap .results-table {
+        font-size: 9px !important;
+      }
+
+      #calcTableWrap .results-table {
+        font-size: 7.2px !important;
+      }
+
+      #calcTableWrap .results-table th,
+      #calcTableWrap .results-table td {
+        padding: 2px 3px !important;
+        line-height: 1.15 !important;
+      }
+
+      #calcTableWrap .fy-col,
+      #calcTableWrap .fy-cell {
+        min-width: 0 !important;
+        width: 7% !important;
+      }
+
+      #adjustTableWrap .results-table {
+        font-size: 8px !important;
+      }
+
+      #adjustTableWrap .results-table th,
+      #adjustTableWrap .results-table td {
+        padding: 2px 3px !important;
+        line-height: 1.15 !important;
+      }
+
+      .summary-item strong {
+        font-size: 10pt !important;
+        color: #000 !important;
       }
     }
   </style>
