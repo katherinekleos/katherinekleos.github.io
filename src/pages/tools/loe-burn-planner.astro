@@ -1,0 +1,1257 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+---
+
+<MainLayout
+  title="LOE Burn Planner | Tools & Templates"
+  description="Estimate prorated personnel spending across a defined period using LOE, fringe, and monthly salary assumptions."
+>
+  <section class="tool-shell">
+    <div class="tool-hero">
+      <p class="tool-eyebrow">Tools &amp; Templates</p>
+      <h1>LOE Burn Planner</h1>
+      <p class="tool-intro">
+        Estimate prorated personnel spending across a defined period using LOE,
+        fringe, and monthly salary assumptions.
+      </p>
+
+      <div class="tool-download-callout no-print">
+        <div class="tool-download-card">
+          <div class="tool-download-copy">
+            <p class="tool-download-label">Excel Template Available</p>
+            <h2>Prefer to work in Excel?</h2>
+            <p>
+              Download the blank LOE Burn Planner template and complete it
+              offline in the spreadsheet format.
+            </p>
+          </div>
+
+          <a
+            class="download-button"
+            href="/downloads/LOE Burn Planner Template - BLANK - KAG3.xlsx"
+            download
+          >
+            Download Excel Template
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-card tool-card-instructions print-section">
+      <div class="section-heading">
+        <h2>How to Use This Tool</h2>
+        <p>
+          Start with the planner inputs first, then add personnel rows below.
+          The tool applies LOE to monthly salary, calculates fringe, and
+          prorates the total monthly cost across the selected period.
+        </p>
+      </div>
+
+      <div class="instruction-grid">
+        <div class="instruction-item">
+          <strong>Where to start</strong>
+          <p>
+            Enter the start date, end date, and total available amount to spend
+            for the planning period before adding personnel.
+          </p>
+        </div>
+
+        <div class="instruction-item">
+          <strong>Proration method</strong>
+          <p>
+            Proration days are calculated using inclusive dates:
+            <br />
+            <strong>End Date − Start Date + 1</strong>
+            <br /><br />
+            The monthly proration factor is then:
+            <br />
+            <strong>(Days ÷ 365) × 12</strong>
+          </p>
+        </div>
+
+        <div class="instruction-item">
+          <strong>Per-person calculation</strong>
+          <p><strong>Salary at LOE</strong> = Monthly Salary × LOE %</p>
+          <p><strong>Monthly Fringe</strong> = Salary at LOE × Fringe Rate</p>
+          <p><strong>Total Monthly Cost</strong> = Salary at LOE + Monthly Fringe</p>
+          <p>
+            <strong>Prorated Period Cost</strong> = Total Monthly Cost ×
+            Proration Factor
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-card print-section">
+      <div class="section-heading">
+        <h2>Planner Inputs</h2>
+        <p>
+          Enter the period and available funding for this planning scenario.
+        </p>
+      </div>
+
+      <div class="input-grid input-grid-3">
+        <label class="field">
+          <span>Start Date</span>
+          <input id="startDate" type="date" />
+        </label>
+
+        <label class="field">
+          <span>End Date</span>
+          <input id="endDate" type="date" />
+        </label>
+
+        <label class="field">
+          <span>Total Available to Spend</span>
+          <input
+            id="totalAvailable"
+            type="text"
+            inputmode="decimal"
+            placeholder="$0.00"
+            autocomplete="off"
+          />
+        </label>
+      </div>
+
+      <p class="field-note">
+        This tool treats the entered end date as inclusive. It is intended for
+        planning and internal estimation purposes. Final charging decisions
+        should align with institutional policy, payroll timing, sponsor
+        restrictions, and award-specific requirements.
+      </p>
+    </div>
+
+    <div class="tool-card print-section">
+      <div class="section-heading">
+        <h2>Personnel Planning Table</h2>
+        <p>
+          Add as many personnel rows as needed. Calculated fields are read-only.
+        </p>
+      </div>
+
+      <div id="tableScrollHint" class="scroll-hint no-print" hidden>
+        Scroll horizontally to view all columns.
+      </div>
+
+      <div class="table-wrap" id="plannerTableWrap">
+        <table class="results-table loe-table" id="plannerTable">
+          <thead>
+            <tr>
+              <th class="name-col">Name</th>
+              <th class="small-col">LOE %</th>
+              <th class="small-col">Fringe Rate</th>
+              <th class="money-col">Estimated Monthly Salary</th>
+              <th class="money-col">Salary at LOE</th>
+              <th class="money-col">Monthly Fringe</th>
+              <th class="money-col">Total Monthly Cost</th>
+              <th class="money-col">Prorated Period Cost</th>
+              <th class="notes-col">Notes</th>
+              <th class="remove-col no-print">Remove</th>
+            </tr>
+          </thead>
+
+          <tbody id="plannerBody"></tbody>
+        </table>
+      </div>
+
+      <div class="table-total-bar">
+        <span class="table-total-label">Total Prorated Spend</span>
+        <strong id="tfootTotal" class="table-total-value">$0.00</strong>
+      </div>
+
+      <div class="table-actions no-print">
+        <div class="table-actions-copy">
+          <p class="table-actions-note">
+            Need another line? Add a new person directly to the table here.
+          </p>
+        </div>
+
+        <button type="button" id="addRowBtn" class="secondary-button">
+          Add Person
+        </button>
+      </div>
+    </div>
+
+    <div class="tool-card print-section">
+      <div class="section-heading">
+        <h2>Summary</h2>
+        <p>
+          These values update automatically based on the planner inputs and
+          personnel table.
+        </p>
+      </div>
+
+      <div class="summary-grid summary-grid-4">
+        <div class="summary-item">
+          <span class="summary-label">Proration Days</span>
+          <strong id="prorationDays">0</strong>
+        </div>
+
+        <div class="summary-item">
+          <span class="summary-label">Proration Factor (Months)</span>
+          <strong id="prorationFactor">0.00</strong>
+        </div>
+
+        <div class="summary-item">
+          <span class="summary-label">Overall Planned to Spend</span>
+          <strong id="plannedTotal">$0.00</strong>
+        </div>
+
+        <div class="summary-item">
+          <span class="summary-label">Remaining to Spend</span>
+          <strong id="remainingTotal">$0.00</strong>
+        </div>
+      </div>
+
+      <div id="statusBar" class="status-bar neutral">
+        Waiting for inputs
+      </div>
+    </div>
+
+    <div class="tool-print-actions no-print">
+      <div class="tool-print-copy">
+        <h2>Print / Save as PDF</h2>
+        <p class="tool-print-note">
+          When the planner looks right, use the print dialog and choose
+          <strong>Save as PDF</strong> for a clean record of the current output.
+        </p>
+      </div>
+
+      <div class="tool-print-buttons">
+        <button type="button" id="printBtn" class="print-button">
+          Print / Save as PDF
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const plannerBody = document.getElementById("plannerBody");
+    const addRowBtn = document.getElementById("addRowBtn");
+    const printBtn = document.getElementById("printBtn");
+
+    const startDateInput = document.getElementById("startDate");
+    const endDateInput = document.getElementById("endDate");
+    const totalAvailableInput = document.getElementById("totalAvailable");
+
+    const prorationDaysEl = document.getElementById("prorationDays");
+    const prorationFactorEl = document.getElementById("prorationFactor");
+    const plannedTotalEl = document.getElementById("plannedTotal");
+    const remainingTotalEl = document.getElementById("remainingTotal");
+    const tfootTotalEl = document.getElementById("tfootTotal");
+    const statusBarEl = document.getElementById("statusBar");
+    const tableScrollHintEl = document.getElementById("tableScrollHint");
+
+    function parseCurrency(value) {
+      if (value === null || value === undefined || value === "") return 0;
+      const cleaned = String(value).replace(/[^0-9.-]/g, "");
+      const parsed = Number.parseFloat(cleaned);
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
+
+    function formatCurrency(value) {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }).format(Number.isFinite(value) ? value : 0);
+    }
+
+    function parsePercent(value) {
+      if (value === null || value === undefined || value === "") return 0;
+
+      const cleaned = String(value).replace(/[^0-9.-]/g, "");
+      let parsed = Number.parseFloat(cleaned);
+
+      if (!Number.isFinite(parsed)) return 0;
+
+      if (Math.abs(parsed) > 1) {
+        parsed = parsed / 100;
+      }
+
+      return parsed;
+    }
+
+    function formatPercentInput(value) {
+      const parsed = parsePercent(value) * 100;
+      if (!Number.isFinite(parsed) || parsed === 0) return "";
+      return `${parsed.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}%`;
+    }
+
+    function parseLocalDate(value) {
+      if (!value) return null;
+      const [year, month, day] = value.split("-").map(Number);
+      if (!year || !month || !day) return null;
+      return new Date(year, month - 1, day);
+    }
+
+    function getInclusiveDayCount(startValue, endValue) {
+      const start = parseLocalDate(startValue);
+      const end = parseLocalDate(endValue);
+
+      if (!start || !end) return 0;
+
+      const msPerDay = 24 * 60 * 60 * 1000;
+      const diff = Math.round((end - start) / msPerDay) + 1;
+
+      return diff > 0 ? diff : 0;
+    }
+
+    function updateStatus({ hasDates, totalAvailable, plannedTotal, remaining }) {
+      if (!hasDates) {
+        statusBarEl.textContent = "Waiting for inputs";
+        statusBarEl.className = "status-bar neutral";
+        return;
+      }
+
+      if (totalAvailable === 0 && plannedTotal === 0) {
+        statusBarEl.textContent = "Enter funding and personnel rows to begin planning";
+        statusBarEl.className = "status-bar neutral";
+        return;
+      }
+
+      if (remaining > 0.01) {
+        statusBarEl.textContent = `On Budget · ${formatCurrency(remaining)} remaining`;
+        statusBarEl.className = "status-bar good";
+        return;
+      }
+
+      if (Math.abs(remaining) <= 0.01) {
+        statusBarEl.textContent = "Fully Allocated";
+        statusBarEl.className = "status-bar neutral";
+        return;
+      }
+
+      statusBarEl.textContent = `Over Budget by ${formatCurrency(Math.abs(remaining))}`;
+      statusBarEl.className = "status-bar bad";
+    }
+
+    function buildRow() {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>
+          <input type="text" class="row-input input-name" placeholder="Name" />
+        </td>
+        <td>
+          <input type="text" class="row-input input-loe" inputmode="decimal" placeholder="0.00%" />
+        </td>
+        <td>
+          <input type="text" class="row-input input-fringe" inputmode="decimal" placeholder="0.00%" />
+        </td>
+        <td>
+          <input type="text" class="row-input input-salary" inputmode="decimal" placeholder="$0.00" />
+        </td>
+        <td>
+          <input type="text" class="calc-input output-salary-loe" readonly tabindex="-1" />
+        </td>
+        <td>
+          <input type="text" class="calc-input output-monthly-fringe" readonly tabindex="-1" />
+        </td>
+        <td>
+          <input type="text" class="calc-input output-total-monthly" readonly tabindex="-1" />
+        </td>
+        <td>
+          <input type="text" class="calc-input output-prorated" readonly tabindex="-1" />
+        </td>
+        <td>
+          <textarea class="row-textarea input-notes" rows="2" placeholder="Notes"></textarea>
+        </td>
+        <td class="no-print">
+          <button type="button" class="remove-row-button" aria-label="Remove row">×</button>
+        </td>
+      `;
+      return tr;
+    }
+
+    function attachRowEvents(row) {
+      row.querySelectorAll("input, textarea").forEach((field) => {
+        field.addEventListener("input", recalculateAll);
+      });
+
+      const loeInput = row.querySelector(".input-loe");
+      const fringeInput = row.querySelector(".input-fringe");
+      const salaryInput = row.querySelector(".input-salary");
+      const removeBtn = row.querySelector(".remove-row-button");
+
+      loeInput.addEventListener("blur", () => {
+        loeInput.value = loeInput.value ? formatPercentInput(loeInput.value) : "";
+        recalculateAll();
+      });
+
+      fringeInput.addEventListener("blur", () => {
+        fringeInput.value = fringeInput.value ? formatPercentInput(fringeInput.value) : "";
+        recalculateAll();
+      });
+
+      salaryInput.addEventListener("blur", () => {
+        salaryInput.value = salaryInput.value ? formatCurrency(parseCurrency(salaryInput.value)) : "";
+        recalculateAll();
+      });
+
+      removeBtn.addEventListener("click", () => {
+        row.remove();
+        recalculateAll();
+      });
+    }
+
+    function addRow() {
+      const row = buildRow();
+      plannerBody.appendChild(row);
+      attachRowEvents(row);
+
+      const nameInput = row.querySelector(".input-name");
+      if (nameInput) nameInput.focus();
+
+      recalculateAll();
+    }
+
+    function recalculateAll() {
+      const prorationDays = getInclusiveDayCount(startDateInput.value, endDateInput.value);
+      const prorationFactor = (prorationDays / 365) * 12;
+      const hasDates = Boolean(startDateInput.value && endDateInput.value && prorationDays > 0);
+
+      prorationDaysEl.textContent = prorationDays.toString();
+      prorationFactorEl.textContent = prorationFactor.toFixed(2);
+
+      let plannedTotal = 0;
+
+      plannerBody.querySelectorAll("tr").forEach((row) => {
+        const loe = parsePercent(row.querySelector(".input-loe")?.value);
+        const fringe = parsePercent(row.querySelector(".input-fringe")?.value);
+        const monthlySalary = parseCurrency(row.querySelector(".input-salary")?.value);
+
+        const salaryAtLoe = monthlySalary * loe;
+        const monthlyFringe = salaryAtLoe * fringe;
+        const totalMonthlyCost = salaryAtLoe + monthlyFringe;
+        const proratedPeriodCost = totalMonthlyCost * prorationFactor;
+
+        row.querySelector(".output-salary-loe").value = formatCurrency(salaryAtLoe);
+        row.querySelector(".output-monthly-fringe").value = formatCurrency(monthlyFringe);
+        row.querySelector(".output-total-monthly").value = formatCurrency(totalMonthlyCost);
+        row.querySelector(".output-prorated").value = formatCurrency(proratedPeriodCost);
+
+        plannedTotal += proratedPeriodCost;
+      });
+
+      const totalAvailable = parseCurrency(totalAvailableInput.value);
+      const remaining = totalAvailable - plannedTotal;
+
+      plannedTotalEl.textContent = formatCurrency(plannedTotal);
+      remainingTotalEl.textContent = formatCurrency(remaining);
+      tfootTotalEl.textContent = formatCurrency(plannedTotal);
+
+      updateStatus({
+        hasDates,
+        totalAvailable,
+        plannedTotal,
+        remaining,
+      });
+
+      if (tableScrollHintEl) {
+        tableScrollHintEl.hidden = false;
+      }
+    }
+
+    function attachFormattedInput(input, formatter) {
+      if (!input) return;
+
+      input.addEventListener("focus", () => {
+        const raw = parseCurrency(input.value);
+        input.value = raw ? String(raw) : "";
+      });
+
+      input.addEventListener("blur", () => {
+        input.value = input.value ? formatter(input.value) : "";
+        recalculateAll();
+      });
+    }
+
+    attachFormattedInput(totalAvailableInput, formatCurrency);
+
+    [startDateInput, endDateInput].forEach((input) => {
+      input?.addEventListener("input", recalculateAll);
+      input?.addEventListener("change", recalculateAll);
+    });
+
+    totalAvailableInput?.addEventListener("input", recalculateAll);
+
+    addRowBtn?.addEventListener("click", addRow);
+    printBtn?.addEventListener("click", () => window.print());
+
+    addRow();
+    addRow();
+    addRow();
+  </script>
+
+  <style is:global>
+    * {
+      box-sizing: border-box;
+    }
+
+    .tool-shell {
+      width: min(1180px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 3rem 0 5rem;
+    }
+
+    .tool-hero {
+      margin-bottom: 2rem;
+    }
+
+    .tool-eyebrow {
+      margin: 0 0 0.5rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #5f6f6a;
+    }
+
+    .tool-hero h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.1;
+      color: #1f352d;
+    }
+
+    .tool-intro {
+      margin: 0.85rem 0 0;
+      max-width: 46rem;
+      font-size: 1.02rem;
+      line-height: 1.7;
+      color: #465751;
+    }
+
+    .tool-download-callout {
+      margin-top: 1.25rem;
+      padding: 2px;
+      border-radius: 26px;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 111, 145, 0.9),
+        rgba(255, 195, 113, 0.9),
+        rgba(130, 200, 255, 0.9),
+        rgba(139, 214, 160, 0.9),
+        rgba(193, 154, 255, 0.9)
+      );
+      box-shadow: 0 18px 36px rgba(56, 85, 103, 0.12);
+    }
+
+    .tool-download-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+      padding: 1.2rem 1.25rem;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .tool-download-copy {
+      min-width: 0;
+    }
+
+    .tool-download-label {
+      margin: 0 0 0.35rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #6b5f88;
+    }
+
+    .tool-download-copy h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      color: #1f352d;
+    }
+
+    .tool-download-copy p {
+      margin: 0.45rem 0 0;
+      line-height: 1.6;
+      color: #556863;
+      max-width: 42rem;
+    }
+
+    .download-button,
+    .print-button,
+    .secondary-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      min-height: 48px;
+      padding: 0.85rem 1.15rem;
+      border-radius: 14px;
+      font: inherit;
+      font-weight: 700;
+      line-height: 1;
+      text-decoration: none;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease,
+        border-color 0.18s ease, color 0.18s ease;
+      cursor: pointer;
+    }
+
+    .download-button,
+    .print-button {
+      border: none;
+      background: #264e41;
+      color: #fff;
+      box-shadow: 0 10px 24px rgba(38, 78, 65, 0.18);
+    }
+
+    .download-button:hover,
+    .print-button:hover {
+      background: #2d5b4d;
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(38, 78, 65, 0.22);
+    }
+
+    .secondary-button {
+      border: 1px solid rgba(38, 78, 65, 0.18);
+      background: #fff;
+      color: #264e41;
+      box-shadow: 0 10px 24px rgba(38, 78, 65, 0.08);
+    }
+
+    .secondary-button:hover {
+      background: rgba(38, 78, 65, 0.05);
+      transform: translateY(-1px);
+    }
+
+    .tool-card,
+    .tool-print-actions {
+      width: 100%;
+      max-width: 100%;
+      overflow: hidden;
+      margin-top: 1.5rem;
+      padding: 1.5rem;
+      border: 1px solid rgba(38, 78, 65, 0.12);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 18px 40px rgba(28, 52, 45, 0.06);
+    }
+
+    .tool-card-instructions {
+      background: linear-gradient(180deg, rgba(232, 242, 248, 0.9), rgba(255, 255, 255, 0.96));
+    }
+
+    .section-heading h2,
+    .tool-print-copy h2 {
+      margin: 0;
+      font-size: 1.35rem;
+      color: #1f352d;
+    }
+
+    .section-heading p {
+      margin: 0.45rem 0 0;
+      color: #566861;
+      line-height: 1.65;
+      max-width: 54rem;
+    }
+
+    .instruction-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .instruction-item {
+      padding: 1rem 1.05rem;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(114, 160, 188, 0.18);
+    }
+
+    .instruction-item strong {
+      display: block;
+      margin-bottom: 0.45rem;
+      color: #244253;
+      font-size: 0.98rem;
+    }
+
+    .instruction-item p {
+      margin: 0 0 0.7rem;
+      line-height: 1.7;
+      color: #4f646f;
+      font-size: 0.95rem;
+    }
+
+    .instruction-item p:last-child {
+      margin-bottom: 0;
+    }
+
+    .input-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+      width: 100%;
+    }
+
+    .input-grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      min-width: 0;
+    }
+
+    .field span {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #29473d;
+    }
+
+    .field input {
+      width: 100%;
+      min-width: 0;
+      min-height: 48px;
+      padding: 0.8rem 0.95rem;
+      border: 1px solid rgba(38, 78, 65, 0.18);
+      border-radius: 14px;
+      background: #fff;
+      font: inherit;
+      color: #21352f;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .field input:focus,
+    .row-input:focus,
+    .row-textarea:focus {
+      outline: none;
+      border-color: rgba(38, 78, 65, 0.45);
+      box-shadow: 0 0 0 4px rgba(88, 148, 129, 0.12);
+    }
+
+    .field-note {
+      margin-top: 1rem;
+      padding: 0.85rem 0.95rem;
+      font-size: 0.86rem;
+      line-height: 1.65;
+      color: #5a6d66;
+      background: rgba(38, 78, 65, 0.05);
+      border-radius: 12px;
+      border: 1px solid rgba(38, 78, 65, 0.08);
+    }
+
+    .scroll-hint {
+      margin-top: 1rem;
+      padding: 0.8rem 1rem;
+      border-radius: 14px;
+      background: rgba(217, 234, 244, 0.85);
+      color: #355567;
+      font-size: 0.93rem;
+      border: 1px solid rgba(114, 160, 188, 0.18);
+    }
+
+    .table-wrap {
+      width: 100%;
+      max-width: 100%;
+      margin-top: 1.1rem;
+      overflow-x: auto;
+      overflow-y: hidden;
+      border-radius: 18px;
+      border: 1px solid rgba(38, 78, 65, 0.08);
+      background: rgba(255, 255, 255, 0.88);
+    }
+
+    .results-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      min-width: 700px;
+    }
+
+    .loe-table {
+      min-width: 1450px;
+    }
+
+    .results-table th,
+    .results-table td {
+      padding: 0.85rem 0.8rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(38, 78, 65, 0.08);
+      vertical-align: top;
+      white-space: nowrap;
+    }
+
+    .results-table thead th {
+      background: #edf5f8;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: #44606d;
+    }
+
+    .results-table tbody tr:nth-child(odd) td {
+      background: rgba(243, 249, 252, 0.88);
+    }
+
+    .results-table tbody tr:nth-child(even) td {
+      background: rgba(233, 244, 249, 0.88);
+    }
+
+    .row-input,
+    .calc-input,
+    .row-textarea {
+      width: 100%;
+      min-width: 0;
+      border: 1px solid rgba(38, 78, 65, 0.14);
+      border-radius: 12px;
+      font: inherit;
+      color: #21352f;
+    }
+
+    .row-input,
+    .calc-input {
+      min-height: 42px;
+      padding: 0.7rem 0.8rem;
+    }
+
+    .row-input {
+      background: #fff;
+    }
+
+    .calc-input {
+      background: rgba(38, 78, 65, 0.06);
+      color: #29473d;
+      font-weight: 600;
+    }
+
+    .row-textarea {
+      min-height: 72px;
+      padding: 0.7rem 0.8rem;
+      resize: vertical;
+      background: #fff;
+    }
+
+    .remove-row-button {
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(198, 65, 65, 0.18);
+      border-radius: 999px;
+      background: #fff;
+      color: #9a3b3b;
+      font-size: 1.1rem;
+      font-weight: 700;
+      line-height: 1;
+      cursor: pointer;
+      transition: background 0.18s ease, transform 0.18s ease;
+    }
+
+    .remove-row-button:hover {
+      background: rgba(198, 65, 65, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .name-col {
+      min-width: 180px;
+    }
+
+    .small-col {
+      min-width: 120px;
+    }
+
+    .money-col {
+      min-width: 170px;
+    }
+
+    .notes-col {
+      min-width: 240px;
+    }
+
+    .remove-col {
+      min-width: 90px;
+    }
+
+    .table-total-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 0.85rem;
+      padding: 0.95rem 1rem;
+      border-radius: 16px;
+      background: rgba(38, 78, 65, 0.05);
+      border: 1px solid rgba(38, 78, 65, 0.08);
+    }
+
+    .table-total-label {
+      font-weight: 700;
+      color: #1f352d;
+    }
+
+    .table-total-value {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #1f352d;
+    }
+
+    .table-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(38, 78, 65, 0.08);
+    }
+
+    .table-actions-copy {
+      min-width: 0;
+    }
+
+    .table-actions-note {
+      margin: 0;
+      color: #556863;
+      line-height: 1.6;
+    }
+
+    .summary-grid {
+      width: 100%;
+      margin-top: 1.25rem;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .summary-grid-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .summary-item {
+      min-width: 0;
+      padding: 1rem 1.05rem;
+      border-radius: 18px;
+      background: rgba(38, 78, 65, 0.05);
+      border: 1px solid rgba(38, 78, 65, 0.08);
+    }
+
+    .summary-label {
+      display: block;
+      margin-bottom: 0.45rem;
+      font-size: 0.88rem;
+      color: #546660;
+    }
+
+    .summary-item strong {
+      font-size: 1.1rem;
+      color: #1f352d;
+    }
+
+    .status-bar {
+      margin-top: 1rem;
+      padding: 0.9rem 1rem;
+      border-radius: 16px;
+      font-weight: 700;
+      line-height: 1.5;
+      border: 1px solid transparent;
+    }
+
+    .status-bar.good {
+      background: rgba(38, 78, 65, 0.08);
+      border-color: rgba(38, 78, 65, 0.12);
+      color: #244739;
+    }
+
+    .status-bar.bad {
+      background: rgba(198, 65, 65, 0.08);
+      border-color: rgba(198, 65, 65, 0.12);
+      color: #8c2f2f;
+    }
+
+    .status-bar.neutral {
+      background: rgba(217, 234, 244, 0.72);
+      border-color: rgba(114, 160, 188, 0.18);
+      color: #355567;
+    }
+
+    .tool-print-copy {
+      min-width: 0;
+    }
+
+    .tool-print-note {
+      margin: 0.45rem 0 0;
+      color: #556863;
+      line-height: 1.6;
+    }
+
+    .tool-print-buttons {
+      display: flex;
+      gap: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 980px) {
+      .instruction-grid,
+      .input-grid-3,
+      .summary-grid-4,
+      .tool-download-card {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .tool-download-card {
+        display: grid;
+      }
+
+      .download-button {
+        justify-self: start;
+      }
+
+      .table-actions,
+      .tool-print-actions {
+        display: grid;
+        justify-content: stretch;
+      }
+
+      .tool-print-buttons {
+        justify-self: start;
+        flex-wrap: wrap;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .tool-shell {
+        width: min(100% - 1.25rem, 1180px);
+        padding: 2rem 0 4rem;
+      }
+
+      .tool-card,
+      .tool-print-actions {
+        padding: 1.2rem;
+        border-radius: 20px;
+      }
+
+      .instruction-grid,
+      .input-grid,
+      .input-grid-3,
+      .summary-grid-4,
+      .tool-download-card {
+        grid-template-columns: 1fr;
+      }
+
+      .download-button,
+      .print-button,
+      .secondary-button {
+        width: 100%;
+      }
+
+      .table-actions,
+      .tool-print-buttons {
+        width: 100%;
+        flex-direction: column;
+      }
+
+      .table-total-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media print {
+      @page {
+        size: letter landscape;
+        margin: 0.35in;
+      }
+
+      html,
+      body {
+        background: #fff !important;
+        color: #000 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      header,
+      nav,
+      footer,
+      .no-print {
+        display: none !important;
+      }
+
+      * {
+        box-shadow: none !important;
+        text-shadow: none !important;
+        filter: none !important;
+      }
+
+      .tool-shell {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      .tool-hero {
+        margin: 0 0 0.35rem !important;
+      }
+
+      .tool-eyebrow {
+        margin-bottom: 0.1rem !important;
+        color: #000 !important;
+      }
+
+      .tool-hero h1 {
+        font-size: 18pt !important;
+        color: #000 !important;
+        margin-bottom: 0.15rem !important;
+      }
+
+      .tool-intro,
+      .section-heading p,
+      .field-note,
+      .tool-print-note,
+      .instruction-item p,
+      .summary-label,
+      .status-bar,
+      .field span,
+      .table-actions-note,
+      .table-total-label {
+        color: #000 !important;
+      }
+
+      .tool-card,
+      .tool-print-actions {
+        margin-top: 0.35rem !important;
+        padding: 0.45rem !important;
+        border: 1px solid #cfd7d3 !important;
+        border-radius: 0 !important;
+        background: #fff !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      .tool-card-instructions {
+        background: #fff !important;
+      }
+
+      .instruction-grid,
+      .input-grid,
+      .input-grid-3,
+      .summary-grid-4 {
+        gap: 0.35rem !important;
+      }
+
+      .instruction-item,
+      .summary-item,
+      .field-note,
+      .status-bar,
+      .table-total-bar {
+        padding: 0.35rem !important;
+        border: 1px solid #d6deda !important;
+        border-radius: 0 !important;
+        background: #fff !important;
+      }
+
+      .field input,
+      .row-input,
+      .calc-input,
+      .row-textarea {
+        min-height: 30px !important;
+        padding: 0.22rem 0.3rem !important;
+        border: 1px solid #cfd7d3 !important;
+        border-radius: 0 !important;
+        color: #000 !important;
+        background: #fff !important;
+        box-shadow: none !important;
+      }
+
+      .row-textarea {
+        min-height: 42px !important;
+        resize: none !important;
+      }
+
+      .table-wrap {
+        overflow: visible !important;
+        overflow-x: visible !important;
+        overflow-y: visible !important;
+        border: 1px solid #cfd7d3 !important;
+        border-radius: 0 !important;
+        background: #fff !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+
+      .results-table,
+      .loe-table {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        border-collapse: collapse !important;
+        table-layout: fixed !important;
+        font-size: 7.2px !important;
+      }
+
+      .results-table th,
+      .results-table td {
+        padding: 2px 3px !important;
+        border: 1px solid #cfd7d3 !important;
+        color: #000 !important;
+        background: #fff !important;
+        vertical-align: top !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+        overflow-wrap: anywhere !important;
+        hyphens: auto !important;
+        line-height: 1.15 !important;
+      }
+
+      .results-table thead th,
+      .results-table tbody tr:nth-child(odd) td,
+      .results-table tbody tr:nth-child(even) td {
+        background: #fff !important;
+        color: #000 !important;
+      }
+
+      .name-col {
+        width: 12% !important;
+        min-width: 0 !important;
+      }
+
+      .small-col {
+        width: 8% !important;
+        min-width: 0 !important;
+      }
+
+      .money-col {
+        width: 11% !important;
+        min-width: 0 !important;
+      }
+
+      .notes-col {
+        width: 14% !important;
+        min-width: 0 !important;
+      }
+
+      .table-total-value,
+      .summary-item strong {
+        color: #000 !important;
+      }
+
+      .summary-item strong {
+        font-size: 10pt !important;
+      }
+
+      thead {
+        display: table-header-group;
+      }
+
+      tr,
+      td,
+      th,
+      .print-section {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+    }
+  </style>
+</MainLayout>
