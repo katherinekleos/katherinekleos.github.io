@@ -38,24 +38,34 @@ const focusAreas = [
 
 const tools = [
   {
-    title: "Cost Transfer Justification Framework",
+    title: "Cost Share Tool",
     description:
-      "Structured template for documenting financial corrections with clear cause, action, and compliance alignment.",
-    href: "#",
+      "Structured calculator for salary cap planning, cost share allocation, and fiscal year breakdowns across project periods.",
+    href: "/tools/cost-share-tool",
+    external: false,
+    status: "",
+    accent: "green",
+    icon: "chart",
+  },
+  {
+    title: "Cost Transfer Justification Tool",
+    description:
+      "Structured support for building clear, policy-aligned cost transfer entries, payroll corrections, and debit-credit balancing.",
+    href: "/tools/cost-transfer-justification",
     external: false,
     status: "",
     accent: "red",
     icon: "document",
   },
   {
-    title: "Financial Data Validation Workflow",
+    title: "LOE Burn Planner",
     description:
-      "Process for reviewing and aligning financial data across systems to support reporting accuracy.",
-    href: "#",
+      "Planning tool for projecting effort distribution, salary usage, and timing across personnel and sponsored project periods.",
+    href: "/tools/loe-burn-planner",
     external: false,
     status: "",
     accent: "blue",
-    icon: "check",
+    icon: "tracker",
   },
   {
     title: "Multi-Ledger Reconciliation Checklist",
@@ -63,7 +73,7 @@ const tools = [
       "Repeatable checklist for identifying discrepancies and validating cross-account financial data.",
     href: "#",
     external: false,
-    status: "",
+    status: "In Development",
     accent: "gold",
     icon: "layers",
   },
@@ -73,7 +83,7 @@ const tools = [
       "Centralized structure for monitoring extensions, carryforward, rebudgeting, and lifecycle actions.",
     href: "#",
     external: false,
-    status: "",
+    status: "In Development",
     accent: "green",
     icon: "tracker",
   },
@@ -282,11 +292,12 @@ const selectedWork = [
           <div class="about-grid about-grid--two">
             {tools.map((tool) => (
               <a
-                class={`about-tool-card about-accent-${tool.accent}`}
-                href={tool.href}
-                target={tool.external ? "_blank" : undefined}
-                rel={tool.external ? "noreferrer noopener" : undefined}
-                aria-label={`Open ${tool.title}`}
+                class={`about-tool-card about-accent-${tool.accent} ${tool.status ? "about-tool-card--inactive" : ""}`}
+                href={tool.status ? undefined : tool.href}
+                target={tool.external && !tool.status ? "_blank" : undefined}
+                rel={tool.external && !tool.status ? "noreferrer noopener" : undefined}
+                aria-label={tool.status ? `${tool.title} in development` : `Open ${tool.title}`}
+                aria-disabled={tool.status ? "true" : undefined}
               >
                 <div class="about-tool-card__body">
                   <div class="about-tool-card__top">
@@ -406,9 +417,12 @@ const selectedWork = [
                   </div>
 
                   <p>{tool.description}</p>
-                  <span class="about-tool-card__link">
-                    {tool.external ? "View on GitHub" : "View item"}
-                  </span>
+
+                  {!tool.status && (
+                    <span class="about-tool-card__link">
+                      {tool.external ? "View on GitHub" : "View item"}
+                    </span>
+                  )}
                 </div>
               </a>
             ))}
@@ -702,6 +716,15 @@ const selectedWork = [
     transform: translateY(-2px);
     border-color: rgba(27, 39, 54, 0.12);
     outline: none;
+  }
+
+  .about-tool-card--inactive {
+    cursor: default;
+  }
+
+  .about-tool-card--inactive:hover,
+  .about-tool-card--inactive:focus-visible {
+    transform: none;
   }
 
   .about-info-card__body,
