@@ -290,142 +290,146 @@ const selectedWork = [
           </div>
 
           <div class="about-grid about-grid--two">
-            {tools.map((tool) => (
-              <a
-                class={`about-tool-card about-accent-${tool.accent} ${tool.status ? "about-tool-card--inactive" : ""}`}
-                href={tool.status ? undefined : tool.href}
-                target={tool.external && !tool.status ? "_blank" : undefined}
-                rel={tool.external && !tool.status ? "noreferrer noopener" : undefined}
-                aria-label={tool.status ? `${tool.title} in development` : `Open ${tool.title}`}
-                aria-disabled={tool.status ? "true" : undefined}
-              >
-                <div class="about-tool-card__body">
-                  <div class="about-tool-card__top">
-                    <div class="about-tool-card__icon-wrap">
-                      <div class="about-tool-card__icon">
-                        {tool.icon === "document" && (
-                          <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path
-                              d="M8 3.5h6l4 4V20a.5.5 0 0 1-.5.5h-9A2.5 2.5 0 0 1 6 18V6a2.5 2.5 0 0 1 2-2.5Z"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="1.7"
-                              stroke-linejoin="round"
-                            />
-                            <path
-                              d="M14 3.5V8h4"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="1.7"
-                              stroke-linejoin="round"
-                            />
-                          </svg>
-                        )}
-                        {tool.icon === "check" && (
-                          <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path
-                              d="M9.2 12.8 11.5 15l5.3-6"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="1.9"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                            <rect
-                              x="4"
-                              y="4"
-                              width="16"
-                              height="16"
-                              rx="3"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="1.7"
-                            />
-                          </svg>
-                        )}
-                        {tool.icon === "layers" && (
-                          <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path
-                              d="m12 4 8 4-8 4-8-4 8-4Z"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="1.7"
-                              stroke-linejoin="round"
-                            />
-                            <path
-                              d="m4 12 8 4 8-4"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="1.7"
-                              stroke-linejoin="round"
-                            />
-                            <path
-                              d="m4 16 8 4 8-4"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="1.7"
-                              stroke-linejoin="round"
-                            />
-                          </svg>
-                        )}
-                        {tool.icon === "tracker" && (
-                          <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path
-                              d="M8 6.5h8M8 12h8M8 17.5h5"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="1.8"
-                              stroke-linecap="round"
-                            />
-                            <rect
-                              x="4"
-                              y="3.5"
-                              width="16"
-                              height="17"
-                              rx="3"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="1.7"
-                            />
-                          </svg>
-                        )}
-                        {tool.icon === "chart" && (
-                          <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path
-                              d="M5 19.5h14"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="1.7"
-                              stroke-linecap="round"
-                            />
-                            <path
-                              d="M7.5 16V11M12 16V8M16.5 16v-5"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="1.8"
-                              stroke-linecap="round"
-                            />
-                          </svg>
-                        )}
+            {tools.map((tool) => {
+              const isDevelopment = Boolean(tool.status);
+
+              return (
+                <a
+                  class={`about-tool-card about-accent-${tool.accent} ${isDevelopment ? "about-tool-card--inactive about-tool-card--development" : ""}`}
+                  href={isDevelopment ? undefined : tool.href}
+                  target={tool.external && !isDevelopment ? "_blank" : undefined}
+                  rel={tool.external && !isDevelopment ? "noreferrer noopener" : undefined}
+                  aria-label={isDevelopment ? `${tool.title} in development` : `Open ${tool.title}`}
+                  aria-disabled={isDevelopment ? "true" : undefined}
+                >
+                  <div class="about-tool-card__body">
+                    <div class="about-tool-card__top">
+                      <div class="about-tool-card__icon-wrap">
+                        <div class="about-tool-card__icon">
+                          {tool.icon === "document" && (
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                              <path
+                                d="M8 3.5h6l4 4V20a.5.5 0 0 1-.5.5h-9A2.5 2.5 0 0 1 6 18V6a2.5 2.5 0 0 1 2-2.5Z"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linejoin="round"
+                              />
+                              <path
+                                d="M14 3.5V8h4"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          )}
+                          {tool.icon === "check" && (
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                              <path
+                                d="M9.2 12.8 11.5 15l5.3-6"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.9"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                              <rect
+                                x="4"
+                                y="4"
+                                width="16"
+                                height="16"
+                                rx="3"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                              />
+                            </svg>
+                          )}
+                          {tool.icon === "layers" && (
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                              <path
+                                d="m12 4 8 4-8 4-8-4 8-4Z"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linejoin="round"
+                              />
+                              <path
+                                d="m4 12 8 4 8-4"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linejoin="round"
+                              />
+                              <path
+                                d="m4 16 8 4 8-4"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          )}
+                          {tool.icon === "tracker" && (
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                              <path
+                                d="M8 6.5h8M8 12h8M8 17.5h5"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                stroke-linecap="round"
+                              />
+                              <rect
+                                x="4"
+                                y="3.5"
+                                width="16"
+                                height="17"
+                                rx="3"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                              />
+                            </svg>
+                          )}
+                          {tool.icon === "chart" && (
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                              <path
+                                d="M5 19.5h14"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linecap="round"
+                              />
+                              <path
+                                d="M7.5 16V11M12 16V8M16.5 16v-5"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                stroke-linecap="round"
+                              />
+                            </svg>
+                          )}
+                        </div>
+                      </div>
+
+                      <div class="about-tool-card__head">
+                        <h3>{tool.title}</h3>
+                        {tool.status && <span class="about-status-pill">{tool.status}</span>}
                       </div>
                     </div>
 
-                    <div class="about-tool-card__head">
-                      <h3>{tool.title}</h3>
-                      {tool.status && <span class="about-status-pill">{tool.status}</span>}
-                    </div>
+                    <p>{tool.description}</p>
+
+                    {!isDevelopment && (
+                      <span class="about-tool-card__link">
+                        {tool.external ? "View on GitHub" : "View item"}
+                      </span>
+                    )}
                   </div>
-
-                  <p>{tool.description}</p>
-
-                  {!tool.status && (
-                    <span class="about-tool-card__link">
-                      {tool.external ? "View on GitHub" : "View item"}
-                    </span>
-                  )}
-                </div>
-              </a>
-            ))}
+                </a>
+              );
+            })}
           </div>
         </section>
 
@@ -724,7 +728,18 @@ const selectedWork = [
 
   .about-tool-card--inactive:hover,
   .about-tool-card--inactive:focus-visible {
-    transform: none;
+    transform: none !important;
+  }
+
+  .about-tool-card--development {
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow:
+      0 16px 34px rgba(24, 33, 43, 0.07),
+      0 1px 0 rgba(255, 255, 255, 0.82) inset;
+    transition:
+      box-shadow 180ms ease,
+      border-color 180ms ease,
+      background 180ms ease;
   }
 
   .about-info-card__body,
@@ -1032,6 +1047,46 @@ const selectedWork = [
     box-shadow:
       0 18px 40px rgba(156, 99, 223, 0.28),
       0 1px 0 rgba(255, 255, 255, 0.82) inset;
+  }
+
+  .about-accent-red.about-tool-card--development:hover,
+  .about-accent-red.about-tool-card--development:focus-visible {
+    box-shadow:
+      0 18px 38px rgba(210, 77, 83, 0.14),
+      0 1px 0 rgba(255, 255, 255, 0.82) inset;
+    border-color: rgba(27, 39, 54, 0.12);
+  }
+
+  .about-accent-gold.about-tool-card--development:hover,
+  .about-accent-gold.about-tool-card--development:focus-visible {
+    box-shadow:
+      0 18px 38px rgba(229, 176, 76, 0.15),
+      0 1px 0 rgba(255, 255, 255, 0.82) inset;
+    border-color: rgba(27, 39, 54, 0.12);
+  }
+
+  .about-accent-green.about-tool-card--development:hover,
+  .about-accent-green.about-tool-card--development:focus-visible {
+    box-shadow:
+      0 18px 38px rgba(77, 168, 107, 0.14),
+      0 1px 0 rgba(255, 255, 255, 0.82) inset;
+    border-color: rgba(27, 39, 54, 0.12);
+  }
+
+  .about-accent-blue.about-tool-card--development:hover,
+  .about-accent-blue.about-tool-card--development:focus-visible {
+    box-shadow:
+      0 18px 38px rgba(76, 126, 255, 0.14),
+      0 1px 0 rgba(255, 255, 255, 0.82) inset;
+    border-color: rgba(27, 39, 54, 0.12);
+  }
+
+  .about-accent-violet.about-tool-card--development:hover,
+  .about-accent-violet.about-tool-card--development:focus-visible {
+    box-shadow:
+      0 18px 38px rgba(156, 99, 223, 0.15),
+      0 1px 0 rgba(255, 255, 255, 0.82) inset;
+    border-color: rgba(27, 39, 54, 0.12);
   }
 
   @media (max-width: 900px) {
