@@ -5,8 +5,8 @@ export const featuredTool = {
   href: "/tools/cost-share-tool",
   image: "/assets/tools/cost-share-tool-card.png",
   type: "Tool",
-  status: "In Development",
-  lastUpdated: "March 28, 2026",
+  status: "Completed",
+  lastUpdated: "March 27, 2026",
 };
 
 export const toolList = [
@@ -16,9 +16,9 @@ export const toolList = [
       "A guided tool for building clearer and more defensible cost transfer explanations across complex funding situations.",
     href: "/tools/cost-transfer-justification",
     image: "/assets/tools/cost-transfer-justification-tool-card.png",
-    type: "Tool",
-    status: "Planned",
-    lastUpdated: "March 28, 2026",
+    type: "Template",
+    status: "Completed",
+    lastUpdated: "March 29, 2026",
   },
   {
     title: "LOE Burn Planner",
@@ -27,7 +27,7 @@ export const toolList = [
     href: "/tools/loe-burn-planner",
     image: "/assets/tools/loe-burn-planner-card.png",
     type: "Tool",
-    status: "Planned",
-    lastUpdated: "March 28, 2026",
+    status: "Completed",
+    lastUpdated: "March 29, 2026",
   },
 ];
