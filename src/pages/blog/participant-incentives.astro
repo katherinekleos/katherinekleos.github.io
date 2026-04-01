@@ -1,0 +1,377 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+
+const title = "Participant Incentives in Research: Distinguishing Purchase from Distribution";
+const description =
+  "A practical breakdown of participant incentives in research administration, focusing on the distinction between purchase and distribution, inventory tracking, and compliance.";
+---
+
+<MainLayout title={title} description={description}>
+  <figure class="hero-image">
+    <img
+      src="/assets/participant-incentives-header.png"
+      alt="Cartoon illustration showing participant incentives moving from asset to expense."
+    />
+  </figure>
+
+  <section class="post-header section-shell">
+    <p class="eyebrow">Blog</p>
+    <h1>{title}</h1>
+    <p class="dek">
+      Understanding how participant incentives move from purchase to distribution,
+      and why that distinction matters for financial accuracy and compliance.
+    </p>
+    <p class="meta">March 31, 2026</p>
+  </section>
+
+  <article class="post-body glass-card section-shell">
+    <p>
+      Participant incentives are a common but often misunderstood cost in research administration.
+      Confusion typically arises from the distinction between what is purchased and what is distributed.
+      These steps have different implications, so many institutions separate them in financial workflows
+      to ensure control and compliance.
+    </p>
+
+    <h2>Purchase: Creating Inventory</h2>
+
+    <p>
+      Often, participant incentives are not charged directly to a grant when purchased. Instead,
+      they are acquired through an advance or holding account, typically a non-sponsored account
+      such as a departmental or 2-ledger account. This account securely holds incentives until they
+      are distributed.
+    </p>
+
+    <p>
+      For example, if 100 gift cards are purchased at $25 each, the $2,500 is charged to the holding
+      account, not the sponsored project. At this point, no grant funds have been spent; the incentives
+      are held as inventory.
+    </p>
+
+    <h2>Managing the Holding Account</h2>
+
+    <p>
+      To set up a holding account, an administrator requests approval from the finance department,
+      specifying the purpose, funding source, and required amount. Once approved, all incentive
+      purchases must be tracked as inventory using a log or spreadsheet that records each item’s
+      serial number, value, and acquisition date.
+    </p>
+
+    <p>
+      As incentives are distributed, update the inventory log with the recipient, date, amount, and
+      supporting documentation. Regularly reconcile inventory to recorded balances to ensure all
+      items are accounted for. Address any discrepancies promptly in accordance with institutional
+      procedures.
+    </p>
+
+    <h2>Why Incentives Aren’t Charged at Purchase</h2>
+
+    <p>
+      A common question is why participant incentives, especially gift cards, cannot be charged
+      directly to a grant at the time of purchase. The answer comes down to both accounting principles
+      and practical compliance.
+    </p>
+
+    <p>
+      From an accounting standpoint, gift cards are considered an asset—not an expense. Under generally
+      accepted accounting principles (GAAP), the purchase represents an asset that is still being held,
+      not yet used. Because of this, the cost is recorded on an asset or holding account rather than
+      expensed to a grant.
+    </p>
+
+    <p>
+      From an operational standpoint, no participant has received anything yet, and no research activity
+      has taken place. This means the cost is not yet allocable to the project. It is a financial
+      transaction, but not a programmatic expense.
+    </p>
+
+    <p>
+      Gift cards are also treated differently from typical purchases because they function as cash
+      equivalents. Once purchased, they can be lost, stolen, or used without proper documentation if
+      controls are not in place. Institutions, therefore, require a clear and defensible link between
+      the expense and the participant activity it supports, and that link only exists once the incentive
+      is distributed.
+    </p>
+
+    <p>
+      This creates a timing gap between when funds are spent and when they are truly earned by the
+      project. Only when the incentives are distributed can the expense be recognized and charged to
+      the grant.
+    </p>
+
+    <p>
+      A simple way to think about it is: until the incentive is used, it remains an asset; once it is
+      distributed, it becomes an expense.
+    </p>
+
+    <h2>Required Documentation</h2>
+
+    <p>
+      Maintain documentation at each stage to support compliance and audit readiness.
+    </p>
+
+    <p>
+      The purchase and inventory stage should include purchase receipts, holding account approval,
+      and an inventory log with serial numbers and values.
+    </p>
+
+    <p>
+      The distribution stage should include a log of recipients, dates, and amounts, along with signed
+      acknowledgments or receipts when possible.
+    </p>
+
+    <p>
+      These records provide a clear audit trail linking purchases to research activity.
+    </p>
+
+    <h3>Example Tracker and How It Works</h3>
+
+    <p>
+      To make this process more practical, I’ve included an example tracker that reflects how participant incentives are managed across purchase, distribution, and expense.
+    </p>
+
+    <p>
+      The tracker separates inventory, distribution, and expense into distinct sections. Incentives are first recorded as inventory, then tracked as they are distributed, and finally tied to internal transfers once they are charged to the grant.
+    </p>
+
+    <p>
+      The goal is not just to track totals, but to reflect the full lifecycle of participant incentives—what has been purchased, what has been used, and what has been formally expensed.
+    </p>
+
+    <a href="/downloads/participant-incentive-tracker.xlsx" download class="download-button">
+      Download Example Tracker
+    </a>
+
+    <h2>Distribution: Creating Expense</h2>
+
+    <p>
+      The expense is valid and chargeable to the grant only when incentives are distributed to
+      participants. At that time, only the distributed amount is transferred to the sponsored project,
+      usually through an internal transfer such as a journal entry or interdepartmental transfer.
+    </p>
+
+    <p>
+      For example, if 100 cards are purchased for $2,500 and 60 are distributed, $1,500 is transferred
+      to the grant, while the remaining $1,000 remains in the holding account as inventory.
+    </p>
+
+    <h2>Handling Remaining Incentives</h2>
+
+    <p>
+      Unused or expired incentives must be managed in accordance with institutional policy. Options
+      include returning them to the department, reassigning them to another approved project, or
+      disposing of expired items with proper documentation. Accurate records of remaining incentives
+      are essential for reconciliation and project closeouts.
+    </p>
+
+    <div class="closing-note">
+      <p>
+        Purchasing creates inventory, and distribution creates expense.
+      </p>
+      <p>
+        The holding account stores inventory, and only distributed items are charged to the grant.
+        This approach aligns financial reporting, operational tracking, and compliance.
+      </p>
+    </div>
+  </article>
+
+  <style>
+    .hero-image {
+      margin: 0 0 1.5rem;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      background: #eaf0f5;
+    }
+
+    .hero-image img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 8.5;
+      object-fit: cover;
+    }
+
+    .post-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin: 0 0 1rem;
+      padding: 0.45rem 0.8rem;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    h1 {
+      margin: 0 0 0.9rem;
+      font-size: clamp(2.3rem, 5vw, 3.7rem);
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      color: #163127;
+      font-weight: 700;
+    }
+
+    .dek {
+      margin: 0 0 0.9rem;
+      font-size: 1.08rem;
+      line-height: 1.85;
+      color: var(--muted);
+      max-width: 44rem;
+    }
+
+    .meta {
+      margin: 0;
+      font-size: 0.95rem;
+      color: #6b7280;
+    }
+
+    .post-body {
+      padding: clamp(1.35rem, 2.5vw, 2.2rem);
+    }
+
+    .post-body p {
+      margin: 0 0 1.2rem;
+      font-size: 1.08rem;
+      line-height: 1.95;
+      color: var(--text);
+    }
+
+    .post-body h2 {
+      margin: 2.2rem 0 0.85rem;
+      font-size: 1.5rem;
+      line-height: 1.22;
+      color: #18382d;
+      font-weight: 700;
+    }
+
+    .post-body h3 {
+      margin: 1.8rem 0 0.75rem;
+      font-size: 1.18rem;
+      line-height: 1.3;
+      color: #234438;
+      font-weight: 700;
+    }
+
+    .closing-note {
+      margin-top: 1.6rem;
+      padding: 1rem 1.05rem;
+      border-left: 4px solid var(--accent);
+      background: rgba(38, 78, 65, 0.06);
+      border-radius: 14px;
+    }
+
+    .closing-note p {
+      margin: 0 0 0.6rem;
+    }
+
+    .closing-note p:last-child {
+      margin-bottom: 0;
+    }
+
+    .download-button {
+      display: table;
+      margin: 1.25rem auto 0;
+      padding: 0.75rem 1.4rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #264e41;
+      background: transparent;
+      border-radius: 999px;
+      text-decoration: none;
+      position: relative;
+      z-index: 1;
+      transition: transform 0.25s ease, color 0.25s ease;
+      -webkit-tap-highlight-color: transparent;
+      outline: none;
+      box-shadow: none;
+      border: none;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .download-button,
+    .download-button:link,
+    .download-button:visited,
+    .download-button:hover,
+    .download-button:focus,
+    .download-button:focus-visible,
+    .download-button:active {
+      background: transparent !important;
+      color: #264e41;
+      outline: none !important;
+      box-shadow: none !important;
+      text-decoration: none;
+    }
+
+    .download-button::-moz-focus-inner {
+      border: 0;
+    }
+
+    .download-button::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: 999px;
+      background: linear-gradient(
+        120deg,
+        #264e41,
+        #3a7bd5,
+        #00c6ff,
+        #7f53ac,
+        #264e41
+      );
+      z-index: -1;
+      opacity: 0.8;
+      filter: blur(6px);
+      transition: opacity 0.25s ease, filter 0.25s ease;
+      pointer-events: none;
+    }
+
+    .download-button::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 999px;
+      background: white;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .download-button:hover {
+      transform: translateY(-2px);
+    }
+
+    .download-button:hover::before,
+    .download-button:focus::before,
+    .download-button:focus-visible::before,
+    .download-button:active::before {
+      opacity: 1;
+      filter: blur(8px);
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: clamp(2rem, 9vw, 2.7rem);
+      }
+
+      .dek,
+      .post-body p {
+        font-size: 1rem;
+        line-height: 1.85;
+      }
+
+      .post-body h2 {
+        font-size: 1.35rem;
+      }
+
+      .post-body h3 {
+        font-size: 1.08rem;
+      }
+    }
+  </style>
+</MainLayout>

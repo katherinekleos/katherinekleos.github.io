@@ -11,6 +11,16 @@ export const featuredPost = {
 
 const allOtherPosts = [
   {
+    title: "Participant Incentives in Research: Distinguishing Purchase from Distribution",
+    description:
+      "A practical breakdown of participant incentives in research administration, focusing on the difference between purchase, inventory, and distribution.",
+    href: "/blog/participant-incentives",
+    image: "/assets/participant-incentives-header.png",
+    date: "2026-03-31",
+    displayDate: "March 31, 2026",
+    tags: ["GAAP", "Internal Controls", "Compliance"],
+  },
+  {
     title: "The Use of Restorative Practices in Research Administration",
     description:
       "How restorative practices can help research administrators recognize tension early, defuse conflict, and protect working relationships across departments, PIs, and central offices.",
