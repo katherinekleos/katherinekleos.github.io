@@ -1,0 +1,1543 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+
+const rebudgetCategories = [
+  { name: "Salary & Wages", mtdcEligible: "Yes", type: "direct" },
+  { name: "Fringe Benefits", mtdcEligible: "Yes", type: "direct" },
+  { name: "Supplies & Expenses", mtdcEligible: "Yes", type: "direct" },
+  { name: "Travel", mtdcEligible: "Yes", type: "direct" },
+  { name: "Other", mtdcEligible: "Yes", type: "direct" },
+  { name: "International Living Expenses", mtdcEligible: "Yes", type: "direct" },
+  { name: "International Operating Expenses", mtdcEligible: "Yes", type: "direct" },
+  { name: "Consulting", mtdcEligible: "Yes", type: "direct" },
+  { name: "Subcontractors", mtdcEligible: "Yes", type: "direct" },
+  { name: "Patient Care", mtdcEligible: "No", type: "direct" },
+  { name: "Participant Support", mtdcEligible: "No", type: "direct" },
+  { name: "Financial Aid", mtdcEligible: "No", type: "direct" },
+  { name: "Land/Building Improvements", mtdcEligible: "No", type: "direct" },
+  { name: "Minor Equipment", mtdcEligible: "Yes", type: "direct" },
+  { name: "Major Equipment", mtdcEligible: "No", type: "direct" },
+  { name: "Cost Share - Direct", mtdcEligible: "", type: "costshare" },
+  { name: "Cost Share - F&A", mtdcEligible: "", type: "costshare" },
+];
+---
+
+<MainLayout
+  title="Rebudget Template"
+  description="Rebudget planning tool with downloadable template and live online summary table."
+>
+  <section class="tool-shell">
+    <div class="tool-hero">
+      <p class="tool-eyebrow">Tools &amp; Templates</p>
+      <h1>Rebudget Template</h1>
+      <p class="tool-intro">
+        Review original and revised budget lines, calculate decreases and increases, and preview
+        summary totals before documenting a rebudget request.
+      </p>
+
+      <div class="tool-download-callout no-print">
+        <div class="tool-download-card">
+          <div class="tool-download-copy">
+            <p class="tool-download-label">Excel Template Available</p>
+            <h2>Prefer to work in Excel?</h2>
+            <p>
+              Download the rebudget template and complete it offline, or use the online version
+              below to test scenarios and review totals live.
+            </p>
+          </div>
+
+          <a
+            class="download-button"
+            href="/downloads/RebudgetSummaryTemplate_KAG3.xlsx"
+            download
+          >
+            Download Excel Template
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-card tool-card-instructions print-section">
+      <div class="section-heading">
+        <h2>How to Use This Tool</h2>
+        <p>
+          Start with the project details and F&amp;A rate, then enter original budget, revised
+          budget, and current expenditures for each category. The tool will calculate available
+          balance, decrease and increase amounts, Oracle-style revised totals, status, and summary
+          lines.
+        </p>
+      </div>
+
+      <div class="instruction-grid">
+        <div class="instruction-item">
+          <strong>Original vs. revised</strong>
+          <p>
+            The decrease and increase columns compare the revised budget to the original budget for
+            each category.
+          </p>
+        </div>
+
+        <div class="instruction-item">
+          <strong>Available balance</strong>
+          <p>
+            Available balance uses the revised budget when one is entered; otherwise it falls back
+            to the original budget and subtracts current expenditures.
+          </p>
+        </div>
+
+        <div class="instruction-item">
+          <strong>MTDC</strong>
+          <p>
+            MTDC is summarized in its own card below the budget table. Sponsor F&amp;A is still
+            calculated in the table footer from MTDC-eligible direct costs using the entered F&amp;A
+            rate.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-card print-section">
+      <div class="section-heading">
+        <h2>Project Details</h2>
+        <p>Enter the project information used to frame the rebudget summary.</p>
+      </div>
+
+      <div class="input-grid input-grid-3">
+        <label class="field">
+          <span>Project title</span>
+          <input id="projectTitle" type="text" placeholder="Optional" />
+        </label>
+
+        <label class="field">
+          <span>PI name</span>
+          <input id="piName" type="text" placeholder="Optional" />
+        </label>
+
+        <label class="field">
+          <span>Sponsor / Award #</span>
+          <input id="sponsorAward" type="text" placeholder="Optional" />
+        </label>
+
+        <label class="field">
+          <span>Cayuse #</span>
+          <input id="cayuseNumber" type="text" placeholder="Optional" />
+        </label>
+
+        <label class="field">
+          <span>Budget period start date</span>
+          <input id="budgetStart" type="date" />
+        </label>
+
+        <label class="field">
+          <span>Budget period end date</span>
+          <input id="budgetEnd" type="date" />
+        </label>
+
+        <label class="field">
+          <span>Scope unchanged?</span>
+          <select id="scopeUnchanged">
+            <option value="">Select</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Prior approval likely required?</span>
+          <select id="priorApproval">
+            <option value="">Select</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+            <option value="Unsure">Unsure</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>F&amp;A rate %</span>
+          <input
+            id="faRate"
+            type="text"
+            inputmode="decimal"
+            placeholder="10.00%"
+            autocomplete="off"
+          />
+          <small class="field-helper">Enter as a percentage, not a decimal.</small>
+        </label>
+      </div>
+
+      <p class="field-note">
+        This online version is intended as a planning and documentation aid. Final rebudget actions
+        should still be aligned with award terms, sponsor rules, institutional process, and any
+        required approvals.
+      </p>
+    </div>
+
+    <div class="tool-card print-section">
+      <div class="section-heading">
+        <h2>Derived Controls</h2>
+        <p>These values update automatically based on the project details and budget lines below.</p>
+      </div>
+
+      <div class="summary-grid">
+        <div class="summary-stack">
+          <div class="summary-row summary-row-grant">
+            <div class="summary-item">
+              <span class="summary-label">Date of Request</span>
+              <strong id="dateOfRequest">—</strong>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Today</span>
+              <strong id="todayValue">—</strong>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Days to End</span>
+              <strong id="daysToEnd">—</strong>
+            </div>
+          </div>
+
+          <div class="summary-row summary-row-costshare">
+            <div class="summary-item">
+              <span class="summary-label">Late-Stage Flag</span>
+              <strong id="lateStageFlag">—</strong>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Categories Affected</span>
+              <strong id="categoriesAffected">0</strong>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Total Rebudget Amount</span>
+              <strong id="totalRebudgetAmount">$0.00</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-card print-section">
+      <div class="section-heading">
+        <h2>Budget Summary</h2>
+        <p>
+          Enter values for each category. Revised budget, decreases, increases, status, and totals
+          update automatically.
+        </p>
+      </div>
+
+      <p class="field-note budget-note">
+        <strong>Subcontractors note:</strong> This online tool treats the subcontractor line as
+        fully included or excluded based on the MTDC setting shown in the table. If only part of
+        the subcontract should be included in MTDC under your institutional or sponsor rules,
+        confirm that amount separately before relying on the MTDC summary.
+      </p>
+
+      <div id="tableScrollHint" class="scroll-hint no-print">
+        Scroll horizontally to view all columns.
+      </div>
+
+      <div class="table-wrap">
+        <table class="results-table rebudget-table">
+          <thead>
+            <tr>
+              <th class="category-col">Category</th>
+              <th>Original Budget</th>
+              <th>Revised Budget</th>
+              <th>Current Expenditures</th>
+              <th>Available Balance</th>
+              <th>Budget Revision Decrease</th>
+              <th>Budget Revision Increase</th>
+              <th>Oracle Revised Budget</th>
+              <th>MTDC Eligible</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="budgetTableBody"></tbody>
+          <tfoot id="budgetTableFoot"></tfoot>
+        </table>
+      </div>
+    </div>
+
+    <div class="tool-card print-section">
+      <div class="section-heading">
+        <h2>MTDC Summary</h2>
+        <p>
+          Review the original, revised, and current MTDC base separately from the main budget table.
+        </p>
+      </div>
+
+      <div class="summary-grid">
+        <div class="summary-stack">
+          <div class="summary-row summary-row-grant">
+            <div class="summary-item">
+              <span class="summary-label">MTDC Base - Original</span>
+              <strong id="mtdcOriginal">$0.00</strong>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">MTDC Base - Revised</span>
+              <strong id="mtdcRevised">$0.00</strong>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">MTDC Base - Current Expended</span>
+              <strong id="mtdcCurrent">$0.00</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-card print-section">
+      <div class="section-heading">
+        <h2>Justification</h2>
+        <p>Use this space for a short narrative supporting the rebudget request.</p>
+      </div>
+
+      <label class="field">
+        <span>Justification</span>
+        <textarea
+          id="justification"
+          rows="6"
+          placeholder="Enter a short rebudget justification here..."
+        ></textarea>
+      </label>
+    </div>
+
+    <div class="tool-print-actions no-print">
+      <p class="tool-print-note">
+        Need a clean copy for review? Use the print dialog and choose
+        <strong>Save as PDF</strong>.
+      </p>
+      <button type="button" class="print-button" onclick="window.print()">
+        Print / Save as PDF
+      </button>
+    </div>
+  </section>
+
+  <script define:vars={{ rebudgetCategories }}>
+    const budgetTableBody = document.getElementById("budgetTableBody");
+    const budgetTableFoot = document.getElementById("budgetTableFoot");
+
+    const faRateInput = document.getElementById("faRate");
+    const budgetStartInput = document.getElementById("budgetStart");
+    const budgetEndInput = document.getElementById("budgetEnd");
+
+    const dateOfRequest = document.getElementById("dateOfRequest");
+    const todayValue = document.getElementById("todayValue");
+    const daysToEnd = document.getElementById("daysToEnd");
+    const lateStageFlag = document.getElementById("lateStageFlag");
+    const categoriesAffected = document.getElementById("categoriesAffected");
+    const totalRebudgetAmount = document.getElementById("totalRebudgetAmount");
+
+    const mtdcOriginal = document.getElementById("mtdcOriginal");
+    const mtdcRevised = document.getElementById("mtdcRevised");
+    const mtdcCurrent = document.getElementById("mtdcCurrent");
+
+    function parseNumber(value) {
+      if (value === "" || value === null || value === undefined) return null;
+      const cleaned = String(value).replace(/[$,%\s,]/g, "");
+      if (cleaned === "") return null;
+      const parsed = Number(cleaned);
+      return Number.isFinite(parsed) ? parsed : null;
+    }
+
+    function parseLocalDate(value) {
+      if (!value) return null;
+      const [year, month, day] = value.split("-").map(Number);
+      return new Date(year, month - 1, day);
+    }
+
+    function formatCurrency(value) {
+      return Number(value || 0).toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+      });
+    }
+
+    function formatCurrencyInput(value) {
+      const parsed = parseNumber(value);
+      if (parsed === null) return "";
+      return parsed.toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+    }
+
+    function formatPercentInput(value) {
+      const parsed = parseNumber(value);
+      if (parsed === null) return "";
+      return `${parsed.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}%`;
+    }
+
+    function formatDate(date) {
+      return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
+    }
+
+    function round2(value) {
+      return Math.round((Number(value || 0) + Number.EPSILON) * 100) / 100;
+    }
+
+    function valuesEqual(a, b) {
+      return Math.abs(Number(a || 0) - Number(b || 0)) < 0.005;
+    }
+
+    function attachFormattedInput(input, formatter) {
+      if (!input) return;
+
+      input.addEventListener("focus", () => {
+        const parsed = parseNumber(input.value);
+        input.value = parsed === null ? "" : String(parsed);
+      });
+
+      input.addEventListener("blur", () => {
+        if (input.value.trim() === "") return;
+        input.value = formatter(input.value);
+        updateTool();
+      });
+    }
+
+    function createBudgetRows() {
+      budgetTableBody.innerHTML = "";
+
+      rebudgetCategories.forEach((category, index) => {
+        const isCostShare = category.type === "costshare";
+        const tr = document.createElement("tr");
+        tr.className = index % 2 === 0 ? "row-blue-a" : "row-blue-b";
+        tr.dataset.type = category.type;
+        tr.dataset.name = category.name;
+
+        tr.innerHTML = `
+          <td class="category-cell">${category.name}</td>
+
+          <td>
+            <input
+              class="table-input currency-input original-budget"
+              type="text"
+              inputmode="decimal"
+              autocomplete="off"
+              data-row="${index}"
+              placeholder="$0.00"
+            />
+          </td>
+
+          <td>
+            <input
+              class="table-input currency-input revised-budget"
+              type="text"
+              inputmode="decimal"
+              autocomplete="off"
+              data-row="${index}"
+              placeholder="$0.00"
+            />
+          </td>
+
+          <td>
+            <input
+              class="table-input currency-input current-exp"
+              type="text"
+              inputmode="decimal"
+              autocomplete="off"
+              data-row="${index}"
+              placeholder="$0.00"
+            />
+          </td>
+
+          <td><span class="table-value available-balance">—</span></td>
+          <td><span class="table-value decrease-value">—</span></td>
+          <td><span class="table-value increase-value">—</span></td>
+          <td><span class="table-value oracle-value">—</span></td>
+
+          <td>
+            ${
+              isCostShare
+                ? `<span class="table-value table-dash">—</span>`
+                : `<select class="table-input mtdc-select" data-row="${index}">
+                    <option value="Yes" ${category.mtdcEligible === "Yes" ? "selected" : ""}>Yes</option>
+                    <option value="No" ${category.mtdcEligible === "No" ? "selected" : ""}>No</option>
+                  </select>`
+            }
+          </td>
+
+          <td><span class="status-pill status-empty">—</span></td>
+        `;
+
+        budgetTableBody.appendChild(tr);
+      });
+    }
+
+    function getRowValues(row) {
+      const rowType = row.dataset.type || "direct";
+      const rowName = row.dataset.name || "";
+      const original = parseNumber(row.querySelector(".original-budget")?.value);
+      const revised = parseNumber(row.querySelector(".revised-budget")?.value);
+      const currentExp = parseNumber(row.querySelector(".current-exp")?.value);
+      const mtdcEligible =
+        rowType === "costshare"
+          ? ""
+          : row.querySelector(".mtdc-select")?.value || "No";
+
+      const hasAny = original !== null || revised !== null || currentExp !== null;
+
+      const originalSafe = original ?? 0;
+      const revisedSafe = revised ?? null;
+      const currentExpSafe = currentExp ?? null;
+
+      const comparisonBudget = revisedSafe !== null ? revisedSafe : originalSafe;
+      const available =
+        currentExpSafe === null ? null : round2(comparisonBudget - currentExpSafe);
+
+      const decrease =
+        original !== null && revised !== null && revised < original
+          ? round2(original - revised)
+          : null;
+
+      const increase =
+        original !== null && revised !== null && revised > original
+          ? round2(revised - original)
+          : null;
+
+      const oracleRevised =
+        original === null
+          ? null
+          : round2(originalSafe - (decrease ?? 0) + (increase ?? 0));
+
+      let status = "";
+      if (hasAny) {
+        if (available !== null && available < 0) {
+          status = "Overspent";
+        } else if ((decrease ?? 0) === 0 && (increase ?? 0) === 0) {
+          status = "No Change";
+        } else if (
+          revised !== null &&
+          oracleRevised !== null &&
+          !valuesEqual(oracleRevised, revised)
+        ) {
+          status = "Check Balance";
+        } else {
+          status = "Rebudgeted";
+        }
+      }
+
+      return {
+        rowType,
+        rowName,
+        original,
+        revised,
+        currentExp,
+        available,
+        decrease,
+        increase,
+        oracleRevised,
+        mtdcEligible,
+        status,
+      };
+    }
+
+    function renderStatus(element, status) {
+      if (!status) {
+        element.className = "status-pill status-empty";
+        element.textContent = "—";
+        return;
+      }
+
+      const statusClassMap = {
+        "Overspent": "status-overspent",
+        "No Change": "status-nochange",
+        "Check Balance": "status-check",
+        "Rebudgeted": "status-rebudgeted",
+        "Updated": "status-rebudgeted",
+        "Calculated": "status-calculated",
+      };
+
+      element.className = `status-pill ${statusClassMap[status] || "status-empty"}`;
+      element.textContent = status;
+    }
+
+    function updateDerivedControls(rowsData) {
+      const today = new Date();
+      const endDate = parseLocalDate(budgetEndInput.value);
+
+      dateOfRequest.textContent = formatDate(today);
+      todayValue.textContent = formatDate(today);
+
+      if (!endDate) {
+        daysToEnd.textContent = "—";
+        lateStageFlag.textContent = "—";
+      } else {
+        const msPerDay = 1000 * 60 * 60 * 24;
+        const todayAtMidnight = new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          today.getDate()
+        ).getTime();
+        const endAtMidnight = new Date(
+          endDate.getFullYear(),
+          endDate.getMonth(),
+          endDate.getDate()
+        ).getTime();
+
+        const diff = Math.ceil((endAtMidnight - todayAtMidnight) / msPerDay);
+
+        daysToEnd.textContent = String(diff);
+
+        if (diff < 0) {
+          lateStageFlag.textContent = "Ended";
+        } else if (diff <= 90) {
+          lateStageFlag.textContent = "Yes";
+        } else {
+          lateStageFlag.textContent = "No";
+        }
+      }
+
+      const affectedCount = rowsData.filter(
+        (row) => (row.decrease ?? 0) > 0 || (row.increase ?? 0) > 0
+      ).length;
+      categoriesAffected.textContent = String(affectedCount);
+
+      const totalRebudget = round2(
+        rowsData.reduce((sum, row) => sum + (row.decrease ?? 0) + (row.increase ?? 0), 0)
+      );
+      totalRebudgetAmount.textContent = formatCurrency(totalRebudget);
+    }
+
+    function renderMtdcSummary(rowsData) {
+      const directRows = rowsData.filter((row) => row.rowType === "direct");
+
+      const mtdcBaseOriginal = round2(
+        directRows.reduce((sum, row) => {
+          if (row.mtdcEligible !== "Yes") return sum;
+          return sum + (row.original ?? 0);
+        }, 0)
+      );
+
+      const mtdcBaseRevised = round2(
+        directRows.reduce((sum, row) => {
+          if (row.mtdcEligible !== "Yes") return sum;
+          return sum + ((row.revised ?? row.original) ?? 0);
+        }, 0)
+      );
+
+      const mtdcBaseCurrent = round2(
+        directRows.reduce((sum, row) => {
+          if (row.mtdcEligible !== "Yes") return sum;
+          return sum + (row.currentExp ?? 0);
+        }, 0)
+      );
+
+      mtdcOriginal.textContent = formatCurrency(mtdcBaseOriginal);
+      mtdcRevised.textContent = formatCurrency(mtdcBaseRevised);
+      mtdcCurrent.textContent = formatCurrency(mtdcBaseCurrent);
+    }
+
+    function statusClass(status) {
+      const statusClassMap = {
+        "Overspent": "status-overspent",
+        "No Change": "status-nochange",
+        "Check Balance": "status-check",
+        "Rebudgeted": "status-rebudgeted",
+        "Updated": "status-rebudgeted",
+        "Calculated": "status-calculated",
+      };
+      return status ? statusClassMap[status] || "status-empty" : "status-empty";
+    }
+
+    function statusLabel(status) {
+      return status || "—";
+    }
+
+    function renderFooter(rowsData) {
+      const directRows = rowsData.filter((row) => row.rowType === "direct");
+      const costShareDirectRow =
+        rowsData.find((row) => row.rowName === "Cost Share - Direct") || null;
+      const costShareFARow =
+        rowsData.find((row) => row.rowName === "Cost Share - F&A") || null;
+
+      const faRatePct = parseNumber(faRateInput.value) ?? 0;
+      const faRate = faRatePct / 100;
+
+      const sumByKey = (rows, key) =>
+        round2(rows.reduce((sum, row) => sum + (row[key] ?? 0), 0));
+
+      const totalDirectOriginal = sumByKey(directRows, "original");
+      const totalDirectRevised = round2(
+        directRows.reduce((sum, row) => sum + ((row.revised ?? row.original) ?? 0), 0)
+      );
+      const totalDirectCurrent = sumByKey(directRows, "currentExp");
+      const totalDirectAvailable = round2(totalDirectRevised - totalDirectCurrent);
+      const totalDirectDecrease = sumByKey(directRows, "decrease");
+      const totalDirectIncrease = sumByKey(directRows, "increase");
+      const totalDirectOracle = round2(
+        totalDirectOriginal - totalDirectDecrease + totalDirectIncrease
+      );
+
+      let totalDirectStatus = "";
+      if (
+        totalDirectOriginal !== 0 ||
+        totalDirectRevised !== 0 ||
+        totalDirectCurrent !== 0
+      ) {
+        if (totalDirectAvailable < 0) {
+          totalDirectStatus = "Overspent";
+        } else if (totalDirectDecrease === 0 && totalDirectIncrease === 0) {
+          totalDirectStatus = "No Change";
+        } else if (!valuesEqual(totalDirectOracle, totalDirectRevised)) {
+          totalDirectStatus = "Check Balance";
+        } else {
+          totalDirectStatus = "Updated";
+        }
+      }
+
+      const mtdcBaseOriginal = round2(
+        directRows.reduce((sum, row) => {
+          if (row.mtdcEligible !== "Yes") return sum;
+          return sum + (row.original ?? 0);
+        }, 0)
+      );
+
+      const mtdcBaseRevised = round2(
+        directRows.reduce((sum, row) => {
+          if (row.mtdcEligible !== "Yes") return sum;
+          return sum + ((row.revised ?? row.original) ?? 0);
+        }, 0)
+      );
+
+      const mtdcBaseCurrent = round2(
+        directRows.reduce((sum, row) => {
+          if (row.mtdcEligible !== "Yes") return sum;
+          return sum + (row.currentExp ?? 0);
+        }, 0)
+      );
+
+      const faOriginal = round2(mtdcBaseOriginal * faRate);
+      const faRevised = round2(mtdcBaseRevised * faRate);
+      const faCurrent = round2(mtdcBaseCurrent * faRate);
+      const faAvailable = round2(faRevised - faCurrent);
+      const faOracle = faRevised;
+
+      let faStatus = "";
+      if (faOriginal !== 0 || faRevised !== 0 || faCurrent !== 0) {
+        if (faAvailable < 0) {
+          faStatus = "Overspent";
+        } else if (!valuesEqual(faOracle, faRevised)) {
+          faStatus = "Check Balance";
+        } else {
+          faStatus = "Calculated";
+        }
+      }
+
+      const costShareDirect = {
+        original: costShareDirectRow?.original ?? 0,
+        revised: (costShareDirectRow?.revised ?? costShareDirectRow?.original) ?? 0,
+        currentExp: costShareDirectRow?.currentExp ?? 0,
+        available: costShareDirectRow?.available ?? 0,
+        decrease: costShareDirectRow?.decrease ?? 0,
+        increase: costShareDirectRow?.increase ?? 0,
+        oracleRevised: costShareDirectRow?.oracleRevised ?? 0,
+      };
+
+      const costShareFA = {
+        original: costShareFARow?.original ?? 0,
+        revised: (costShareFARow?.revised ?? costShareFARow?.original) ?? 0,
+        currentExp: costShareFARow?.currentExp ?? 0,
+        available: costShareFARow?.available ?? 0,
+        decrease: costShareFARow?.decrease ?? 0,
+        increase: costShareFARow?.increase ?? 0,
+        oracleRevised: costShareFARow?.oracleRevised ?? 0,
+      };
+
+      const totalCostOriginal = round2(
+        totalDirectOriginal + faOriginal + costShareDirect.original + costShareFA.original
+      );
+      const totalCostRevised = round2(
+        totalDirectRevised + faRevised + costShareDirect.revised + costShareFA.revised
+      );
+      const totalCostCurrent = round2(
+        totalDirectCurrent + faCurrent + costShareDirect.currentExp + costShareFA.currentExp
+      );
+      const totalCostAvailable = round2(
+        totalDirectAvailable + faAvailable + costShareDirect.available + costShareFA.available
+      );
+      const totalCostDecrease = round2(
+        totalDirectDecrease + costShareDirect.decrease + costShareFA.decrease
+      );
+      const totalCostIncrease = round2(
+        totalDirectIncrease + costShareDirect.increase + costShareFA.increase
+      );
+      const totalCostOracle = round2(
+        totalDirectOracle + faOracle + costShareDirect.oracleRevised + costShareFA.oracleRevised
+      );
+
+      let totalCostStatus = "";
+      if (totalCostOriginal !== 0 || totalCostRevised !== 0 || totalCostCurrent !== 0) {
+        if (totalCostAvailable < 0) {
+          totalCostStatus = "Overspent";
+        } else if (totalCostDecrease === 0 && totalCostIncrease === 0) {
+          totalCostStatus = "No Change";
+        } else if (!valuesEqual(totalCostOracle, totalCostRevised)) {
+          totalCostStatus = "Check Balance";
+        } else {
+          totalCostStatus = "Updated";
+        }
+      }
+
+      budgetTableFoot.innerHTML = `
+        <tr class="footer-row footer-row-direct">
+          <td class="category-cell">Total Direct</td>
+          <td>${formatCurrency(totalDirectOriginal)}</td>
+          <td>${formatCurrency(totalDirectRevised)}</td>
+          <td>${formatCurrency(totalDirectCurrent)}</td>
+          <td>${formatCurrency(totalDirectAvailable)}</td>
+          <td>${formatCurrency(totalDirectDecrease)}</td>
+          <td>${formatCurrency(totalDirectIncrease)}</td>
+          <td>${formatCurrency(totalDirectOracle)}</td>
+          <td>—</td>
+          <td><span class="status-pill ${statusClass(totalDirectStatus)}">${statusLabel(totalDirectStatus)}</span></td>
+        </tr>
+
+        <tr class="footer-row footer-row-fa">
+          <td class="category-cell">F&amp;A Sponsor</td>
+          <td>${formatCurrency(faOriginal)}</td>
+          <td>${formatCurrency(faRevised)}</td>
+          <td>${formatCurrency(faCurrent)}</td>
+          <td>${formatCurrency(faAvailable)}</td>
+          <td>—</td>
+          <td>—</td>
+          <td>${formatCurrency(faOracle)}</td>
+          <td>Calculated from MTDC</td>
+          <td><span class="status-pill ${statusClass(faStatus)}">${statusLabel(faStatus)}</span></td>
+        </tr>
+
+        <tr class="footer-row footer-row-total">
+          <td class="category-cell">Total Cost</td>
+          <td>${formatCurrency(totalCostOriginal)}</td>
+          <td>${formatCurrency(totalCostRevised)}</td>
+          <td>${formatCurrency(totalCostCurrent)}</td>
+          <td>${formatCurrency(totalCostAvailable)}</td>
+          <td>${formatCurrency(totalCostDecrease)}</td>
+          <td>${formatCurrency(totalCostIncrease)}</td>
+          <td>${formatCurrency(totalCostOracle)}</td>
+          <td>—</td>
+          <td><span class="status-pill ${statusClass(totalCostStatus)}">${statusLabel(totalCostStatus)}</span></td>
+        </tr>
+      `;
+    }
+
+    function updateTool() {
+      const rows = Array.from(budgetTableBody.querySelectorAll("tr"));
+      const rowsData = rows.map((row) => {
+        const values = getRowValues(row);
+
+        row.querySelector(".available-balance").textContent =
+          values.available === null ? "—" : formatCurrency(values.available);
+
+        row.querySelector(".decrease-value").textContent =
+          values.decrease === null ? "—" : formatCurrency(values.decrease);
+
+        row.querySelector(".increase-value").textContent =
+          values.increase === null ? "—" : formatCurrency(values.increase);
+
+        row.querySelector(".oracle-value").textContent =
+          values.oracleRevised === null ? "—" : formatCurrency(values.oracleRevised);
+
+        renderStatus(row.querySelector(".status-pill"), values.status);
+
+        return values;
+      });
+
+      updateDerivedControls(rowsData);
+      renderMtdcSummary(rowsData);
+      renderFooter(rowsData);
+    }
+
+    createBudgetRows();
+
+    document.querySelectorAll(".currency-input").forEach((input) => {
+      attachFormattedInput(input, formatCurrencyInput);
+      input.addEventListener("input", updateTool);
+    });
+
+    document.querySelectorAll(".mtdc-select").forEach((select) => {
+      select.addEventListener("change", updateTool);
+    });
+
+    attachFormattedInput(faRateInput, formatPercentInput);
+    faRateInput?.addEventListener("input", updateTool);
+    budgetStartInput?.addEventListener("input", updateTool);
+    budgetEndInput?.addEventListener("input", updateTool);
+
+    if (faRateInput?.value) {
+      faRateInput.value = formatPercentInput(faRateInput.value);
+    }
+
+    updateTool();
+  </script>
+
+  <style is:global>
+    * {
+      box-sizing: border-box;
+    }
+
+    .tool-shell {
+      width: min(1240px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 3rem 0 5rem;
+    }
+
+    .tool-hero {
+      margin-bottom: 2rem;
+    }
+
+    .tool-eyebrow {
+      margin: 0 0 0.5rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #5f6f6a;
+    }
+
+    .tool-hero h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.1;
+      color: #1f352d;
+    }
+
+    .tool-intro {
+      margin: 0.85rem 0 0;
+      max-width: 46rem;
+      font-size: 1.02rem;
+      line-height: 1.7;
+      color: #465751;
+    }
+
+    .tool-download-callout {
+      margin-top: 1.25rem;
+      padding: 2px;
+      border-radius: 26px;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 111, 145, 0.9),
+        rgba(255, 195, 113, 0.9),
+        rgba(130, 200, 255, 0.9),
+        rgba(139, 214, 160, 0.9),
+        rgba(193, 154, 255, 0.9)
+      );
+      box-shadow: 0 18px 36px rgba(56, 85, 103, 0.12);
+    }
+
+    .tool-download-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+      padding: 1.2rem 1.25rem;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .tool-download-copy {
+      min-width: 0;
+    }
+
+    .tool-download-label {
+      margin: 0 0 0.35rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #6b5f88;
+    }
+
+    .tool-download-copy h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      color: #1f352d;
+    }
+
+    .tool-download-copy p {
+      margin: 0.45rem 0 0;
+      line-height: 1.6;
+      color: #556863;
+      max-width: 42rem;
+    }
+
+    .download-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      min-height: 48px;
+      padding: 0.85rem 1.15rem;
+      border-radius: 14px;
+      background: #264e41;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      line-height: 1;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      box-shadow: 0 10px 24px rgba(38, 78, 65, 0.18);
+    }
+
+    .download-button:hover {
+      background: #2d5b4d;
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(38, 78, 65, 0.22);
+    }
+
+    .tool-card {
+      width: 100%;
+      max-width: 100%;
+      overflow: hidden;
+      margin-top: 1.5rem;
+      padding: 1.5rem;
+      border: 1px solid rgba(38, 78, 65, 0.12);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 18px 40px rgba(28, 52, 45, 0.06);
+    }
+
+    .tool-card-instructions {
+      background: linear-gradient(180deg, rgba(232, 242, 248, 0.9), rgba(255, 255, 255, 0.96));
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 1.35rem;
+      color: #1f352d;
+    }
+
+    .section-heading p {
+      margin: 0.45rem 0 0;
+      color: #566861;
+      line-height: 1.65;
+      max-width: 58rem;
+    }
+
+    .instruction-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .instruction-item {
+      padding: 1rem 1.05rem;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(114, 160, 188, 0.18);
+    }
+
+    .instruction-item strong {
+      display: block;
+      margin-bottom: 0.45rem;
+      color: #244253;
+      font-size: 0.98rem;
+    }
+
+    .instruction-item p {
+      margin: 0;
+      line-height: 1.65;
+      color: #4f646f;
+      font-size: 0.95rem;
+    }
+
+    .input-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+      width: 100%;
+    }
+
+    .input-grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      min-width: 0;
+    }
+
+    .field span {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #29473d;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      min-width: 0;
+      min-height: 48px;
+      padding: 0.8rem 0.95rem;
+      border: 1px solid rgba(38, 78, 65, 0.18);
+      border-radius: 14px;
+      background: #fff;
+      font: inherit;
+      color: #21352f;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .field textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      outline: none;
+      border-color: rgba(38, 78, 65, 0.45);
+      box-shadow: 0 0 0 4px rgba(88, 148, 129, 0.12);
+    }
+
+    .field-helper {
+      display: block;
+      margin-top: 0.35rem;
+      font-size: 0.8rem;
+      line-height: 1.45;
+      color: #60736d;
+    }
+
+    .field-note {
+      margin-top: 1rem;
+      padding: 0.85rem 0.95rem;
+      font-size: 0.86rem;
+      line-height: 1.65;
+      color: #5a6d66;
+      background: rgba(38, 78, 65, 0.05);
+      border-radius: 12px;
+      border: 1px solid rgba(38, 78, 65, 0.08);
+    }
+
+    .budget-note {
+      margin-top: 1rem;
+      margin-bottom: 0;
+    }
+
+    .scroll-hint {
+      margin-top: 1rem;
+      padding: 0.8rem 1rem;
+      border-radius: 14px;
+      background: rgba(217, 234, 244, 0.85);
+      color: #355567;
+      font-size: 0.93rem;
+      border: 1px solid rgba(114, 160, 188, 0.18);
+    }
+
+    .table-wrap {
+      width: 100%;
+      max-width: 100%;
+      margin-top: 1.1rem;
+      overflow-x: auto;
+      overflow-y: hidden;
+      border-radius: 18px;
+      border: 1px solid rgba(38, 78, 65, 0.08);
+      background: rgba(255, 255, 255, 0.88);
+    }
+
+    .results-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      min-width: 1400px;
+    }
+
+    .results-table th,
+    .results-table td {
+      padding: 0.8rem 0.85rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(38, 78, 65, 0.08);
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    .results-table thead th {
+      background: #edf5f8;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: #44606d;
+    }
+
+    .results-table td {
+      color: #223730;
+    }
+
+    .category-col,
+    .category-cell {
+      min-width: 220px;
+    }
+
+    .category-cell {
+      font-weight: 600;
+      color: #244253;
+    }
+
+    .row-blue-a td {
+      background: rgba(243, 249, 252, 0.88);
+    }
+
+    .row-blue-b td {
+      background: rgba(233, 244, 249, 0.88);
+    }
+
+    .row-blue-a .category-cell,
+    .row-blue-b .category-cell {
+      background: rgba(230, 242, 248, 0.98);
+    }
+
+    .table-input {
+      width: 100%;
+      min-width: 130px;
+      min-height: 42px;
+      padding: 0.7rem 0.8rem;
+      border: 1px solid rgba(38, 78, 65, 0.16);
+      border-radius: 12px;
+      background: #fff;
+      font: inherit;
+      color: #21352f;
+    }
+
+    .table-input:focus {
+      outline: none;
+      border-color: rgba(38, 78, 65, 0.45);
+      box-shadow: 0 0 0 4px rgba(88, 148, 129, 0.12);
+    }
+
+    .table-value {
+      display: inline-block;
+      min-width: 100px;
+      color: #21352f;
+      font-weight: 600;
+    }
+
+    .table-dash {
+      color: #6b7780;
+      font-weight: 500;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      line-height: 1.2;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .status-empty {
+      background: rgba(90, 108, 102, 0.08);
+      color: #60736d;
+      border-color: rgba(90, 108, 102, 0.14);
+    }
+
+    .status-nochange {
+      background: rgba(217, 234, 244, 0.9);
+      color: #355567;
+      border-color: rgba(114, 160, 188, 0.25);
+    }
+
+    .status-check {
+      background: rgba(255, 238, 204, 0.9);
+      color: #8a5b00;
+      border-color: rgba(196, 146, 31, 0.25);
+    }
+
+    .status-rebudgeted,
+    .status-calculated {
+      background: rgba(38, 78, 65, 0.1);
+      color: #264e41;
+      border-color: rgba(38, 78, 65, 0.16);
+    }
+
+    .status-overspent {
+      background: rgba(255, 223, 223, 0.92);
+      color: #8b2e2e;
+      border-color: rgba(170, 71, 71, 0.22);
+    }
+
+    .footer-row td {
+      font-weight: 600;
+    }
+
+    .footer-row-direct td {
+      background: rgba(218, 233, 230, 0.96) !important;
+    }
+
+    .footer-row-fa td {
+      background: rgba(228, 236, 226, 0.96) !important;
+    }
+
+    .footer-row-total td {
+      background: rgba(208, 219, 214, 0.98) !important;
+      font-weight: 700;
+    }
+
+    .summary-grid {
+      width: 100%;
+    }
+
+    .summary-stack {
+      display: grid;
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .summary-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .summary-item {
+      min-width: 0;
+      padding: 1rem 1.05rem;
+      border-radius: 18px;
+      background: rgba(38, 78, 65, 0.05);
+      border: 1px solid rgba(38, 78, 65, 0.08);
+    }
+
+    .summary-row-grant .summary-item {
+      background: rgba(240, 246, 243, 0.96);
+      border-color: rgba(38, 78, 65, 0.08);
+    }
+
+    .summary-row-costshare .summary-item {
+      background: rgba(217, 234, 244, 0.72);
+      border-color: rgba(114, 160, 188, 0.18);
+    }
+
+    .summary-label {
+      display: block;
+      margin-bottom: 0.45rem;
+      font-size: 0.88rem;
+      color: #546660;
+    }
+
+    .summary-item strong {
+      font-size: 1.1rem;
+      color: #1f352d;
+    }
+
+    .tool-print-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 1.75rem;
+      padding: 1.15rem 1.25rem;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid rgba(38, 78, 65, 0.12);
+      box-shadow: 0 18px 40px rgba(28, 52, 45, 0.06);
+    }
+
+    .tool-print-note {
+      margin: 0;
+      color: #556863;
+      line-height: 1.6;
+    }
+
+    .print-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      min-height: 48px;
+      padding: 0.85rem 1.15rem;
+      border: none;
+      border-radius: 14px;
+      background: #264e41;
+      color: #fff;
+      font: inherit;
+      font-weight: 700;
+      line-height: 1;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      box-shadow: 0 10px 24px rgba(38, 78, 65, 0.18);
+    }
+
+    .print-button:hover {
+      background: #2d5b4d;
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(38, 78, 65, 0.22);
+    }
+
+    .print-button:focus-visible {
+      outline: 2px solid rgba(38, 78, 65, 0.35);
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 980px) {
+      .instruction-grid,
+      .input-grid-3,
+      .summary-row,
+      .tool-download-card {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .tool-download-card {
+        display: grid;
+      }
+
+      .download-button {
+        justify-self: start;
+      }
+
+      .tool-print-actions {
+        display: grid;
+        justify-content: stretch;
+      }
+
+      .print-button {
+        justify-self: start;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .tool-shell {
+        width: min(100% - 1.25rem, 1240px);
+        padding: 2rem 0 4rem;
+      }
+
+      .tool-card,
+      .tool-print-actions {
+        padding: 1.2rem;
+        border-radius: 20px;
+      }
+
+      .instruction-grid,
+      .input-grid,
+      .input-grid-3,
+      .summary-row,
+      .tool-download-card {
+        grid-template-columns: 1fr;
+      }
+
+      .download-button,
+      .print-button {
+        width: 100%;
+      }
+    }
+
+    @media print {
+      @page {
+        size: letter landscape;
+        margin: 0.35in;
+      }
+
+      html,
+      body {
+        background: #fff !important;
+        color: #000 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      header,
+      nav,
+      footer,
+      .no-print {
+        display: none !important;
+      }
+
+      * {
+        box-shadow: none !important;
+        text-shadow: none !important;
+        filter: none !important;
+      }
+
+      .tool-shell {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      .tool-card,
+      .tool-print-actions {
+        margin-top: 0.35rem !important;
+        padding: 0.45rem !important;
+        border: 1px solid #cfd7d3 !important;
+        border-radius: 0 !important;
+        background: #fff !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      .tool-card-instructions {
+        background: #fff !important;
+      }
+
+      .instruction-item,
+      .summary-item,
+      .field-note {
+        padding: 0.35rem !important;
+        border: 1px solid #d6deda !important;
+        border-radius: 0 !important;
+        background: #fff !important;
+      }
+
+      .field input,
+      .field select,
+      .field textarea,
+      .table-input {
+        min-height: 32px !important;
+        padding: 0.25rem 0.35rem !important;
+        border: 1px solid #cfd7d3 !important;
+        border-radius: 0 !important;
+        color: #000 !important;
+        background: #fff !important;
+      }
+
+      .table-wrap {
+        overflow: visible !important;
+        border: 1px solid #cfd7d3 !important;
+        border-radius: 0 !important;
+        background: #fff !important;
+      }
+
+      .results-table {
+        width: 100% !important;
+        min-width: 0 !important;
+        border-collapse: collapse !important;
+        table-layout: fixed !important;
+        font-size: 7.2px !important;
+      }
+
+      .results-table th,
+      .results-table td {
+        padding: 2px 3px !important;
+        border: 1px solid #cfd7d3 !important;
+        color: #000 !important;
+        background: #fff !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+        overflow-wrap: anywhere !important;
+        line-height: 1.15 !important;
+      }
+
+      .status-pill {
+        border: 1px solid #cfd7d3 !important;
+        background: #fff !important;
+        color: #000 !important;
+      }
+    }
+  </style>
+</MainLayout>

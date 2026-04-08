@@ -30,4 +30,14 @@ export const toolList = [
     status: "Completed",
     lastUpdated: "March 29, 2026",
   },
+  {
+    title: "Rebudget Template",
+    description:
+      "A rebudget planning tool for comparing original and revised budget categories, reviewing available balances, and summarizing rebudget changes.",
+    href: "/tools/rebudget-template",
+    image: "/assets/tools/rebudget-template-card.png",
+    type: "Template",
+    status: "Completed",
+    lastUpdated: "April 7, 2026",
+  },
 ];
