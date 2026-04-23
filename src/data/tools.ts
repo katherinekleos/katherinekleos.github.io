@@ -40,4 +40,40 @@ export const toolList = [
     status: "Completed",
     lastUpdated: "April 7, 2026",
   },
+
+  // --- NEW (IN DEVELOPMENT) ---
+
+  {
+    title: "Multi-Ledger Reconciliation Checklist",
+    description:
+      "A structured checklist for reviewing balances, payroll alignment, and reconciliation steps across multiple ledgers and accounts.",
+    href: "#",
+    image: "/assets/tools/multi-ledger-reconciliation-checklist-card.png",
+    type: "Template",
+    status: "In Development",
+    lastUpdated: "April 22, 2026",
+    disabled: true,
+  },
+  {
+    title: "LOE with Supplement Projection",
+    description:
+      "A projection tool for modeling labor distribution across base salary and supplemental funding to understand true effort allocation over time.",
+    href: "#",
+    image: "/assets/tools/loe-supplement-projection-card.png",
+    type: "Tool",
+    status: "In Development",
+    lastUpdated: "April 22, 2026",
+    disabled: true,
+  },
+  {
+    title: "Award Tracker Template",
+    description:
+      "A centralized tracking template for monitoring awards, timelines, status, and next steps across a sponsored project portfolio.",
+    href: "#",
+    image: "/assets/tools/award-tracker-template-card.png",
+    type: "Template",
+    status: "In Development",
+    lastUpdated: "April 22, 2026",
+    disabled: true,
+  },
 ];
