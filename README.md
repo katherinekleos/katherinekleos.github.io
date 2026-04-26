@@ -1,23 +1,41 @@
-# Astro Starter Kit: Blog
+# Research Administration Tools & Systems
 
-```sh
-npm create astro@latest -- --template blog
-```
+This repository supports the development of a structured, web-based toolkit for research administration.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+It focuses on translating complex processes—such as budgeting, effort allocation, and financial management—into clear, repeatable systems that can be used across roles and departments.
 
-Features:
+🔗 Live site: https://katherinekleos.github.io
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+## 📌 Purpose
 
-## 🚀 Project Structure
+Research administration work is often shaped by:
+- Fragmented processes  
+- Institutional variation  
+- Reliance on individual knowledge rather than shared systems  
 
-Inside of your Astro project, you'll see the following folders and files:
+This project addresses those challenges by building structured, reusable frameworks that make institutional processes more usable in practice.
+
+## 🧩 Scope
+
+This repository serves as the foundation for a broader toolkit focused on structuring workflows across the research administration lifecycle.
+
+This includes both pre-award and post-award activities, such as proposal development, budgeting, effort planning, financial management, and ongoing project administration.
+
+Each component is designed to be:
+- Interpretable  
+- Adaptable across institutions  
+- Grounded in real operational use 
+
+## ⚙️ Approach
+
+- Structure over improvisation  
+- Clarity over complexity  
+- Practical application  
+- System alignment  
+
+## 🗂️ Project Structure
+
+This project is built using Astro as a lightweight framework for organizing and presenting tools.
 
 ```text
 ├── public/
@@ -27,18 +45,18 @@ Inside of your Astro project, you'll see the following folders and files:
 │   ├── layouts/
 │   └── pages/
 ├── astro.config.mjs
-├── README.md
 ├── package.json
-└── tsconfig.json
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Pages are organized within `src/pages/`, where each file corresponds to a route on the site.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Reusable interface elements are stored in `src/components/`, supporting consistent structure across tools and pages.
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+Structured content and datasets are maintained in `src/data/` to support tool logic and content organization.
 
-Any static assets, like images, can be placed in the `public/` directory.
+Content-driven sections, such as blog entries or long-form materials, are managed alongside the site structure and rendered through the same framework.
+
+Static assets, including images and downloadable templates, are stored in the `public/` directory.
 
 ## 🧞 Commands
 
@@ -50,13 +68,19 @@ All commands are run from the root of the project, from a terminal:
 | `npm run dev`             | Starts local dev server at `localhost:4321`      |
 | `npm run build`           | Build your production site to `./dist/`          |
 | `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
 
-## 👀 Want to learn more?
 
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## 🌐 Context
 
-## Credit
+This work is part of an ongoing effort to improve how research administration is practiced—particularly in environments where systems, roles, and expectations are evolving.
 
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+The intention is to create resources that are:
+- Immediately usable  
+- Scalable across contexts  
+- Grounded in real administrative work  
+
+## 📝 Notes
+
+This repository reflects active development. Tools and structure will continue to evolve.
+
+## KatherineKleos 🌿 🪬 🌈 ✨
