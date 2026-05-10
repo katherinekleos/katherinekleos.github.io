@@ -1,0 +1,1789 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+---
+
+<MainLayout
+  title="LOE Supplement Tool"
+  description="Dynamic LOE planning tool for standard FTE, fluctuating monthly FTE, multiple supplements, and account-level labor distribution."
+>
+  <section class="tool-shell">
+    <div class="tool-hero">
+      <p class="tool-eyebrow">Tools &amp; Templates</p>
+      <h1>LOE Supplement Tool</h1>
+      <p class="tool-intro">
+        Model labor distribution across base salary, supplemental funding, monthly FTE changes,
+        and multiple LOE accounts.
+      </p>
+
+      <div class="tool-download-callout no-print">
+        <div class="tool-download-card">
+          <div class="tool-download-copy">
+            <p class="tool-download-label">Excel Templates Available</p>
+            <h2>Prefer to work in Excel?</h2>
+            <p>
+              Download either the standard FTE version or the fluctuating monthly FTE version
+              depending on how the labor distribution is structured.
+            </p>
+          </div>
+
+          <div class="download-button-group">
+            <a
+              class="download-button"
+              href="/downloads/LOE%20Supplement%20Planner_V1.1.xlsx"
+              download
+            >
+              Standard FTE Template
+            </a>
+
+            <a
+              class="download-button"
+              href="/downloads/LOE%20Supplement%20Planner_V2.xlsx"
+              download
+            >
+              Fluctuating FTE Template
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-card tool-card-instructions print-section">
+      <div class="section-heading">
+        <h2>How to Use This Tool</h2>
+        <p>
+          Enter the base salary, standard FTE, fringe rate, supplement structure, and LOE account
+          allocation. The tool will combine monthly FTE with each account’s LOE percentage.
+        </p>
+      </div>
+
+      <div class="instruction-grid">
+        <div class="instruction-item">
+          <strong>Monthly FTE</strong>
+          <p>
+            Use standard FTE as the default. Enter monthly overrides only when FTE changes for a
+            specific month.
+          </p>
+        </div>
+
+        <div class="instruction-item">
+          <strong>LOE accounts</strong>
+          <p>
+            Add one row per account or project. Each account receives its own LOE percentage and
+            projected salary/fringe calculation.
+          </p>
+        </div>
+
+        <div class="instruction-item">
+          <strong>Supplement structure</strong>
+          <p>
+            Add one or more supplement lines with effective dates. Each supplement can either scale
+            with FTE or remain fixed.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-card print-section">
+      <div class="section-heading">
+        <h2>Projection Details</h2>
+        <p>Enter the projection period to generate the monthly rows automatically.</p>
+      </div>
+
+      <div class="input-grid input-grid-3">
+        <label class="field">
+          <span>Projection start date</span>
+          <input id="projectionStart" type="date" />
+        </label>
+
+        <label class="field">
+          <span>Projection end date</span>
+          <input id="projectionEnd" type="date" />
+        </label>
+
+        <label class="field">
+          <span>Name / scenario label</span>
+          <input id="scenarioLabel" type="text" placeholder="Optional" />
+        </label>
+      </div>
+
+      <p class="field-note">
+        This tool uses month-based proration. Enter the last day of the projection period when
+        modeling a full month. This calculator is intended for planning purposes and should be
+        reviewed against institutional payroll and labor distribution requirements.
+      </p>
+    </div>
+
+    <div class="tool-card print-section">
+      <div class="section-heading">
+        <h2>Key Inputs</h2>
+        <p>These values drive the base salary, FTE, and fringe calculations.</p>
+      </div>
+
+      <div class="input-grid input-grid-3">
+        <label class="field">
+          <span>Annual base salary</span>
+          <input
+            id="baseSalary"
+            type="text"
+            inputmode="decimal"
+            placeholder="$100,000.00"
+            autocomplete="off"
+          />
+        </label>
+
+        <label class="field">
+          <span>Standard FTE %</span>
+          <input
+            id="standardFte"
+            type="text"
+            inputmode="decimal"
+            placeholder="100.00%"
+            autocomplete="off"
+          />
+          <small class="field-helper">Enter as a percentage, not a decimal.</small>
+        </label>
+
+        <label class="field">
+          <span>Fringe rate %</span>
+          <input
+            id="fringeRate"
+            type="text"
+            inputmode="decimal"
+            placeholder="30.00%"
+            autocomplete="off"
+          />
+          <small class="field-helper">Enter as a percentage, not a decimal.</small>
+        </label>
+      </div>
+    </div>
+
+    <div class="tool-card print-section">
+      <div class="section-heading section-heading-with-action">
+        <div>
+          <h2>Supplement Structure</h2>
+          <p>
+            Add supplement lines as needed. A supplement is active only during the months that fall
+            within its effective date range.
+          </p>
+        </div>
+
+        <button type="button" class="small-action-button no-print" id="addSupplementButton">
+          Add Supplement
+        </button>
+      </div>
+
+      <p class="field-note">
+        Use this section for the supplement line itself. The online tool supports multiple
+        supplement rows, but many scenarios may only need one.
+      </p>
+
+      <div class="scroll-hint no-print">
+        Scroll horizontally to view all supplement columns.
+      </div>
+
+      <div class="table-wrap">
+        <table class="results-table supplement-table">
+          <thead>
+            <tr>
+              <th>Supplement Label</th>
+              <th>Annual Amount</th>
+              <th>Effective Start</th>
+              <th>Effective End</th>
+              <th>Scales with FTE?</th>
+              <th>Notes</th>
+              <th class="no-print">Action</th>
+            </tr>
+          </thead>
+          <tbody id="supplementTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tool-card print-section">
+      <div class="section-heading section-heading-with-action">
+        <div>
+          <h2>LOE Account Allocation</h2>
+          <p>
+            Add each account or project receiving LOE. The account LOE percentage is applied to
+            base salary and active supplements.
+          </p>
+        </div>
+
+        <button type="button" class="small-action-button no-print" id="addAccountButton">
+          Add Account
+        </button>
+      </div>
+
+      <p class="field-note">
+        Account LOE should be entered as a percentage. For example, enter 25 for 25.00%, not 0.25.
+      </p>
+
+      <div class="table-wrap">
+        <table class="results-table account-table">
+          <thead>
+            <tr>
+              <th>Account / Project Name</th>
+              <th>Account Number</th>
+              <th>LOE %</th>
+              <th class="no-print">Action</th>
+            </tr>
+          </thead>
+          <tbody id="accountTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tool-card print-section">
+      <div class="section-heading">
+        <h2>Monthly FTE Overrides</h2>
+        <p>
+          Monthly overrides are optional. Blank fields use the standard FTE entered above.
+        </p>
+      </div>
+
+      <div id="fteEmptyState" class="empty-state">
+        Enter a projection start and end date to generate monthly FTE rows.
+      </div>
+
+      <div id="fteTableWrap" class="table-wrap" hidden>
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th class="fy-col">Month</th>
+              <th>Monthly FTE Override %</th>
+              <th>FTE Used</th>
+            </tr>
+          </thead>
+          <tbody id="fteTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tool-card print-section">
+      <div class="section-heading">
+        <h2>Monthly Account Projection</h2>
+        <p>
+          This table combines monthly FTE, account LOE, base salary, active supplements, and fringe.
+        </p>
+      </div>
+
+      <div id="projectionEmptyState" class="empty-state">
+        Enter projection dates, key inputs, supplements, and LOE accounts to generate results.
+      </div>
+
+      <div id="projectionScrollHint" class="scroll-hint no-print" hidden>
+        Scroll horizontally to view all monthly account projection columns.
+      </div>
+
+      <div id="projectionTableWrap" class="table-wrap" hidden>
+        <table class="results-table wide-table">
+          <thead>
+            <tr>
+              <th class="fy-col">Month</th>
+              <th>Account</th>
+              <th>Account Number</th>
+              <th>LOE %</th>
+              <th>FTE Used</th>
+              <th>Base Salary</th>
+              <th>Supplement Total</th>
+              <th>Total Salary</th>
+              <th>Fringe</th>
+              <th>Total Cost</th>
+            </tr>
+          </thead>
+          <tbody id="projectionTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tool-card print-section">
+      <div class="section-heading">
+        <h2>Summary</h2>
+        <p>High-level totals across all generated months and LOE accounts.</p>
+      </div>
+
+      <div id="summaryEmptyState" class="empty-state">
+        Summary totals will appear once the projection is generated.
+      </div>
+
+      <div id="summaryGrid" class="summary-grid" hidden>
+        <div class="summary-stack">
+          <div class="summary-row summary-row-grant">
+            <div class="summary-item">
+              <span class="summary-label">Total Base Salary</span>
+              <strong id="summaryBaseSalary">$0.00</strong>
+            </div>
+
+            <div class="summary-item">
+              <span class="summary-label">Total Supplement</span>
+              <strong id="summarySupplement">$0.00</strong>
+            </div>
+
+            <div class="summary-item">
+              <span class="summary-label">Total Salary</span>
+              <strong id="summaryTotalSalary">$0.00</strong>
+            </div>
+          </div>
+
+          <div class="summary-row summary-row-costshare">
+            <div class="summary-item">
+              <span class="summary-label">Total Fringe</span>
+              <strong id="summaryFringe">$0.00</strong>
+            </div>
+
+            <div class="summary-item">
+              <span class="summary-label">Total Projected Cost</span>
+              <strong id="summaryTotalCost">$0.00</strong>
+            </div>
+
+            <div class="summary-item">
+              <span class="summary-label">Total LOE Allocated</span>
+              <strong id="summaryTotalLoe">0.00%</strong>
+            </div>
+          </div>
+
+          <div class="summary-row summary-row-neutral">
+            <div class="summary-item">
+              <span class="summary-label">Average FTE Used</span>
+              <strong id="summaryAverageFte">0.00%</strong>
+            </div>
+
+            <div class="summary-item">
+              <span class="summary-label">Supplement Lines</span>
+              <strong id="summarySupplementCount">0</strong>
+            </div>
+
+            <div class="summary-item">
+              <span class="summary-label">LOE Account Lines</span>
+              <strong id="summaryAccountCount">0</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-card print-section">
+      <div class="section-heading">
+        <h2>Account-Level Summary</h2>
+        <p>Review total projected salary, supplement, fringe, and cost by account.</p>
+      </div>
+
+      <div id="accountSummaryEmptyState" class="empty-state">
+        Account-level totals will appear once the projection is generated.
+      </div>
+
+      <div id="accountSummaryTableWrap" class="table-wrap" hidden>
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>Account</th>
+              <th>Account Number</th>
+              <th>LOE %</th>
+              <th>Base Salary</th>
+              <th>Supplement</th>
+              <th>Total Salary</th>
+              <th>Fringe</th>
+              <th>Total Cost</th>
+            </tr>
+          </thead>
+          <tbody id="accountSummaryTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tool-print-actions no-print">
+      <p class="tool-print-note">
+        Need a clean record of the calculator output? Use the print dialog and choose
+        <strong>Save as PDF</strong>.
+      </p>
+      <button type="button" class="print-button" onclick="window.print()">
+        Print / Save as PDF
+      </button>
+    </div>
+  </section>
+
+  <script>
+    const projectionStartInput = document.getElementById("projectionStart");
+    const projectionEndInput = document.getElementById("projectionEnd");
+
+    const baseSalaryInput = document.getElementById("baseSalary");
+    const standardFteInput = document.getElementById("standardFte");
+    const fringeRateInput = document.getElementById("fringeRate");
+
+    const addSupplementButton = document.getElementById("addSupplementButton");
+    const supplementTableBody = document.getElementById("supplementTableBody");
+
+    const addAccountButton = document.getElementById("addAccountButton");
+    const accountTableBody = document.getElementById("accountTableBody");
+
+    const fteEmptyState = document.getElementById("fteEmptyState");
+    const fteTableWrap = document.getElementById("fteTableWrap");
+    const fteTableBody = document.getElementById("fteTableBody");
+
+    const projectionEmptyState = document.getElementById("projectionEmptyState");
+    const projectionScrollHint = document.getElementById("projectionScrollHint");
+    const projectionTableWrap = document.getElementById("projectionTableWrap");
+    const projectionTableBody = document.getElementById("projectionTableBody");
+
+    const summaryEmptyState = document.getElementById("summaryEmptyState");
+    const summaryGrid = document.getElementById("summaryGrid");
+
+    const summaryBaseSalary = document.getElementById("summaryBaseSalary");
+    const summarySupplement = document.getElementById("summarySupplement");
+    const summaryTotalSalary = document.getElementById("summaryTotalSalary");
+    const summaryFringe = document.getElementById("summaryFringe");
+    const summaryTotalCost = document.getElementById("summaryTotalCost");
+    const summaryTotalLoe = document.getElementById("summaryTotalLoe");
+    const summaryAverageFte = document.getElementById("summaryAverageFte");
+    const summarySupplementCount = document.getElementById("summarySupplementCount");
+    const summaryAccountCount = document.getElementById("summaryAccountCount");
+
+    const accountSummaryEmptyState = document.getElementById("accountSummaryEmptyState");
+    const accountSummaryTableWrap = document.getElementById("accountSummaryTableWrap");
+    const accountSummaryTableBody = document.getElementById("accountSummaryTableBody");
+
+    let monthlyRows = [];
+
+    function parseLocalDate(value) {
+      if (!value) return null;
+      const [year, month, day] = value.split("-").map(Number);
+      return new Date(year, month - 1, day);
+    }
+
+    function parseNumber(value) {
+      if (value === "" || value === null || value === undefined) return null;
+      const cleaned = String(value).replace(/[$,%\s,]/g, "");
+      if (cleaned === "") return null;
+      const parsed = Number(cleaned);
+      return Number.isFinite(parsed) ? parsed : null;
+    }
+
+    function formatCurrency(value) {
+      return value.toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+      });
+    }
+
+    function formatPercent(value) {
+      return `${value.toFixed(2)}%`;
+    }
+
+    function formatMonth(date) {
+      return date.toLocaleDateString("en-US", {
+        month: "short",
+        year: "numeric",
+      });
+    }
+
+    function formatCurrencyInput(value) {
+      const parsed = parseNumber(value);
+      if (parsed === null) return "";
+      return parsed.toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+    }
+
+    function formatPercentInput(value) {
+      const parsed = parseNumber(value);
+      if (parsed === null) return "";
+      return `${parsed.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}%`;
+    }
+
+    function attachFormattedInput(input, formatter) {
+      if (!input) return;
+
+      input.addEventListener("focus", () => {
+        const parsed = parseNumber(input.value);
+        input.value = parsed === null ? "" : String(parsed);
+      });
+
+      input.addEventListener("blur", () => {
+        if (input.value.trim() === "") return;
+        input.value = formatter(input.value);
+        updateProjection();
+      });
+    }
+
+    function attachTableCurrencyInput(input) {
+      input.addEventListener("focus", () => {
+        const parsed = parseNumber(input.value);
+        input.value = parsed === null ? "" : String(parsed);
+      });
+
+      input.addEventListener("blur", () => {
+        if (input.value.trim() !== "") {
+          input.value = formatCurrencyInput(input.value);
+        }
+        updateProjection();
+      });
+
+      input.addEventListener("input", updateProjection);
+    }
+
+    function attachTablePercentInput(input) {
+      input.addEventListener("focus", () => {
+        const parsed = parseNumber(input.value);
+        input.value = parsed === null ? "" : String(parsed);
+      });
+
+      input.addEventListener("blur", () => {
+        if (input.value.trim() !== "") {
+          input.value = formatPercentInput(input.value);
+        }
+        updateProjection();
+      });
+
+      input.addEventListener("input", updateProjection);
+    }
+
+    function getMonthStart(date) {
+      return new Date(date.getFullYear(), date.getMonth(), 1);
+    }
+
+    function getMonthEnd(date) {
+      return new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    }
+
+    function addMonths(date, months) {
+      return new Date(date.getFullYear(), date.getMonth() + months, 1);
+    }
+
+    function generateMonths(startDate, endDate) {
+      const rows = [];
+      let cursor = getMonthStart(startDate);
+      const finalMonth = getMonthStart(endDate);
+
+      while (cursor <= finalMonth) {
+        rows.push({
+          monthDate: new Date(cursor),
+          monthEndDate: getMonthEnd(cursor),
+          monthLabel: formatMonth(cursor),
+        });
+
+        cursor = addMonths(cursor, 1);
+      }
+
+      return rows;
+    }
+
+    function isSupplementActiveForMonth(supplement, monthDate, monthEndDate) {
+      if (!supplement.amount) return false;
+
+      const startDate = parseLocalDate(supplement.startDate);
+      const endDate = parseLocalDate(supplement.endDate);
+
+      if (!startDate && !endDate) return true;
+      if (startDate && monthEndDate < startDate) return false;
+      if (endDate && monthDate > endDate) return false;
+
+      return true;
+    }
+
+    function addSupplementRow(defaults = {}) {
+      const tr = document.createElement("tr");
+      tr.className = supplementTableBody.children.length % 2 === 0 ? "row-blue-a" : "row-blue-b";
+
+      tr.innerHTML = `
+        <td>
+          <input
+            class="inline-table-input supplement-label"
+            type="text"
+            placeholder="Supplement"
+            value="${defaults.label ?? ""}"
+          />
+        </td>
+        <td>
+          <input
+            class="inline-table-input supplement-amount"
+            type="text"
+            inputmode="decimal"
+            placeholder="$0.00"
+            value="${defaults.amount ?? ""}"
+          />
+        </td>
+        <td>
+          <input
+            class="inline-table-input supplement-start"
+            type="date"
+            value="${defaults.startDate ?? ""}"
+          />
+        </td>
+        <td>
+          <input
+            class="inline-table-input supplement-end"
+            type="date"
+            value="${defaults.endDate ?? ""}"
+          />
+        </td>
+        <td>
+          <select class="inline-table-input supplement-scales">
+            <option value="yes" ${defaults.scalesWithFte !== "no" ? "selected" : ""}>Yes</option>
+            <option value="no" ${defaults.scalesWithFte === "no" ? "selected" : ""}>No</option>
+          </select>
+        </td>
+        <td>
+          <input
+            class="inline-table-input supplement-notes"
+            type="text"
+            placeholder="Optional"
+            value="${defaults.notes ?? ""}"
+          />
+        </td>
+        <td class="no-print">
+          <button type="button" class="remove-row-button">Remove</button>
+        </td>
+      `;
+
+      supplementTableBody.appendChild(tr);
+
+      attachTableCurrencyInput(tr.querySelector(".supplement-amount"));
+
+      tr.querySelectorAll("input, select").forEach((input) => {
+        if (!input.classList.contains("supplement-amount")) {
+          input.addEventListener("input", updateProjection);
+          input.addEventListener("change", updateProjection);
+        }
+      });
+
+      tr.querySelector(".remove-row-button").addEventListener("click", () => {
+        tr.remove();
+        updateProjection();
+      });
+
+      updateProjection();
+    }
+
+    function addAccountRow(defaults = {}) {
+      const tr = document.createElement("tr");
+      tr.className = accountTableBody.children.length % 2 === 0 ? "row-blue-a" : "row-blue-b";
+
+      tr.innerHTML = `
+        <td>
+          <input
+            class="inline-table-input account-name"
+            type="text"
+            placeholder="Account / Project"
+            value="${defaults.name ?? ""}"
+          />
+        </td>
+        <td>
+          <input
+            class="inline-table-input account-number"
+            type="text"
+            placeholder="Account number"
+            value="${defaults.number ?? ""}"
+          />
+        </td>
+        <td>
+          <input
+            class="inline-table-input account-loe"
+            type="text"
+            inputmode="decimal"
+            placeholder="0.00%"
+            value="${defaults.loe ?? ""}"
+          />
+        </td>
+        <td class="no-print">
+          <button type="button" class="remove-row-button">Remove</button>
+        </td>
+      `;
+
+      accountTableBody.appendChild(tr);
+
+      attachTablePercentInput(tr.querySelector(".account-loe"));
+
+      tr.querySelectorAll("input").forEach((input) => {
+        if (!input.classList.contains("account-loe")) {
+          input.addEventListener("input", updateProjection);
+        }
+      });
+
+      tr.querySelector(".remove-row-button").addEventListener("click", () => {
+        tr.remove();
+        updateProjection();
+      });
+
+      updateProjection();
+    }
+
+    function readSupplements() {
+      return Array.from(supplementTableBody.querySelectorAll("tr")).map((row) => ({
+        label: row.querySelector(".supplement-label")?.value.trim() || "Supplement",
+        amount: parseNumber(row.querySelector(".supplement-amount")?.value) ?? 0,
+        startDate: row.querySelector(".supplement-start")?.value || "",
+        endDate: row.querySelector(".supplement-end")?.value || "",
+        scalesWithFte: row.querySelector(".supplement-scales")?.value === "yes",
+        notes: row.querySelector(".supplement-notes")?.value.trim() || "",
+      }));
+    }
+
+    function readAccounts() {
+      return Array.from(accountTableBody.querySelectorAll("tr")).map((row, index) => ({
+        name: row.querySelector(".account-name")?.value.trim() || `Account ${index + 1}`,
+        number: row.querySelector(".account-number")?.value.trim() || "—",
+        loePct: parseNumber(row.querySelector(".account-loe")?.value) ?? 0,
+      }));
+    }
+
+    function renderFteTable(rows) {
+      fteTableBody.innerHTML = "";
+
+      if (!rows.length) {
+        fteEmptyState.hidden = false;
+        fteTableWrap.hidden = true;
+        return;
+      }
+
+      rows.forEach((row, index) => {
+        const tr = document.createElement("tr");
+        tr.className = index % 2 === 0 ? "row-blue-a" : "row-blue-b";
+
+        tr.innerHTML = `
+          <td class="fy-cell">${row.monthLabel}</td>
+          <td>
+            <input
+              class="inline-table-input monthly-fte-override"
+              type="text"
+              inputmode="decimal"
+              placeholder="Use standard"
+              data-index="${index}"
+              autocomplete="off"
+            />
+          </td>
+          <td class="fte-used">—</td>
+        `;
+
+        fteTableBody.appendChild(tr);
+      });
+
+      document.querySelectorAll(".monthly-fte-override").forEach((input) => {
+        attachTablePercentInput(input);
+      });
+
+      fteEmptyState.hidden = true;
+      fteTableWrap.hidden = false;
+    }
+
+    function resetProjectionResults(message = "Enter projection dates, key inputs, supplements, and LOE accounts to generate results.") {
+      projectionTableBody.innerHTML = "";
+      projectionEmptyState.textContent = message;
+      projectionEmptyState.hidden = false;
+      projectionTableWrap.hidden = true;
+      projectionScrollHint.hidden = true;
+
+      summaryEmptyState.hidden = false;
+      summaryGrid.hidden = true;
+
+      accountSummaryTableBody.innerHTML = "";
+      accountSummaryEmptyState.hidden = false;
+      accountSummaryTableWrap.hidden = true;
+    }
+
+    function updateProjection() {
+      const startDate = parseLocalDate(projectionStartInput.value);
+      const endDate = parseLocalDate(projectionEndInput.value);
+
+      if (!startDate || !endDate) {
+        monthlyRows = [];
+        fteTableBody.innerHTML = "";
+        fteEmptyState.hidden = false;
+        fteTableWrap.hidden = true;
+        fteEmptyState.textContent = "Enter a projection start and end date to generate monthly FTE rows.";
+        resetProjectionResults();
+        return;
+      }
+
+      if (endDate < startDate) {
+        monthlyRows = [];
+        fteTableBody.innerHTML = "";
+        fteEmptyState.hidden = false;
+        fteTableWrap.hidden = true;
+        fteEmptyState.textContent = "Projection end date must be on or after the projection start date.";
+        resetProjectionResults("Projection end date must be on or after the projection start date.");
+        return;
+      }
+
+      if (!monthlyRows.length) {
+        monthlyRows = generateMonths(startDate, endDate);
+        renderFteTable(monthlyRows);
+      } else {
+        const expectedRows = generateMonths(startDate, endDate);
+        const existingLabels = monthlyRows.map((row) => row.monthLabel).join("|");
+        const expectedLabels = expectedRows.map((row) => row.monthLabel).join("|");
+
+        if (existingLabels !== expectedLabels) {
+          monthlyRows = expectedRows;
+          renderFteTable(monthlyRows);
+        }
+      }
+
+      calculateProjection();
+    }
+
+    function calculateProjection() {
+      const annualBaseSalary = parseNumber(baseSalaryInput.value);
+      const standardFtePct = parseNumber(standardFteInput.value);
+      const fringePct = parseNumber(fringeRateInput.value);
+      const supplements = readSupplements();
+      const accounts = readAccounts();
+
+      const validAccounts = accounts.filter((account) => account.loePct > 0);
+      const validSupplements = supplements.filter((supplement) => supplement.amount > 0);
+
+      const hasInputs =
+        annualBaseSalary !== null &&
+        standardFtePct !== null &&
+        fringePct !== null &&
+        monthlyRows.length > 0 &&
+        validAccounts.length > 0;
+
+      if (!hasInputs) {
+        resetProjectionResults();
+        return;
+      }
+
+      const standardFte = standardFtePct / 100;
+      const fringeRate = fringePct / 100;
+      const fteOverrideInputs = document.querySelectorAll(".monthly-fte-override");
+      const fteUsedCells = document.querySelectorAll(".fte-used");
+
+      const totals = {
+        baseSalary: 0,
+        supplement: 0,
+        totalSalary: 0,
+        fringe: 0,
+        totalCost: 0,
+        fteSum: 0,
+      };
+
+      const accountTotals = new Map();
+
+      projectionTableBody.innerHTML = "";
+
+      monthlyRows.forEach((month, monthIndex) => {
+        const overrideValue = parseNumber(fteOverrideInputs[monthIndex]?.value);
+        const fteUsed = overrideValue !== null ? overrideValue / 100 : standardFte;
+
+        fteUsedCells[monthIndex].textContent = formatPercent(fteUsed * 100);
+        totals.fteSum += fteUsed;
+
+        validAccounts.forEach((account, accountIndex) => {
+          const accountLoe = account.loePct / 100;
+
+          const activeSupplementTotal = validSupplements.reduce((sum, supplement) => {
+            if (!isSupplementActiveForMonth(supplement, month.monthDate, month.monthEndDate)) {
+              return sum;
+            }
+
+            const monthlySupplement = supplement.scalesWithFte
+              ? (supplement.amount / 12) * fteUsed
+              : supplement.amount / 12;
+
+            return sum + monthlySupplement;
+          }, 0);
+
+          const baseSalary = (annualBaseSalary / 12) * fteUsed * accountLoe;
+          const supplementTotal = activeSupplementTotal * accountLoe;
+          const totalSalary = baseSalary + supplementTotal;
+          const fringe = totalSalary * fringeRate;
+          const totalCost = totalSalary + fringe;
+
+          totals.baseSalary += baseSalary;
+          totals.supplement += supplementTotal;
+          totals.totalSalary += totalSalary;
+          totals.fringe += fringe;
+          totals.totalCost += totalCost;
+
+          const accountKey = `${account.name}|${account.number}|${account.loePct}`;
+
+          if (!accountTotals.has(accountKey)) {
+            accountTotals.set(accountKey, {
+              name: account.name,
+              number: account.number,
+              loePct: account.loePct,
+              baseSalary: 0,
+              supplement: 0,
+              totalSalary: 0,
+              fringe: 0,
+              totalCost: 0,
+            });
+          }
+
+          const accountSummary = accountTotals.get(accountKey);
+          accountSummary.baseSalary += baseSalary;
+          accountSummary.supplement += supplementTotal;
+          accountSummary.totalSalary += totalSalary;
+          accountSummary.fringe += fringe;
+          accountSummary.totalCost += totalCost;
+
+          const tr = document.createElement("tr");
+          tr.className = (monthIndex + accountIndex) % 2 === 0 ? "row-blue-a" : "row-blue-b";
+
+          tr.innerHTML = `
+            <td class="fy-cell">${month.monthLabel}</td>
+            <td>${account.name}</td>
+            <td>${account.number}</td>
+            <td>${formatPercent(account.loePct)}</td>
+            <td>${formatPercent(fteUsed * 100)}</td>
+            <td>${formatCurrency(baseSalary)}</td>
+            <td>${formatCurrency(supplementTotal)}</td>
+            <td>${formatCurrency(totalSalary)}</td>
+            <td>${formatCurrency(fringe)}</td>
+            <td>${formatCurrency(totalCost)}</td>
+          `;
+
+          projectionTableBody.appendChild(tr);
+        });
+      });
+
+      const totalLoeAllocated = validAccounts.reduce((sum, account) => sum + account.loePct, 0);
+      const averageFte = monthlyRows.length > 0 ? (totals.fteSum / monthlyRows.length) * 100 : 0;
+
+      summaryBaseSalary.textContent = formatCurrency(totals.baseSalary);
+      summarySupplement.textContent = formatCurrency(totals.supplement);
+      summaryTotalSalary.textContent = formatCurrency(totals.totalSalary);
+      summaryFringe.textContent = formatCurrency(totals.fringe);
+      summaryTotalCost.textContent = formatCurrency(totals.totalCost);
+      summaryTotalLoe.textContent = formatPercent(totalLoeAllocated);
+      summaryAverageFte.textContent = formatPercent(averageFte);
+      summarySupplementCount.textContent = String(validSupplements.length);
+      summaryAccountCount.textContent = String(validAccounts.length);
+
+      renderAccountSummary(Array.from(accountTotals.values()));
+
+      projectionEmptyState.hidden = true;
+      projectionTableWrap.hidden = false;
+      projectionScrollHint.hidden = false;
+
+      summaryEmptyState.hidden = true;
+      summaryGrid.hidden = false;
+    }
+
+    function renderAccountSummary(rows) {
+      accountSummaryTableBody.innerHTML = "";
+
+      if (!rows.length) {
+        accountSummaryEmptyState.hidden = false;
+        accountSummaryTableWrap.hidden = true;
+        return;
+      }
+
+      rows.forEach((row, index) => {
+        const tr = document.createElement("tr");
+        tr.className = index % 2 === 0 ? "row-blue-a" : "row-blue-b";
+
+        tr.innerHTML = `
+          <td class="fy-cell">${row.name}</td>
+          <td>${row.number}</td>
+          <td>${formatPercent(row.loePct)}</td>
+          <td>${formatCurrency(row.baseSalary)}</td>
+          <td>${formatCurrency(row.supplement)}</td>
+          <td>${formatCurrency(row.totalSalary)}</td>
+          <td>${formatCurrency(row.fringe)}</td>
+          <td>${formatCurrency(row.totalCost)}</td>
+        `;
+
+        accountSummaryTableBody.appendChild(tr);
+      });
+
+      accountSummaryEmptyState.hidden = true;
+      accountSummaryTableWrap.hidden = false;
+    }
+
+    attachFormattedInput(baseSalaryInput, formatCurrencyInput);
+    attachFormattedInput(standardFteInput, formatPercentInput);
+    attachFormattedInput(fringeRateInput, formatPercentInput);
+
+    [
+      projectionStartInput,
+      projectionEndInput,
+      baseSalaryInput,
+      standardFteInput,
+      fringeRateInput,
+    ].forEach((input) => {
+      input?.addEventListener("input", updateProjection);
+      input?.addEventListener("change", updateProjection);
+    });
+
+    addSupplementButton.addEventListener("click", () => addSupplementRow());
+    addAccountButton.addEventListener("click", () => addAccountRow());
+
+    addSupplementRow({
+      label: "Supplement Line",
+      amount: "",
+      scalesWithFte: "yes",
+    });
+
+    addAccountRow({
+      name: "Account 1",
+      number: "",
+      loe: "",
+    });
+  </script>
+
+  <style is:global>
+    * {
+      box-sizing: border-box;
+    }
+
+    .tool-shell {
+      width: min(1180px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 3rem 0 5rem;
+    }
+
+    .tool-hero {
+      margin-bottom: 2rem;
+    }
+
+    .tool-eyebrow {
+      margin: 0 0 0.5rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #5f6f6a;
+    }
+
+    .tool-hero h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.1;
+      color: #1f352d;
+    }
+
+    .tool-intro {
+      margin: 0.85rem 0 0;
+      max-width: 46rem;
+      font-size: 1.02rem;
+      line-height: 1.7;
+      color: #465751;
+    }
+
+    .tool-download-callout {
+      margin-top: 1.25rem;
+      padding: 2px;
+      border-radius: 26px;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 111, 145, 0.9),
+        rgba(255, 195, 113, 0.9),
+        rgba(130, 200, 255, 0.9),
+        rgba(139, 214, 160, 0.9),
+        rgba(193, 154, 255, 0.9)
+      );
+      box-shadow: 0 18px 36px rgba(56, 85, 103, 0.12);
+    }
+
+    .tool-download-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+      padding: 1.2rem 1.25rem;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .tool-download-copy {
+      min-width: 0;
+    }
+
+    .tool-download-label {
+      margin: 0 0 0.35rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #6b5f88;
+    }
+
+    .tool-download-copy h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      color: #1f352d;
+    }
+
+    .tool-download-copy p {
+      margin: 0.45rem 0 0;
+      line-height: 1.6;
+      color: #556863;
+      max-width: 42rem;
+    }
+
+    .download-button-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    .download-button,
+    .small-action-button,
+    .print-button,
+    .remove-row-button {
+      font: inherit;
+    }
+
+    .download-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      min-height: 48px;
+      padding: 0.85rem 1.15rem;
+      border-radius: 14px;
+      background: #264e41;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      line-height: 1;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      box-shadow: 0 10px 24px rgba(38, 78, 65, 0.18);
+    }
+
+    .download-button:hover {
+      background: #2d5b4d;
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(38, 78, 65, 0.22);
+    }
+
+    .tool-card {
+      width: 100%;
+      max-width: 100%;
+      overflow: hidden;
+      margin-top: 1.5rem;
+      padding: 1.5rem;
+      border: 1px solid rgba(38, 78, 65, 0.12);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 18px 40px rgba(28, 52, 45, 0.06);
+    }
+
+    .tool-card-instructions {
+      background: linear-gradient(180deg, rgba(232, 242, 248, 0.9), rgba(255, 255, 255, 0.96));
+    }
+
+    .section-heading {
+      display: block;
+    }
+
+    .section-heading-with-action {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 1.35rem;
+      color: #1f352d;
+    }
+
+    .section-heading p {
+      margin: 0.45rem 0 0;
+      color: #566861;
+      line-height: 1.65;
+      max-width: 54rem;
+    }
+
+    .small-action-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      min-height: 42px;
+      padding: 0.7rem 1rem;
+      border: none;
+      border-radius: 12px;
+      background: #264e41;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(38, 78, 65, 0.16);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    .small-action-button:hover {
+      background: #2d5b4d;
+      transform: translateY(-1px);
+      box-shadow: 0 14px 26px rgba(38, 78, 65, 0.2);
+    }
+
+    .instruction-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .instruction-item {
+      padding: 1rem 1.05rem;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(114, 160, 188, 0.18);
+    }
+
+    .instruction-item strong {
+      display: block;
+      margin-bottom: 0.45rem;
+      color: #244253;
+      font-size: 0.98rem;
+    }
+
+    .instruction-item p {
+      margin: 0;
+      line-height: 1.65;
+      color: #4f646f;
+      font-size: 0.95rem;
+    }
+
+    .input-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+      width: 100%;
+    }
+
+    .input-grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      min-width: 0;
+    }
+
+    .field span {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #29473d;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      min-width: 0;
+      min-height: 48px;
+      padding: 0.8rem 0.95rem;
+      border: 1px solid rgba(38, 78, 65, 0.18);
+      border-radius: 14px;
+      background: #fff;
+      font: inherit;
+      color: #21352f;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .inline-table-input:focus {
+      outline: none;
+      border-color: rgba(38, 78, 65, 0.45);
+      box-shadow: 0 0 0 4px rgba(88, 148, 129, 0.12);
+    }
+
+    .field-helper {
+      display: block;
+      margin-top: 0.35rem;
+      font-size: 0.8rem;
+      line-height: 1.45;
+      color: #60736d;
+    }
+
+    .field-note {
+      margin-top: 1rem;
+      padding: 0.85rem 0.95rem;
+      font-size: 0.86rem;
+      line-height: 1.65;
+      color: #5a6d66;
+      background: rgba(38, 78, 65, 0.05);
+      border-radius: 12px;
+      border: 1px solid rgba(38, 78, 65, 0.08);
+    }
+
+    .empty-state {
+      margin-top: 1.2rem;
+      padding: 1rem 1.1rem;
+      border-radius: 16px;
+      background: rgba(38, 78, 65, 0.05);
+      color: #51635d;
+      line-height: 1.6;
+    }
+
+    .scroll-hint {
+      margin-top: 1rem;
+      padding: 0.8rem 1rem;
+      border-radius: 14px;
+      background: rgba(217, 234, 244, 0.85);
+      color: #355567;
+      font-size: 0.93rem;
+      border: 1px solid rgba(114, 160, 188, 0.18);
+    }
+
+    .table-wrap {
+      width: 100%;
+      max-width: 100%;
+      margin-top: 1.1rem;
+      overflow-x: auto;
+      overflow-y: hidden;
+      border-radius: 18px;
+      border: 1px solid rgba(38, 78, 65, 0.08);
+      background: rgba(255, 255, 255, 0.88);
+    }
+
+    .results-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      min-width: 700px;
+    }
+
+    .wide-table {
+      min-width: 1450px;
+    }
+
+    .supplement-table {
+      min-width: 1200px;
+    }
+
+    .account-table {
+      min-width: 760px;
+    }
+
+    .results-table th,
+    .results-table td {
+      padding: 0.9rem 0.95rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(38, 78, 65, 0.08);
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    .results-table thead th {
+      background: #edf5f8;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: #44606d;
+    }
+
+    .results-table td {
+      color: #223730;
+    }
+
+    .fy-col {
+      min-width: 110px;
+    }
+
+    .fy-cell {
+      min-width: 110px;
+      font-weight: 600;
+      color: #244253;
+    }
+
+    .inline-table-input {
+      width: 170px;
+      min-height: 42px;
+      padding: 0.65rem 0.75rem;
+      border: 1px solid rgba(38, 78, 65, 0.18);
+      border-radius: 12px;
+      background: #fff;
+      font: inherit;
+      color: #21352f;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .supplement-notes {
+      width: 260px;
+    }
+
+    .remove-row-button {
+      min-height: 38px;
+      padding: 0.55rem 0.8rem;
+      border: 1px solid rgba(112, 67, 67, 0.18);
+      border-radius: 10px;
+      background: rgba(112, 67, 67, 0.08);
+      color: #704343;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .remove-row-button:hover {
+      background: rgba(112, 67, 67, 0.13);
+    }
+
+    .row-blue-a td {
+      background: rgba(243, 249, 252, 0.88);
+    }
+
+    .row-blue-b td {
+      background: rgba(233, 244, 249, 0.88);
+    }
+
+    .row-blue-a .fy-cell {
+      background: rgba(230, 242, 248, 0.98);
+    }
+
+    .row-blue-b .fy-cell {
+      background: rgba(220, 236, 245, 0.98);
+    }
+
+    .summary-grid {
+      width: 100%;
+    }
+
+    .summary-stack {
+      display: grid;
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .summary-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .summary-item {
+      min-width: 0;
+      padding: 1rem 1.05rem;
+      border-radius: 18px;
+      background: rgba(38, 78, 65, 0.05);
+      border: 1px solid rgba(38, 78, 65, 0.08);
+    }
+
+    .summary-row-grant .summary-item {
+      background: rgba(38, 78, 65, 0.06);
+    }
+
+    .summary-row-costshare .summary-item {
+      background: rgba(217, 234, 244, 0.72);
+      border-color: rgba(114, 160, 188, 0.18);
+    }
+
+    .summary-row-neutral .summary-item {
+      background: rgba(250, 248, 241, 0.9);
+      border-color: rgba(179, 156, 98, 0.16);
+    }
+
+    .summary-label {
+      display: block;
+      margin-bottom: 0.45rem;
+      font-size: 0.88rem;
+      color: #546660;
+    }
+
+    .summary-item strong {
+      font-size: 1.1rem;
+      color: #1f352d;
+    }
+
+    .tool-print-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 1.75rem;
+      padding: 1.15rem 1.25rem;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid rgba(38, 78, 65, 0.12);
+      box-shadow: 0 18px 40px rgba(28, 52, 45, 0.06);
+    }
+
+    .tool-print-note {
+      margin: 0;
+      color: #556863;
+      line-height: 1.6;
+    }
+
+    .print-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      min-height: 48px;
+      padding: 0.85rem 1.15rem;
+      border: none;
+      border-radius: 14px;
+      background: #264e41;
+      color: #fff;
+      font-weight: 700;
+      line-height: 1;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      box-shadow: 0 10px 24px rgba(38, 78, 65, 0.18);
+    }
+
+    .print-button:hover {
+      background: #2d5b4d;
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(38, 78, 65, 0.22);
+    }
+
+    .print-button:focus-visible,
+    .small-action-button:focus-visible,
+    .remove-row-button:focus-visible {
+      outline: 2px solid rgba(38, 78, 65, 0.35);
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 980px) {
+      .instruction-grid,
+      .input-grid-3,
+      .summary-row {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .tool-download-card,
+      .section-heading-with-action {
+        display: grid;
+      }
+
+      .download-button-group {
+        justify-content: flex-start;
+      }
+
+      .tool-print-actions {
+        display: grid;
+        justify-content: stretch;
+      }
+
+      .print-button {
+        justify-self: start;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .tool-shell {
+        width: min(100% - 1.25rem, 1180px);
+        padding: 2rem 0 4rem;
+      }
+
+      .tool-card,
+      .tool-print-actions {
+        padding: 1.2rem;
+        border-radius: 20px;
+      }
+
+      .instruction-grid,
+      .input-grid,
+      .input-grid-3,
+      .summary-row,
+      .tool-download-card,
+      .section-heading-with-action {
+        grid-template-columns: 1fr;
+      }
+
+      .download-button-group,
+      .download-button,
+      .print-button,
+      .small-action-button {
+        width: 100%;
+      }
+    }
+
+    @media print {
+      @page {
+        size: letter landscape;
+        margin: 0.35in;
+      }
+
+      html,
+      body {
+        background: #fff !important;
+        color: #000 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      header,
+      nav,
+      footer,
+      .no-print {
+        display: none !important;
+      }
+
+      * {
+        box-shadow: none !important;
+        text-shadow: none !important;
+        filter: none !important;
+      }
+
+      .tool-shell {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      .tool-hero {
+        margin: 0 0 0.3rem !important;
+      }
+
+      .tool-eyebrow {
+        margin-bottom: 0.1rem !important;
+        color: #000 !important;
+      }
+
+      .tool-hero h1 {
+        font-size: 18pt !important;
+        color: #000 !important;
+        margin-bottom: 0.15rem !important;
+      }
+
+      .tool-intro,
+      .section-heading p,
+      .field-note,
+      .tool-print-note,
+      .instruction-item p,
+      .summary-label,
+      .empty-state,
+      .field-helper {
+        color: #000 !important;
+      }
+
+      .tool-card,
+      .tool-print-actions {
+        margin-top: 0.35rem !important;
+        padding: 0.45rem !important;
+        border: 1px solid #cfd7d3 !important;
+        border-radius: 0 !important;
+        background: #fff !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      .tool-card-instructions {
+        background: #fff !important;
+      }
+
+      .instruction-grid,
+      .input-grid,
+      .input-grid-3,
+      .summary-row {
+        gap: 0.35rem !important;
+      }
+
+      .instruction-item,
+      .summary-item,
+      .field-note,
+      .empty-state {
+        padding: 0.35rem !important;
+        border: 1px solid #d6deda !important;
+        border-radius: 0 !important;
+        background: #fff !important;
+      }
+
+      .field input,
+      .field select,
+      .inline-table-input {
+        min-height: 30px !important;
+        padding: 0.2rem 0.3rem !important;
+        border: 1px solid #cfd7d3 !important;
+        border-radius: 0 !important;
+        color: #000 !important;
+        background: #fff !important;
+      }
+
+      .table-wrap {
+        overflow: visible !important;
+        overflow-x: visible !important;
+        overflow-y: visible !important;
+        border: 1px solid #cfd7d3 !important;
+        border-radius: 0 !important;
+        background: #fff !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+
+      .results-table,
+      .wide-table,
+      .supplement-table,
+      .account-table {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        border-collapse: collapse !important;
+        table-layout: fixed !important;
+      }
+
+      .results-table th,
+      .results-table td {
+        padding: 3px 4px !important;
+        border: 1px solid #cfd7d3 !important;
+        color: #000 !important;
+        background: #fff !important;
+        vertical-align: top !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+        overflow-wrap: anywhere !important;
+        hyphens: auto !important;
+      }
+
+      .results-table thead th,
+      .row-blue-a td,
+      .row-blue-b td,
+      .row-blue-a .fy-cell,
+      .row-blue-b .fy-cell {
+        background: #fff !important;
+        color: #000 !important;
+      }
+
+      .fy-cell {
+        color: #000 !important;
+        font-weight: 700 !important;
+      }
+
+      thead {
+        display: table-header-group;
+      }
+
+      tr,
+      td,
+      th,
+      .print-section {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      .scroll-hint {
+        display: none !important;
+      }
+
+      #projectionTableWrap .results-table {
+        font-size: 7.2px !important;
+      }
+
+      #projectionTableWrap .results-table th,
+      #projectionTableWrap .results-table td {
+        padding: 2px 3px !important;
+        line-height: 1.15 !important;
+      }
+
+      #projectionTableWrap .fy-col,
+      #projectionTableWrap .fy-cell {
+        min-width: 0 !important;
+        width: 8% !important;
+      }
+
+      .summary-item strong {
+        font-size: 10pt !important;
+        color: #000 !important;
+      }
+    }
+  </style>
+</MainLayout>
